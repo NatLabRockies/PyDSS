@@ -25,8 +25,7 @@ def test_frt_and_droop(cleanup_project):
     kw_df_frt=scenario_frt.get_full_dataframe("Generators", "kW")
     class_df_frt=scenario_frt.get_full_dataframe("Generators", "class")
     
-    assert not kw_df_droop[kw_df_droop[kw_df_droop.columns[0]]<=8].empty
-    assert 0.0 in kw_df_frt.values
-    assert 1.0 not in class_df_droop.values
-    assert 1.0 in class_df_frt.values
-        
+    assert not kw_df_droop[kw_df_droop[kw_df_droop.columns[0]]<=8].empty #check if droop reduces kw below 8 (it should)
+    assert 0.0 in kw_df_frt.values #check that DER tripped and active power dropped to 0.0 kW
+    assert 1.0 not in class_df_droop.values #check that DER did not trip and class parameter was not changed from 0 to 1
+    assert 1.0 in class_df_frt.values #check that DER did trip and class parameter was changed from 0 to 1
