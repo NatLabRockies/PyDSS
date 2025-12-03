@@ -37,7 +37,6 @@ class ControllerType(enum.Enum):
     STORAGE_CONTROLLER = "StorageController"
     THERMOSTATIC_LOAD_CONTROLLER = "ThermostaticLoad"
     XMFR_CONTROLLER = "xmfrController"
-    DYNAMIC_VOLTAGE_SUPPORT = "DynamicVoltageSupport"
 
 CONTROLLER_TYPES = tuple(x.value for x in ControllerType)
 CONFIG_EXT = ".toml"

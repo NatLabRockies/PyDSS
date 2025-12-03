@@ -156,7 +156,11 @@ class OpenDSS:
     def _CreateControllers(self, ControllerDict):
         self._pyControls = {}
         self._pyControls_types = {}
+        # logger.info(f'self._dssObjects -> {self._dssObjects}')
+        # os.system("PAUSE")
         for ControllerType, ElementsDict in ControllerDict.items():
+            # logger.info(f'ControllerType -> {ControllerType}, ElementsDict -> {ElementsDict}')
+            # os.system("PAUSE")
             for ElmName, SettingsDict in ElementsDict.items():
                 Controller = pyControllers.pyController.Create(ElmName, ControllerType, SettingsDict, self._dssObjects,
                                                   self._dssInstance, self._dssSolver)
@@ -205,7 +209,8 @@ class OpenDSS:
         InvalidSelection = ['Settings', 'ActiveClass', 'dss', 'utils', 'PDElements', 'XYCurves', 'Bus', 'Properties']
         # TODO: this causes a segmentation fault. Aadil says it may not be needed.
         #self._dssObjectsByClass={'LoadShape': self._get_relavent_object_dict('LoadShape')}
-
+        # logger.info(f"dss.Circuit.AllElementNames()  -> {dss.Circuit.AllElementNames()}")
+        # os.system("PAUSE")
         for ElmName in dss.Circuit.AllElementNames():
             Class, Name =  ElmName.split('.', 1)
             ClassName = Class + 's'
@@ -247,12 +252,27 @@ class OpenDSS:
             self.profileStore.update()
 
         if self._settings.helics.co_simulation_mode:
+            # self._heilcs_interface.updateHelicsPublications()
+            self._increment_flag, helics_time = self._heilcs_interface.request_time_increment()
+
+        if self._settings.helics.co_simulation_mode:
             self._heilcs_interface.updateHelicsSubscriptions()
         else:
             if updateObjects:
                 for object, params in updateObjects.items():
                     cl, name = object.split('.')
                     self._Modifier.Edit_Element(cl, name, params)
+        
+        # pydss_update_agian = "y"
+        # while pydss_update_agian == "y":
+        #     if self._settings.helics.co_simulation_mode:
+        #         self._heilcs_interface.updateHelicsSubscriptions()
+        #     else:
+        #         if updateObjects:
+        #             for object, params in updateObjects.items():
+        #                 cl, name = object.split('.')
+        #                 self._Modifier.Edit_Element(cl, name, params)
+        #     pydss_update_agian = input('enter your pydss update command: ')
 
         # run simulation time step and get results
         time_step_has_converged = True
@@ -263,6 +283,7 @@ class OpenDSS:
                     for i in range(self._settings.project.max_control_iterations):
                         has_converged, error = self._update_controllers(priority, step, i, UpdateResults=False)
                         logger.debug('Control Loop {} convergence error: {}'.format(priority, error))
+                        logger.debug('Control Loop {} convergence @step {} '.format(priority, step))
                         if has_converged:
                             priority_has_converged = True
                             break
@@ -297,8 +318,9 @@ class OpenDSS:
 
         if self._settings.helics.co_simulation_mode:
             self._heilcs_interface.updateHelicsPublications()
-            self._increment_flag, helics_time = self._heilcs_interface.request_time_increment()
-
+            # if step < 1:
+            #     self._increment_flag, helics_time = self._heilcs_interface.request_time_increment_2()
+        # os.system("PAUSE")
         return time_step_has_converged
 
     def _HandleConvergenceErrorChecks(self, step, error):
@@ -316,7 +338,7 @@ class OpenDSS:
         self._convergenceErrorsOpenDSS += 1
 
         if self._maxConvergenceErrorCount is not None and self._convergenceErrorsOpenDSS > self._maxConvergenceErrorCount:
-            logger.error("Exceeded OpenDSS convergence error count threshold at step %s", step)
+            logger.error(f"Exceeded OpenDSS convergence error count threshold at step {step}")
             raise OpenDssConvergenceErrorCountExceeded(f"{self._convergenceErrorsOpenDSS} errors occurred")
 
     def DryRunSimulation(self, project, scenario):
@@ -357,7 +379,7 @@ class OpenDSS:
         dss.Solution.Convergence(self._settings.project.error_tolerance)
         logger.info('Running simulation from {} till {}.'.format(sTime, eTime))
         logger.info('Simulation time step {}.'.format(Steps))
-        logger.info("Set OpenDSS convergence to %s", dss.Solution.Convergence())
+        logger.info(f"Set OpenDSS convergence to {dss.Solution.Convergence()}")
         logger.info('Max convergence error count {}.'.format(self._maxConvergenceErrorCount))
         logger.info("initializing store")
         self.ResultContainer.InitializeDataStore(project.hdf_store, Steps, MC_scenario_number)
@@ -388,12 +410,21 @@ class OpenDSS:
                 within_range = self._simulation_range.is_within_range(self._dssSolver.GetDateTime())
                 if within_range:
                     pydss_has_converged = self.RunStep(step)
+                    # logger.info(f'Finish simulation: step {step} 1')
+                    # pydss_has_converged = self.RunStep(step)
+                    # logger.info(f'Finish simulation: step {step} 2')
+                    # pydss_has_converged = self.RunStep(step)
+                    # logger.info(f'Finish simulation: step {step} 3')
                     opendss_has_converged = dss.Solution.Converged()
                     if not opendss_has_converged:
-                        logger.error("OpenDSS did not converge at step=%s pydss_converged=%s",
-                                            step, pydss_has_converged)
+                        logger.error(f"OpenDSS did not converge at step={step} pydss_converged={pydss_has_converged}")
                         self._HandleOpenDSSConvergenceErrorChecks(step)
-                has_converged = pydss_has_converged and opendss_has_converged
+                
+                if pydss_has_converged:
+                    has_converged = True
+                else:
+                    has_converged = pydss_has_converged and opendss_has_converged
+                
                 if step == 0 and self.ResultContainer is not None:
                     size = make_human_readable_size(self.ResultContainer.max_num_bytes())
                     logger.info('Storage requirement estimation: %s, estimated based on first time step run.', size)
@@ -401,6 +432,10 @@ class OpenDSS:
                     step, has_converged = self._RunPostProcessors(step, Steps, postprocessors)
                 if self._increment_flag:
                     step += 1
+                    # if step < 1:
+                    #     step += 1
+                    # else:
+                    #     step += 2
 
                 # In the case of a frequency sweep, the code updates results at each frequency.
                 # Doing so again would cause a duplicate result.

@@ -355,7 +355,7 @@ class ValueByNumber(ValueStorageBase):
         if np.issubdtype(self._value_type, np.int64):
             self._value = INTEGER_NAN
         else:
-            self._value = np.NaN
+            self._value = np.nan
 
     def set_value(self, value):
         self._value = value
@@ -487,7 +487,7 @@ class ValueByLabel(ValueStorageBase):
 
     def set_nan(self):
         for i in range(len(self._value)):
-            self._value[i] = np.NaN
+            self._value[i] = np.nan
 
     def set_value(self, value):
         self._value = value

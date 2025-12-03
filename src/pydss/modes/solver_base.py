@@ -22,7 +22,7 @@ class solver_base(abc.ABC):
 
         StartDay = time_offset_days
         StartTimeMin = time_offset_seconds / 60.0
-        sStepResolution = settings.step_resolution_sec
+        sStepResolution = settings.step_resolution_sec/3
 
         self.StartDay = self._StartTime.timetuple().tm_yday
         self.EndDay = self._EndTime.timetuple().tm_yday
@@ -36,7 +36,7 @@ class solver_base(abc.ABC):
 
         #self._dssSolution.DblHour()
         self.reSolve()
-        logger.info("%s solver setup complete", settings.simulation_type)
+        logger.info(f"{settings.simulation_type} solver setup complete")
 
     def setFrequency(self, frequency):
         self._dssSolution.Frequency(frequency)

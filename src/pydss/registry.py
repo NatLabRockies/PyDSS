@@ -39,50 +39,13 @@ DEFAULT_REGISTRY = {
                 ),
             },
         ],
-        ControllerType.PV_VOLTAGE_RIDETHROUGH.value: [
-            {
-                "name": "NO_VRT_DVS_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
-                ),
-            },
-            {
-                "name": "1547_CAT_III_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
-                ),
-            },
-            {
-                "name": "1547_CAT_III_DVS_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
-                ),
-            },
-        ],
+        ControllerType.PV_VOLTAGE_RIDETHROUGH.value: [],
         ControllerType.SOCKET_CONTROLLER.value: [],
         ControllerType.STORAGE_CONTROLLER.value: [],
         ControllerType.XMFR_CONTROLLER.value: [],
         ControllerType.MOTOR_STALL.value: [],
         ControllerType.MOTOR_STALL_SIMPLE.value: [],
         ControllerType.FAULT_CONTROLLER.value: [],
-        ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value:[{
-                "name": "DVS_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "PyDSS/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
-                ),
-            },
-            {
-                "name": "DVS_VRT_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "PyDSS/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
-                ),
-            },
-        ],
     },
 }
 
