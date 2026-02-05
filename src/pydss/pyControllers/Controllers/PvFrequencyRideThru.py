@@ -240,11 +240,11 @@ class PvFrequencyRideThru(ControllerAbstract):
         MayTripRegion = TotalRegion.difference(intersection) #everything not in the active region is the white "may trip" 
 
         if self.__Settings['May trip operation'] == 'Trip':
-            self.CurrLimRegion = cascaded_union([MandatoryRegion1, MandatoryRegion2]) #Naming probably not appropriate with frequency variation.  
-            self.TripRegion = cascaded_union([OFtripRegion, UFtripRegion, MayTripRegion])
+            self.CurrLimRegion = unary_union([MandatoryRegion1, MandatoryRegion2]) #Naming probably not appropriate with frequency variation.  
+            self.TripRegion = unary_union([OFtripRegion, UFtripRegion, MayTripRegion])
         elif self.__Settings['May trip operation'] == 'Ride-Through':
-            self.CurrLimRegion = cascaded_union([MandatoryRegion1, MandatoryRegion2, MayTripRegion])
-            self.TripRegion = cascaded_union([OFtripRegion, UFtripRegion])
+            self.CurrLimRegion = unary_union([MandatoryRegion1, MandatoryRegion2, MayTripRegion])
+            self.TripRegion = unary_union([OFtripRegion, UFtripRegion])
         else:
             assert False
         self.ContinuousRegion = ContinuousRegion
