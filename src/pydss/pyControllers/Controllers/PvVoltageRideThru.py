@@ -527,7 +527,7 @@ class PvVoltageRideThru(ControllerAbstract):
             logger.info(f"deadtime: {deadtime}")
             logger.info(f"self._tripped_dead_time: {self._tripped_dead_time}")
             # self.DERA_control(0.0)
-            logger.info(f"self.DERA_p_limit: {self.DERA_p_limit}")
+            # logger.info(f"self.DERA_p_limit: {self.DERA_p_limit}")
             # os.system("PAUSE")
             if u_in < self._rvs[0] and u_in > self._rvs[1] and deadtime >= self._tripped_dead_time:
                 

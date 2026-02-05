@@ -1,7 +1,7 @@
 from ipaddress import v4_int_to_packed
 from  pydss.pyControllers.pyControllerAbstract import ControllerAbstract
 from shapely.geometry import MultiPoint, Polygon, Point, MultiPolygon
-from shapely.ops import triangulate, cascaded_union
+from shapely.ops import triangulate, unary_union
 import matplotlib.pyplot as plt
 import datetime
 import math
