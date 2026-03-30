@@ -261,6 +261,13 @@ class PvVoltageRideThru(ControllerAbstract):
             logger.error("User defined setting outside of IEEE 1547 acceptable range.")
             assert False
 
+        # Re-set kV to force RecalcElementData before switching from Model 7 to 1.
+        # Model 7 internally uses VBase = kV*1000/sqrt(3) even for 1-phase generators,
+        # but Model 1 expects VBase = kV*1000 for 1-phase. Changing only the 'Model'
+        # property does not trigger RecalcElementData, leaving a stale VBase that
+        # causes Model 1 to operate in constant-impedance mode (inflated output).
+        kv = self._controlled_element.GetParameter('kV')
+        self._controlled_element.SetParameter('kV', kv)
         self._controlled_element.SetParameter('Model', '1') # change to model 1
         self._controlled_element.SetParameter('Vmaxpu', V[0])
         self._controlled_element.SetParameter('Vminpu', '0.1')# V[1])
