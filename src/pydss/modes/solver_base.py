@@ -22,7 +22,7 @@ class solver_base(abc.ABC):
 
         StartDay = time_offset_days
         StartTimeMin = time_offset_seconds / 60.0
-        sStepResolution = settings.step_resolution_sec/3
+        sStepResolution = settings.step_resolution_sec
 
         self.StartDay = self._StartTime.timetuple().tm_yday
         self.EndDay = self._EndTime.timetuple().tm_yday

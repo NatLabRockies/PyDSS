@@ -214,7 +214,7 @@ class helics_interface:
         if self._settings.helics.broker_port:
             helics.helicsFederateInfoSetBrokerPort(self.fedinfo, self._settings.helics.broker_port)
         helics.helicsFederateInfoSetTimeProperty(self.fedinfo, helics.helics_property_time_delta,
-                                                 self._settings.helics.time_delta/3)
+                                                 self._settings.helics.time_delta)
         helics.helicsFederateInfoSetIntegerProperty(self.fedinfo, helics.helics_property_int_log_level,
                                                     self._settings.helics.logging_level)
         helics.helicsFederateInfoSetIntegerProperty(self.fedinfo, helics.helics_property_int_max_iterations,
