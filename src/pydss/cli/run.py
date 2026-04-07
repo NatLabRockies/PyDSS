@@ -81,15 +81,13 @@ def run(project_path, options=None, tar_project=False, zip_project=False, verbos
             logger.error("Logs path %s does not exist", logs_path)
             sys.exit(1)
         filename = logs_path / "pydss.log"
-    if settings.logging.clear_old_log_file:
-         logs_path = project_path / "Logs"
-         filename = logs_path / "pydss.log"
-         if os.path.exists(filename):
-            os.remove(filename)
 
     logger.level(console_level)
     if filename:
-        logger.add(filename)
+        if settings.logging.clear_old_log_file:
+            logger.add(filename, mode="w")
+        else:
+            logger.add(filename)
 
     logger.info(f"CLI: [{get_cli_string()}]",)
 
