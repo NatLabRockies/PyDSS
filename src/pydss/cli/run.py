@@ -96,9 +96,7 @@ def run(project_path, options=None, tar_project=False, zip_project=False, verbos
         if not isinstance(options, dict):
             logger.error("options are invalid: %s", options)
             sys.exit(1)
-    # logger.info(f"indicator 1")
     project = PyDssProject.load_project(project_path, options=options, simulation_file=simulations_file)
-    # logger.info(f"indicator 2")
     project.run(tar_project=tar_project, zip_project=zip_project, dry_run=dry_run)
 
     if dry_run:

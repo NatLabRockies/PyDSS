@@ -91,19 +91,19 @@ class MotorStall(ControllerAbstract):
 
     def Update(self, Priority, time, update_results):
         self.t = self._dss_solver.GetTotalSeconds()
-        # logger.info(f"self.t: {self.t}")
-        # logger.info(f"self._controlled_element: {self._controlled_element}")
-        # logger.info(f"{self.name} - {self.kw_rated} - {self.kvar_rated} - {self.kvbase} - {self.i_base}")
+        logger.debug(f"self.t: {self.t}")
+        logger.debug(f"self._controlled_element: {self._controlled_element}")
+        logger.debug(f"{self.name} - {self.kw_rated} - {self.kvar_rated} - {self.kvbase} - {self.i_base}")
         if self.i_base:
             self.p = self._controlled_element.GetVariable('Powers')[0] + self._controlled_element.GetVariable('Powers')[2]
             self.q = self._controlled_element.GetVariable('Powers')[1] + self._controlled_element.GetVariable('Powers')[3]
             self.voltage = self._controlled_element.GetVariable('VoltagesMagAng')[0]
             self.voltage_pu = self._controlled_element.sBus[0].GetVariable("puVmagAngle")[0]
-            # logger.info(f"CurrentsMagAng: {self._controlled_element.GetVariable('CurrentsMagAng')}")
-            # logger.info(f"voltage_pu: {self.voltage_pu}")
-            # logger.info(f"Powers: {self._controlled_element.GetVariable('Powers')}")
-            # logger.info(f"self.kw_rated: {self.kw_rated}")
-            # logger.info(f"self.kvar_rated: {self.kvar_rated}")
+            logger.debug(f"CurrentsMagAng: {self._controlled_element.GetVariable('CurrentsMagAng')}")
+            logger.debug(f"voltage_pu: {self.voltage_pu}")
+            logger.debug(f"Powers: {self._controlled_element.GetVariable('Powers')}")
+            logger.debug(f"self.kw_rated: {self.kw_rated}")
+            logger.debug(f"self.kvar_rated: {self.kvar_rated}")
 
             comp_lf = self.comp_lf # self.p / self.kw_rated
             comp_pf = self.rated_pf # self.p / (self.p**2 + self.q**2)**0.5
@@ -173,8 +173,6 @@ class MotorStall(ControllerAbstract):
 
                 p0 = 1 - self._settings.k_p1 * (1-v_break_adj)**self._settings.n_p1
                 q0 = ((1 - comp_pf**2)**0.5 / comp_pf)-self._settings.k_q1*(1-v_break_adj)**self._settings.n_q1
-                # logger.info(f"p0: {p0}")
-                # logger.info(f"q0: {q0}")
                 logger.info(f"self.voltage_pu: {self.voltage_pu}")
 
                 # the operation model
@@ -182,8 +180,7 @@ class MotorStall(ControllerAbstract):
                     # stage III
                     p_stall = self.voltage_pu ** 2 * self.r_stall_pu / (self.r_stall_pu ** 2 + self.x_stall_pu ** 2)
                     q_stall = self.voltage_pu ** 2 * self.x_stall_pu / (self.r_stall_pu ** 2 + self.x_stall_pu ** 2)
-                    # logger.info(f"p_stall: {p_stall}")
-                    # logger.info(f"q_stall: {q_stall}")
+
                     if self.rstrt:
                         logger.info(f"Stage III: Motor stall and {self._settings.f_rst} of load is restarted")
                         if self.voltage_pu > v_break_adj:
@@ -204,14 +201,7 @@ class MotorStall(ControllerAbstract):
                         q_rstrt = q * self._settings.f_rst
                         p_nonrstrt = p_stall * (1 - self._settings.f_rst)
                         q_nonrstrt = q_stall * (1 - self._settings.f_rst)
-                        # logger.info(f"p_rstrt: {p_rstrt}")
-                        # logger.info(f"q_rstrt: {q_rstrt}")
-                        # logger.info(f"p_nonrstrt: {p_nonrstrt}")
-                        # logger.info(f"q_nonrstrt: {q_nonrstrt}")
-                        # logger.info(f"current_pu_rstrt: {current_pu_rstrt}")
-                        # logger.info(f"current_pu_nonrstrt: {current_pu_nonrstrt}")
-                        # logger.info(f"self.i2r_nonrstr: {self.i2r_nonrstr}")
-                        # logger.info(f"self.temp_nonrstr: {self.temp_nonrstr}")
+
                     else:
                         logger.info(f"Stage III: Motor stall and not restarted load")
                         # self._controlled_element.SetParameter('kw', Kth * p_stall * self.kva_rated) 
@@ -238,15 +228,11 @@ class MotorStall(ControllerAbstract):
                         logger.info(f"Stage I: normal operation")
                         p = p0 + self._settings.k_p1*(self.voltage_pu-v_break_adj)**self._settings.n_p1
                         q = q0 + self._settings.k_q1*(self.voltage_pu-v_break_adj)**self._settings.n_q1
-                        # logger.info(f"p1: {p}")
-                        # logger.info(f"q1: {q}")
                     else:
                         # stage II or before stall
                         logger.info(f"Stage II: Motor voltage below the break down voltage")
                         p = p0 + self._settings.k_p2 * (v_break_adj - self.voltage_pu)**self._settings.n_p2
                         q = q0 + self._settings.k_q2 * (v_break_adj - self.voltage_pu)**self._settings.n_q2
-                        # logger.info(f"p2: {p}")
-                        # logger.info(f"q2: {q}")
                     current_pu = p / self.voltage_pu
                     p_rstrt = p * self._settings.f_rst
                     p_nonrstrt = p * (1 - self._settings.f_rst)
@@ -256,18 +242,11 @@ class MotorStall(ControllerAbstract):
                     self.i2r_nonrstr = current_pu * current_pu * self.r_stall_pu
                     self.temp_rstr = (self.dt*(self.i2r_rstr+self.i2r_rstr_prev)-(self.dt-2*self.t_th)*self.temp_rstr_prev)/(2*self.t_th+self.dt)
                     self.temp_nonrstr = (self.dt*(self.i2r_nonrstr+self.i2r_nonrstr_prev)-(self.dt-2*self.t_th)*self.temp_nonrstr_prev)/(2*self.t_th+self.dt)
-                    # logger.info(f"p_rstrt: {p_rstrt}")
-                    # logger.info(f"q_rstrt: {q_rstrt}")
-                    # logger.info(f"p_nonrstrt: {p_nonrstrt}")
-                    # logger.info(f"q_nonrstrt: {q_nonrstrt}")
-                    # logger.info(f"current_pu: {current_pu}")
-                    # logger.info(f"self.i2r_rstr: {self.i2r_rstr}")
-                    # logger.info(f"self.temp_rstr: {self.temp_rstr}")
 
                 # thermal protection
                 if self.stall:
                     if self.trip_rstr:
-                        # logger.info(f"Motor is tripped")
+                        logger.debug(f"Motor is tripped")
                         Kth_rstr = 0
                     ## for single bus system
                     elif self.temp_rstr > self._settings.t_th2t:
