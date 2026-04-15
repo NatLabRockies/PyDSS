@@ -342,6 +342,7 @@ class PyDssProject:
         else:
             store_filename = os.path.join(self._project_dir, STORE_FILENAME)
             self._dump_simulation_settings()
+        logger.info("indicator 3")
 
         driver = None
         if self._settings.exports.export_data_in_memory:

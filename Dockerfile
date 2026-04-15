@@ -1,4 +1,4 @@
-FROM python:3.7.0-slim
+FROM python:3.11.0-slim
 
 RUN apt-get update
 

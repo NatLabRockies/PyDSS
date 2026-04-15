@@ -1,5 +1,5 @@
 import ast
-
+from loguru import logger
 from opendssdirect import DSSException
 
 from pydss.dssBus import dssBus
@@ -60,9 +60,10 @@ class dssElement(dssObjectBase):
         super(dssElement, self).__init__(dssInstance, name, fullName)
         self._Enabled = dssInstance.CktElement.Enabled()
         if not self._Enabled:
+            logger.debug(f"Element isn't defined: {fullName}")
             return
-
         self._Parameters = {}
+        logger.debug(fullName)
         self._NumTerminals = dssInstance.CktElement.NumTerminals()
         self._NumConductors = dssInstance.CktElement.NumConductors()
 
@@ -135,8 +136,12 @@ class dssElement(dssObjectBase):
             return 0, None
 
     def GetValue(self, VarName, convert=False):
+
         if self._dssInstance.Element.Name() != self._FullName:
             self.SetActiveObject()
+        fullName = self._dssInstance.Element.Name()
+        # logger.debug("123456789123456789123456789123456789123456789123456789")
+        # logger.debug(fullName)
         if VarName in self._Variables:
             VarValue = self.GetVariable(VarName, convert=convert)
         elif VarName in self._Parameters:

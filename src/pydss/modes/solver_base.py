@@ -36,7 +36,7 @@ class solver_base(abc.ABC):
 
         #self._dssSolution.DblHour()
         self.reSolve()
-        logger.info("%s solver setup complete", settings.simulation_type)
+        logger.info(f"{settings.simulation_type} solver setup complete")
 
     def setFrequency(self, frequency):
         self._dssSolution.Frequency(frequency)

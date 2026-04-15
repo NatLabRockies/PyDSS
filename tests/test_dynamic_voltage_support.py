@@ -1,21 +1,48 @@
 import re
 import os
+from pydss import __path__ as pydsspath
 from pydss.pydss_project import PyDssProject
 from pydss.pydss_results import PyDssResults
 from tests.common import (
     DYNAMIC_VOLTAGE_SUPPORT_PATH,
-    cleanup_project
+    cleanup_project,
 )
 from pydss.common import (SIMULATION_SETTINGS_FILENAME,
                           RUN_SIMULATION_FILENAME,
+                          ControllerType
 )
 from pydss.pydss_fs_interface import STORE_FILENAME
+from pydss.registry import Registry
 
 def test_dynamic_voltage_support(cleanup_project):
+    # register the controllers if not in registry
+    registry = Registry()
+    dynamic_voltage_support_toml = pydsspath[0] + "/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
+    if not registry.is_controller_registered(ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value, "DVS_test"):
+        registry.register_controller(
+            ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value,
+                {"name": "DVS_test",
+                "filename": dynamic_voltage_support_toml})
+    if not registry.is_controller_registered(ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value, "DVS_VRT_test"):
+        registry.register_controller(
+            ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value,
+                {"name": "DVS_VRT_test",
+                "filename": dynamic_voltage_support_toml})
+    if not registry.is_controller_registered(ControllerType.PV_VOLTAGE_RIDETHROUGH.value, "NO_VRT_DVS_test"):
+        registry.register_controller(
+            ControllerType.PV_VOLTAGE_RIDETHROUGH.value,
+                {"name": "NO_VRT_DVS_test",
+                "filename": dynamic_voltage_support_toml.replace('DynamicVoltageSupport', 'VoltageRideThru')})
+    registry.unregister_controller(ControllerType.PV_VOLTAGE_RIDETHROUGH.value, "1547_CAT_III_DVS_test")
+    if not registry.is_controller_registered(ControllerType.PV_VOLTAGE_RIDETHROUGH.value, "1547_CAT_III_DVS_test"):
+        registry.register_controller(
+            ControllerType.PV_VOLTAGE_RIDETHROUGH.value,
+                {"name": "1547_CAT_III_DVS_test",
+                "filename": dynamic_voltage_support_toml.replace('DynamicVoltageSupport','VoltageRideThru')})
+    # then run the project
     PyDssProject.run_project(
         path=DYNAMIC_VOLTAGE_SUPPORT_PATH,
-        simulation_file=SIMULATION_SETTINGS_FILENAME
-    )
+        simulation_file=SIMULATION_SETTINGS_FILENAME)
     results=PyDssResults(DYNAMIC_VOLTAGE_SUPPORT_PATH)
     scenario_DVS_only=results.scenarios[0] #DVS Only
     scenario_no_vrt=results.scenarios[1] #DVS and VRT with instantaneous trip

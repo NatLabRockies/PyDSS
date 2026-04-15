@@ -4,7 +4,7 @@ from enum import Enum
 import helics
 import os
 import re
-
+import pandas as pd
 from loguru import logger
 
 from pydss.simulation_input_models import SimulationSettingsModel
@@ -208,6 +208,7 @@ class helics_interface:
         IP = self._settings.helics.broker
         Port = self._settings.helics.broker_port
         logger.info("Connecting to broker @ {}".format(f"{IP}:{Port}" if Port else IP))
+        logger.info(f"Connecting to broker @ {self._settings.helics}")
         if self._settings.helics.broker:
             helics.helicsFederateInfoSetBroker(self.fedinfo, str(self._settings.helics.broker))
         if self._settings.helics.broker_port:
@@ -261,8 +262,9 @@ class helics_interface:
                     value = helics.helicsInputGetInteger(subscription.sub)
                     
                 if value and value != 0:
-                    if value > 1e6 or value < -1e6:
-                        value = 1.0 
+                    logger.info(f"value is {value}")
+                    if value > 1e6 or value < -1e6 or pd.isna(value):
+                        value = 1.0
 
                 value = value * subscription.multiplier
                 subscription.object.SetParameter(subscription.property, value) 
@@ -337,7 +339,39 @@ class helics_interface:
 
     def request_time_increment(self):
         error = sum([abs(sub.states[0] - sub.states[1]) for sub in self.subscriptions.subscriptions])
-        r_seconds = self._dss_solver.GetTotalSeconds() #- self._dss_solver.GetStepResolutionSeconds()
+        # r_seconds = self._dss_solver.GetTotalSeconds() # parallel
+        r_seconds = self._dss_solver.GetTotalSeconds() + self._dss_solver.GetStepResolutionSeconds() # transmission priority
+        # if r_seconds > 0:
+        #     r_seconds = self._dss_solver.GetTotalSeconds() + self._dss_solver.GetStepResolutionSeconds()
+        # logger.info(f"self._dss_solver.GetTotalSeconds(): {self._dss_solver.GetTotalSeconds()}, self._dss_solver.GetStepResolutionSeconds(): {self._dss_solver.GetStepResolutionSeconds()}")
+        # os.system('PAUSE')
+        if not self._settings.helics.iterative_mode:
+            while self.c_seconds < r_seconds:
+                self.c_seconds = helics.helicsFederateRequestTime(self._federate, r_seconds)
+            logger.info('Time requested: {} - time granted: {} '.format(r_seconds, self.c_seconds))
+            return True, self.c_seconds
+        else:
+
+            self.c_seconds, iteration_state = helics.helicsFederateRequestTimeIterative(
+                self._federate,
+                r_seconds,
+                helics.helics_iteration_request_iterate_if_needed
+            )
+
+            logger.info('Time requested: {} - time granted: {} error: {} it: {}'.format(
+                r_seconds, self.c_seconds, error, self.itr))
+            if error > -1 and self.itr < self._co_convergance_max_iterations - 1:
+                self.itr += 1
+                return False, self.c_seconds
+            else:
+                self.itr = 0
+                return True, self.c_seconds
+    
+    def request_time_increment_2(self):
+        error = sum([abs(sub.states[0] - sub.states[1]) for sub in self.subscriptions.subscriptions])
+        r_seconds = self._dss_solver.GetTotalSeconds() + self._dss_solver.GetStepResolutionSeconds()/2
+        # logger.info('Time requested: {} - self._dss_solver.GetStepResolutionSeconds(): {} '.format(r_seconds, self._dss_solver.GetStepResolutionSeconds()))
+        # os.system('PAUSE')
         if not self._settings.helics.iterative_mode:
             while self.c_seconds < r_seconds:
                 self.c_seconds = helics.helicsFederateRequestTime(self._federate, r_seconds)
