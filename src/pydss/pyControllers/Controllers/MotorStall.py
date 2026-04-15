@@ -110,8 +110,7 @@ class MotorStall(ControllerAbstract):
             
             v_stall_adj = self._settings.v_stall*(1 + self._settings.lf_adj * (comp_lf-1))
             v_break_adj = self._settings.v_break*(1 + self._settings.lf_adj * (comp_lf-1))
-            # logger.info(f"v_stall_adj: {v_stall_adj}")
-            # logger.info(f"v_break_adj: {v_break_adj}")
+
             if Priority == 0:
                 ## stall and restart time clock
                 if self.voltage_pu < v_stall_adj and not self.stall:
@@ -262,7 +261,7 @@ class MotorStall(ControllerAbstract):
                         Kth_rstr = 1
                     
                     if self.trip_nonrstr:
-                        # logger.info(f"Motor is tripped")
+                        logger.info(f"Motor is tripped")
                         Kth_nonrstr = 0
                     ## for single bus system
                     elif self.temp_nonrstr > self._settings.t_th2t:
@@ -279,20 +278,16 @@ class MotorStall(ControllerAbstract):
                 else:
                     Kth_rstr = 1
                     Kth_nonrstr = 1
-                
-                # logger.info(f"Kth_rstr: {Kth_rstr}")
-                # logger.info(f"Kth_nonrstr: {Kth_nonrstr}")
 
                 pset = (Kth_rstr*p_rstrt + Kth_nonrstr*p_nonrstrt) * self.kw_rated
                 qset = (Kth_rstr*q_rstrt + Kth_nonrstr*q_nonrstrt) * self.kw_rated
                 if self.stall:
                     qset = (Kth_rstr*q_rstrt + Kth_nonrstr*q_nonrstrt) * self.kw_rated
-                # logger.info(f"pset: {pset}")
-                # logger.info(f"qset: {qset}")
+                logger.debug(f"pset: {pset}")
+                logger.debug(f"qset: {qset}")
 
                 self._controlled_element.SetParameter('kw', Kthc * Kthuv * pset ) 
                 self._controlled_element.SetParameter('kvar', Kthc * Kthuv * qset )
-                # os.system("PAUSE")
             
             self.voltage_prev = self.voltage_pu
             self.temp_rstr_prev = self.temp_rstr
