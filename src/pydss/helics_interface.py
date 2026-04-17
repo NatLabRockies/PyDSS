@@ -76,18 +76,24 @@ class Subscriptions(BaseModel):
     subscriptions: List[Subscription]
 
     @model_validator(mode='after')
-    def is_in_opendss_model(self)-> 'Subscriptions':
+    def is_in_opendss_model(self)-> 'Subscriptions':        
         for subscription in self.subscriptions:
             if subscription.model not in self.opendss_models:
                 raise AssertionError(f"The loaded OpenDSS model does not have an element define with the name {subscription}")
-            
             if subscription.subscribe:
                 subscription.object = self.opendss_models[subscription.model]
-                subscription.sub = helics.helicsFederateRegisterSubscription(
-                    self.federate,
-                    subscription.id,
-                    subscription.unit
-                )
+                if subscription.multi_input_ids:
+                    subscription.sub = helics.helicsFederateRegisterInput(self.federate, helics.helics_data_type_double, "")
+                    for input_id in subscription.multi_input_ids:
+                        helics.helicsInputAddTarget(subscription.sub, input_id)
+                    helics.helicsInputSetOption(subscription.sub, helics.helics_handle_option_multi_input_handling_method,
+                        subscription.multi_input_handling_method)
+                else:
+                    subscription.sub = helics.helicsFederateRegisterSubscription(
+                        self.federate,
+                        subscription.id,
+                        subscription.unit
+                    )
         return self
     
 class Publications(BaseModel):
