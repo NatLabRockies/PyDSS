@@ -61,8 +61,8 @@ class Subscription(BaseModel):
     states: List[Union[float, int, bool]] = [0.0, 0.0, 0.0, 0.0, 0.0]
     sub: Any = None
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    multi_input_ids: Optional[list] = None
-    multi_input_handling_method: Optional[str] = None
+    multi_input_ids: List[str] = None
+    multi_input_handling_method: str = 'no_op'
 
 class Publication(BaseModel):
     model: str
