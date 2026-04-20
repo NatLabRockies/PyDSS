@@ -90,7 +90,7 @@ class Subscriptions(BaseModel):
                     for input_id in subscription.multi_input_ids:
                         helics.helicsInputAddTarget(subscription.sub, input_id)
                     helics.helicsInputSetOption(subscription.sub, helics.helics_handle_option_multi_input_handling_method,
-                        subscription.multi_input_handling_method.upper())
+                        subscription.multi_input_handling_method)
                 else:
                     subscription.sub = helics.helicsFederateRegisterSubscription(
                         self.federate,
