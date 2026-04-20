@@ -85,11 +85,11 @@ class Subscriptions(BaseModel):
             if subscription.subscribe:
                 subscription.object = self.opendss_models[subscription.model]
                 if subscription.multi_input_ids:
-                    subscription.sub = helics.helicsFederateRegisterInput(self.federate, helics.helics_data_type_double, "")
+                    subscription.sub = helics.helicsFederateRegisterInput(self.federate, str(subscription.id), helics.helics_data_type_double, "")
                     for input_id in subscription.multi_input_ids:
                         helics.helicsInputAddTarget(subscription.sub, input_id)
                     helics.helicsInputSetOption(subscription.sub, helics.helics_handle_option_multi_input_handling_method,
-                        subscription.multi_input_handling_method)
+                        subscription.multi_input_handling_method.upper())
                 else:
                     subscription.sub = helics.helicsFederateRegisterSubscription(
                         self.federate,
