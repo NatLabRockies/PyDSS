@@ -62,7 +62,8 @@ class Subscription(BaseModel):
     sub: Any = None
     model_config = ConfigDict(arbitrary_types_allowed=True)
     multi_input_ids: List[str] = None
-    multi_input_handling_method: str = 'no_op'
+    multi_input_handling_method: int = 0 # the enums for helics multi-input handling methods: https://docs.helics.org/en/latest/references/api-reference/C_API.html#enums
+    # a zero indicates in order of priority or no_op (no operation)
 
 class Publication(BaseModel):
     model: str
