@@ -8,7 +8,7 @@ version = "3.1.8"
 description = "A high-level python interface for OpenDSS"
 readme = "README.md"
 license = "BSD-3-Clause"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
     { name = "Aadil Latif", email = "Aadil.Latif@nrel.gov" },
 ]
