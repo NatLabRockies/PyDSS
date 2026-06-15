@@ -247,10 +247,11 @@ class VoltageMetricsByBusTypeModel(VoltageMetricsBaseModel):
             description="metrics for primary buses",
         )]
     secondaries: Annotated[
-        VoltageMetricsModel,
+        Union[VoltageMetricsModel, None],
         Field(
             title="secondaries",
             description="metrics for secondary buses",
+            default=None,
         )]
 
 

@@ -26,7 +26,6 @@ MODEL_ORDER = (
     "HelicsModel",
     "LoggingModel",
     "MonteCarloModel",
-    "PlotsModel",
     "ProfilesModel",
     "ReportsModel",
     "SimulationRangeModel",
@@ -60,7 +59,7 @@ def make_tables(output):
         property_types = parse_property_types(ordered_names, classes)
         for name in ordered_names:
             cls = classes[name]
-            schema = cls.schema()
+            schema = cls.model_json_schema()
             if name in ABSTRACT_TYPES:
                 continue
             f_rst.write(f".. _{name}:\n\n")
@@ -174,15 +173,15 @@ def parse_property_types(ordered_names, classes):
         Two-level dict: {class_name: {property_name: class}}
 
     """
-    regex_definition = re.compile(r"^#\/definitions\/(\w+)")
+    regex_definition = re.compile(r"^#\/(?:definitions|\$defs)\/(\w+)")
     property_types = defaultdict(dict)
     for name in ordered_names:
         if name in ABSTRACT_TYPES:
             continue
         cls = classes[name]
-        schema = cls.schema()
-        for prop, vals in schema["properties"].items():
-            title = vals["title"]
+        schema = cls.model_json_schema()
+        for prop, vals in schema.get("properties", {}).items():
+            title = vals.get("title", prop)
             if "allOf" in vals:
                 if len(vals["allOf"]) == 1:
                     match = regex_definition.search(vals["allOf"][0]["$ref"])

@@ -1,45 +1,27 @@
-﻿pydss.pyControllers.Controllers
+pydss.pyControllers.Controllers
 ===============================
 
 .. automodule:: pydss.pyControllers.Controllers
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
 .. rubric:: Modules
 
 .. autosummary::
    :toctree:
    :recursive:
 
-   pydss.pyControllers.Controllers.DynamicVoltageSupport
-   pydss.pyControllers.Controllers.FaultController
-   pydss.pyControllers.Controllers.GenController
-   pydss.pyControllers.Controllers.MotorStall
-   pydss.pyControllers.Controllers.MotorStallBackup
-   pydss.pyControllers.Controllers.MotorStallSimple
-   pydss.pyControllers.Controllers.PvController
-   pydss.pyControllers.Controllers.PvDynamic
-   pydss.pyControllers.Controllers.PvFrequencyRideThru
-   pydss.pyControllers.Controllers.PvVoltageRideThru
-   pydss.pyControllers.Controllers.Settings
-   pydss.pyControllers.Controllers.SocketController
-   pydss.pyControllers.Controllers.StorageController
-   pydss.pyControllers.Controllers.ThermostaticLoad
-   pydss.pyControllers.Controllers.xfmrController
-
+   DynamicVoltageSupport
+   FaultController
+   GenController
+   MotorStall
+   MotorStallBackup
+   MotorStallSimple
+   PvController
+   PvDynamic
+   PvFrequencyRideThru
+   PvVoltageRideThru
+   Settings
+   SocketController
+   StorageController
+   ThermostaticLoad
+   xfmrController

@@ -4,11 +4,6 @@ pydss.utils.simulation\_utils
 .. automodule:: pydss.utils.simulation_utils
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
@@ -20,10 +15,6 @@ pydss.utils.simulation\_utils
       get_simulation_resolution
       get_start_time
    
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -31,11 +22,3 @@ pydss.utils.simulation\_utils
       CircularBufferHelper
       SimulationFilteredTimeRange
    
-   
-
-   
-   
-   
-
-
-

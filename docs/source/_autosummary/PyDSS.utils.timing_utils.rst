@@ -4,11 +4,6 @@ pydss.utils.timing\_utils
 .. automodule:: pydss.utils.timing_utils
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
@@ -18,10 +13,6 @@ pydss.utils.timing\_utils
       timed_info
       track_timing
    
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -30,11 +21,3 @@ pydss.utils.timing\_utils
       TimerStats
       TimerStatsCollector
    
-   
-
-   
-   
-   
-
-
-

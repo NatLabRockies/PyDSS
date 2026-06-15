@@ -1,24 +1,24 @@
 {
     "event_log": "Exports/helics/event_log.csv",
     "element_info_files": [
-        "Exports/helics\\CapacitorsInfo.csv",
-        "Exports/helics\\FusesInfo.csv",
-        "Exports/helics\\GeneratorsInfo.csv",
-        "Exports/helics\\IsourceInfo.csv",
-        "Exports/helics\\LinesInfo.csv",
-        "Exports/helics\\LoadsInfo.csv",
-        "Exports/helics\\MonitorsInfo.csv",
-        "Exports/helics\\PVSystemsInfo.csv",
-        "Exports/helics\\ReclosersInfo.csv",
-        "Exports/helics\\RegControlsInfo.csv",
-        "Exports/helics\\RelaysInfo.csv",
-        "Exports/helics\\SensorsInfo.csv",
-        "Exports/helics\\TransformersInfo.csv",
-        "Exports/helics\\VsourcesInfo.csv",
-        "Exports/helics\\XYCurvesInfo.csv",
-        "Exports/helics\\TransformersPhaseInfo.csv"
+        "Exports/helics/CapacitorsInfo.csv",
+        "Exports/helics/FusesInfo.csv",
+        "Exports/helics/GeneratorsInfo.csv",
+        "Exports/helics/IsourceInfo.csv",
+        "Exports/helics/LinesInfo.csv",
+        "Exports/helics/LoadsInfo.csv",
+        "Exports/helics/MonitorsInfo.csv",
+        "Exports/helics/PVSystemsInfo.csv",
+        "Exports/helics/ReclosersInfo.csv",
+        "Exports/helics/RegControlsInfo.csv",
+        "Exports/helics/RelaysInfo.csv",
+        "Exports/helics/SensorsInfo.csv",
+        "Exports/helics/TransformersInfo.csv",
+        "Exports/helics/VsourcesInfo.csv",
+        "Exports/helics/XYCurvesInfo.csv",
+        "Exports/helics/TransformersPhaseInfo.csv"
     ],
     "feeder_head_info_files": [
-        "Exports/helics\\FeederHeadInfo.json"
+        "Exports/helics/FeederHeadInfo.json"
     ]
 }

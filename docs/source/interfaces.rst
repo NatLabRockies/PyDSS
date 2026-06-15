@@ -1,11 +1,16 @@
+**********
 Interfaces
-=========================
+**********
 
-Pydss provides three easy to configure external interfaces. These interface help researchers cut lead time in setting up and configuring co-simulation setups to simulate cyber phsical interactions by coupling multiple domain scpific tools. The 'External_interfacing_example' project in the examples folder provides examples on how to set up and use each of these interfaces.
+PyDSS provides three interfaces for interacting with simulations:
+
+- **CLI** — Command-line interface for project creation, simulation, and data management
+- **Python API** — Programmatic access for scripting and integration
+- **REST API** — HTTP interface for web-based applications (requires ``server`` extras)
 
 .. toctree::
    :maxdepth: 3
-  
+
    CLI interface
-   REST API interface
    Python API interface
+   REST API interface

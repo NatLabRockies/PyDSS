@@ -1,7 +1,7 @@
 #######
 Reports
 #######
-This page describes how to generate pydss reports from exported simulation data.
+This page describes how to generate PyDSS reports from exported simulation data.
 
 The following reports can be enabled in the project's ``simulation.toml``
 ``Reports`` section.
@@ -24,7 +24,7 @@ Global settings
 Format
 ======
 Used to control export format for dataframes: ``.csv`` or ``.h5``. In either
-case you can use pydss to convert the file back to a dataframe.
+case you can use PyDSS to convert the file back to a dataframe.
 
 .. code-block:: python
 
@@ -34,8 +34,8 @@ case you can use pydss to convert the file back to a dataframe.
 
 Granularity
 ===========
-Controls how often and how much data is collected. This applies to elements of
-given type, such as PVSystems. Suppose there are 10 PVSystems in the circuit
+Controls how often and how much data is collected. This applies to elements of a
+given type, such as PVSystems. Suppose there are 100 PVSystems in the circuit
 and 35,040 time points in the simulation. Each value stored is a float that
 consumes 8 bytes.
 
@@ -60,7 +60,7 @@ consumes 8 bytes.
 *****************
 Export Parameters
 *****************
-Each report configures its own export parameters. pydss will serialize the
+Each report configures its own export parameters. PyDSS will serialize the
 export parameters used in a simulation to
 ``<project-path>/Exports/<scenario-name>/ExportsActual.toml``.
 
@@ -69,14 +69,14 @@ This can be useful for debugging purposes when you develop your own reports.
 ***********
 Output Data
 ***********
-Pydss stores generated reports in ``<project-path>/Reports``.
+PyDSS stores generated reports in ``<project-path>/Reports``.
 
 ******************
 Adding New Reports
 ******************
-Here's how to create a new report in pydss.
+Here's how to create a new report in PyDSS.
 
-#. Create a new class in a Python file in ``PyDSS/reports``. The class must
+#. Create a new class in a Python file in ``pydss/reports``. The class must
    inherit from ``ReportBase``.
 #. Implement the required methods:
 

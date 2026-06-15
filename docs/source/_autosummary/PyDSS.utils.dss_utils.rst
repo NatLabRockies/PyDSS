@@ -4,11 +4,6 @@ pydss.utils.dss\_utils
 .. automodule:: pydss.utils.dss_utils
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
@@ -21,15 +16,3 @@ pydss.utils.dss\_utils
       list_element_names_by_class_name
       read_pv_systems_from_dss_file
    
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

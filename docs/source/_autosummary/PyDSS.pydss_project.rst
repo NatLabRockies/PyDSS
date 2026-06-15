@@ -4,21 +4,12 @@ pydss.pydss\_project
 .. automodule:: pydss.pydss_project
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
    
       load_config
       update_pydss_controllers
-   
-   
-
-   
    
    .. rubric:: Classes
 
@@ -27,11 +18,3 @@ pydss.pydss\_project
       PyDssProject
       PyDssScenario
    
-   
-
-   
-   
-   
-
-
-

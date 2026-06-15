@@ -4,11 +4,6 @@ pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer\_helper\_modules.opt\_fu
 .. automodule:: pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.opt_funcs
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
@@ -30,21 +25,9 @@ pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer\_helper\_modules.opt\_fu
       voltage_constraint
       voltage_constraint_gradient
    
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
    
       DERMS
    
-   
-
-   
-   
-   
-
-
-

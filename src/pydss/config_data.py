@@ -79,7 +79,7 @@ def _convert_exports(filename, name_field):
         cls = export.pop(name_field)
         if cls not in exports:
             exports[cls] = {"Publish": [], "NoPublish": []}
-        values = [x for x in export.values() if x is not np.NaN]
+        values = [x for x in export.values() if x is not np.nan]
         if not values:
             raise InvalidParameter(f"export data has empty row: {export}")
         if export["Publish"]:

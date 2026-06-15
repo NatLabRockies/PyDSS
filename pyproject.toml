@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "NREL-pydss"
-version = "3.1.7"
+version = "3.1.8"
 description = "A high-level python interface for OpenDSS"
 readme = "README.md"
 license = "BSD-3-Clause"
@@ -23,45 +23,46 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "click",
-    "h5py",
-    "helics",
-    "loguru",
-    "networkx",
-    "numpy",
+    "click~=8.1.8",
+    "h5py~=3.13.0",
+    "helics~=3.6.1",
+    "loguru~=0.7.3",
+    "networkx~=3.4.2",
+    "numpy~=2.2.4",
     "OpenDSSDirect.py==0.8.4",
-    "pandas",
-    "pvder",
-    "pydantic~=2.5.2",
-    "pymongo",
-    "requests",
-    "scikit-learn",
-    "scipy",
-    "Shapely",
-    "tables",
-    "terminaltables",
-    "toml",
+    "pandas~=2.2.3",
+    "pvder~=0.6.0",
+    "pydantic~=2.5.3",
+    "pymongo~=4.11.3",
+    "requests~=2.32.3",
+    "scikit-learn~=1.6.1",
+    "scipy~=1.15.2",
+    "Shapely~=2.0.7",
+    "tables~=3.10.2",
+    "terminaltables~=3.1.10",
+    "toml~=0.10.2",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "mock",
-    "pytest",
-    "pytest-cov",
-    "setuptools",
-    "sphinx",
-    "sphinx-rtd-theme",
+    "mock~=5.2.0",
+    "pytest~=9.1.0",
+    "pytest-cov~=7.1.0",
+    "setuptools~=75.8.0",
+    "sphinx~=9.1.0",
+    "sphinx-rtd-theme~=3.1.0",
 ]
 server = [
-    "aiohttp_swagger3>=0.4.3",
-    "aiohttp",
+    "aiohttp_swagger3~=0.8.0",
+    "aiohttp~=3.11.0",
 ]
 
 [project.scripts]
 pydss = "pydss.cli.pydss:cli"
 
 [project.urls]
-Homepage = "http://www.github.com/nrel/pydss"
+Homepage = "https://github.com/NatLabRockies/PyDSS"
+Documentation = "https://natlabrockies.github.io/PyDSS/"
 
 
 [tool.hatch.build.targets.sdist]
