@@ -57,7 +57,7 @@ class dssObjectBase(abc.ABC):
         if VarName in self._Variables:
             VarValue = self.GetVariable(VarName, convert=convert)
         else:
-            VarValue = np.NaN
+            VarValue = np.nan
         return VarValue
 
     def GetVariable(self, VarName, convert=False):

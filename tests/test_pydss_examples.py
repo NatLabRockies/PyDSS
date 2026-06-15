@@ -1,7 +1,9 @@
 
 from distutils.dir_util import copy_tree
+import socket
 import subprocess
 import tempfile
+import time
 import os
 
 from loguru import logger
@@ -31,41 +33,34 @@ def copy_examples_to_temp_folder(pydss_project, example_name):
     copy_tree(EXAMPLES_path, base_projects_path)
     return base_projects_path
 
-@pytest.mark.skip
 def test_helics_interface_example(pydss_project):
     example_name = "external_interfaces/pydss_project"
     scenarios = [
         {
             'TOML': 'helics.toml',
-            'file': r"external_interfaces/helics_example/run_dummy_federate.py",
+            'file': r"external_interfaces/Helics_example/run_dummy_federate.py",
         },
     ]
     run_example(pydss_project, example_name, scenarios)
     return
 
-@pytest.mark.skipif(
-    IN_GITHUB_ACTIONS, reason="test runs locally but fails on github actions"
-)
 def test_helics_interface_iterative_example(pydss_project):
     example_name = "external_interfaces/pydss_project"
     scenarios = [
         {
             'TOML': 'helics_itr.toml',
-            'file': r"external_interfaces/helics_example/run_dummy_federate.py",
+            'file': r"external_interfaces/Helics_example/run_dummy_federate.py",
         },
     ]
     run_example(pydss_project, example_name, scenarios)
     return
 
-@pytest.mark.skipif(
-    IN_GITHUB_ACTIONS, reason="test runs locally but fails on github actions"
-)
 def test_socket_interface_example(pydss_project):
     example_name = "external_interfaces/pydss_project"
     scenarios = [
         {
             'TOML': 'socket.toml',
-            'file': r"external_interfaces/socket_example/run_socket_controller.py",
+            'file': r"external_interfaces/Socket_example/run_socket_controller.py",
         },
     ]
     run_example(pydss_project, example_name, scenarios)
@@ -144,14 +139,16 @@ def run_example(pydss_project, example_name, scenarios):
         logger.info('Running scenario %s for example %s', example_name, sim_file)
         if sup_file != None:
             sup_file_path = os.path.join(base_projects_path, sup_file)
-            assert os.path.exists(sup_file_path)
+            assert os.path.exists(sup_file_path), f"{sup_file_path} does not exist"
             dir_path = os.path.dirname(sup_file_path)
             dir_main = os.getcwd()
             try:
                 os.chdir(dir_path)
-                proc = subprocess.Popen(["python", sup_file_path], shell=True)
+                proc = subprocess.Popen(["python", sup_file_path])
             finally:
-                os.chdir(dir_main)     
+                os.chdir(dir_main)
+            # Wait for the subprocess server to be ready
+            time.sleep(2)
         try:
             if sim_file:
                 project_path = os.path.join(base_projects_path, example_name)

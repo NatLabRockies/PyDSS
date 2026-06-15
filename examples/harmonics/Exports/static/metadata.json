@@ -1,24 +1,24 @@
 {
     "event_log": "Exports/static/event_log.csv",
     "element_info_files": [
-        "Exports/static\\CapacitorsInfo.csv",
-        "Exports/static\\FusesInfo.csv",
-        "Exports/static\\GeneratorsInfo.csv",
-        "Exports/static\\IsourceInfo.csv",
-        "Exports/static\\LinesInfo.csv",
-        "Exports/static\\LoadsInfo.csv",
-        "Exports/static\\MonitorsInfo.csv",
-        "Exports/static\\PVSystemsInfo.csv",
-        "Exports/static\\ReclosersInfo.csv",
-        "Exports/static\\RegControlsInfo.csv",
-        "Exports/static\\RelaysInfo.csv",
-        "Exports/static\\SensorsInfo.csv",
-        "Exports/static\\TransformersInfo.csv",
-        "Exports/static\\VsourcesInfo.csv",
-        "Exports/static\\XYCurvesInfo.csv",
-        "Exports/static\\TransformersPhaseInfo.csv"
+        "Exports/static/CapacitorsInfo.csv",
+        "Exports/static/FusesInfo.csv",
+        "Exports/static/GeneratorsInfo.csv",
+        "Exports/static/IsourceInfo.csv",
+        "Exports/static/LinesInfo.csv",
+        "Exports/static/LoadsInfo.csv",
+        "Exports/static/MonitorsInfo.csv",
+        "Exports/static/PVSystemsInfo.csv",
+        "Exports/static/ReclosersInfo.csv",
+        "Exports/static/RegControlsInfo.csv",
+        "Exports/static/RelaysInfo.csv",
+        "Exports/static/SensorsInfo.csv",
+        "Exports/static/TransformersInfo.csv",
+        "Exports/static/VsourcesInfo.csv",
+        "Exports/static/XYCurvesInfo.csv",
+        "Exports/static/TransformersPhaseInfo.csv"
     ],
     "feeder_head_info_files": [
-        "Exports/static\\FeederHeadInfo.json"
+        "Exports/static/FeederHeadInfo.json"
     ]
 }

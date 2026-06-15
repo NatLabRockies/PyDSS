@@ -4,20 +4,11 @@ pydss.metrics
 .. automodule:: pydss.metrics
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
    
       convert_data
-   
-   
-
-   
    
    .. rubric:: Classes
 
@@ -39,11 +30,3 @@ pydss.metrics
       TrackCapacitorChangeCounts
       TrackRegControlTapNumberChanges
    
-   
-
-   
-   
-   
-
-
-

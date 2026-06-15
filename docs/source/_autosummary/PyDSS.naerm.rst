@@ -4,11 +4,6 @@ pydss.naerm
 .. automodule:: pydss.naerm
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
@@ -18,15 +13,3 @@ pydss.naerm
       naerm_to_pydss
       pydss_to_naerm
    
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

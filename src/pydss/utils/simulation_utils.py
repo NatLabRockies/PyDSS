@@ -23,7 +23,7 @@ class CircularBufferHelper:
 
     def average(self):
         if len(self._buf) < self._window_size:
-            return np.NaN
+            return np.nan
         return sum(self._buf) / len(self._buf)
 
 

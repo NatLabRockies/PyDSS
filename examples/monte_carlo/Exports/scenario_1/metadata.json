@@ -1,24 +1,24 @@
 {
     "event_log": "Exports/scenario_1/event_log.csv",
     "element_info_files": [
-        "Exports/scenario_1\\CapacitorsInfo.csv",
-        "Exports/scenario_1\\FusesInfo.csv",
-        "Exports/scenario_1\\GeneratorsInfo.csv",
-        "Exports/scenario_1\\IsourceInfo.csv",
-        "Exports/scenario_1\\LinesInfo.csv",
-        "Exports/scenario_1\\LoadsInfo.csv",
-        "Exports/scenario_1\\MonitorsInfo.csv",
-        "Exports/scenario_1\\PVSystemsInfo.csv",
-        "Exports/scenario_1\\ReclosersInfo.csv",
-        "Exports/scenario_1\\RegControlsInfo.csv",
-        "Exports/scenario_1\\RelaysInfo.csv",
-        "Exports/scenario_1\\SensorsInfo.csv",
-        "Exports/scenario_1\\TransformersInfo.csv",
-        "Exports/scenario_1\\VsourcesInfo.csv",
-        "Exports/scenario_1\\XYCurvesInfo.csv",
-        "Exports/scenario_1\\TransformersPhaseInfo.csv"
+        "Exports/scenario_1/CapacitorsInfo.csv",
+        "Exports/scenario_1/FusesInfo.csv",
+        "Exports/scenario_1/GeneratorsInfo.csv",
+        "Exports/scenario_1/IsourceInfo.csv",
+        "Exports/scenario_1/LinesInfo.csv",
+        "Exports/scenario_1/LoadsInfo.csv",
+        "Exports/scenario_1/MonitorsInfo.csv",
+        "Exports/scenario_1/PVSystemsInfo.csv",
+        "Exports/scenario_1/ReclosersInfo.csv",
+        "Exports/scenario_1/RegControlsInfo.csv",
+        "Exports/scenario_1/RelaysInfo.csv",
+        "Exports/scenario_1/SensorsInfo.csv",
+        "Exports/scenario_1/TransformersInfo.csv",
+        "Exports/scenario_1/VsourcesInfo.csv",
+        "Exports/scenario_1/XYCurvesInfo.csv",
+        "Exports/scenario_1/TransformersPhaseInfo.csv"
     ],
     "feeder_head_info_files": [
-        "Exports/scenario_1\\FeederHeadInfo.json"
+        "Exports/scenario_1/FeederHeadInfo.json"
     ]
 }

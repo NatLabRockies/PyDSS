@@ -1,29 +1,33 @@
-.. pydss documentation master file, created by
-   sphinx-quickstart on Mon Oct 21 12:01:13 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. pydss documentation master file
 
 #####
-Pydss
+PyDSS
 #####
 
 ***********
-About Pydss
+About PyDSS
 ***********
 
-Pydss is a Python wrapper for OpenDSS that aims to expand upon its
-organizational, analytical, and visualization capabilities with these features:
+PyDSS is a Python wrapper for `OpenDSS <https://www.epri.com/pages/sa/opendss>`_ that extends its
+organizational, analytical, and co-simulation capabilities. It is built on top of
+`OpenDSSDirect.py <https://pypi.org/project/OpenDSSDirect.py/>`_.
 
-- Allows the user to develop custom control algorithms for specific circuit elements and run them
-  at each simulation time step.
-- Provides co-simulation integration with HELICS.
-- Provides extension modules to facilitate Monte Carlo studies in distribution system domain and
-  automated post-processing of results.
-- Automates collection and analysis of circuit element results at each simulation time step.
-- Flexible architecture allows users to develop extensions.
+Key Features
+============
 
-Pydss uses opendssdirect.py (https://pypi.org/project/OpenDSSDirect.py/) to communicate with
-OpenDSS.
+- **Custom Control Algorithms** — Define Python-based controllers for any circuit element, executed
+  at each simulation time step. 13 built-in controllers are included.
+- **HELICS Co-simulation** — Integrate with external simulators via the
+  `HELICS <https://github.com/GMLC-TDC/HELICS>`_ framework for cyber-physical co-simulation studies.
+- **Scenario Management** — Run multiple scenarios on a shared OpenDSS model with independent
+  controllers, exports, and post-processing.
+- **Flexible Data Export** — Export results to HDF5 or CSV with per-element filtering, regex-based
+  selection, moving averages, and group aggregation.
+- **Automated Reports** — Generate reports for voltage metrics, thermal metrics, PV
+  clipping/curtailment, capacitor switching, tap changes, and feeder losses.
+- **Monte Carlo Studies** — Built-in support for Monte Carlo simulations with profile management.
+- **Extension Architecture** — Plugin system for custom controllers, post-processing scripts, and
+  report types.
 
 .. _installation_label:
 
@@ -31,42 +35,47 @@ OpenDSS.
 Installation
 ************
 
-Recommendation: Install pydss in an Anaconda virtual environment. Specific dependent
-packages like shapely will only install successfully on Windows with conda.
-
-Here are conda commands to create and activate the environment:
+Recommendation: Install PyDSS in a conda virtual environment.
 
 .. code-block:: bash
 
-    $ conda create -n pydss python=3.9
+    $ conda create -n pydss python=3.11
     $ conda activate pydss
 
-
-Install the latest supported pydss version with this command:
+Install the latest release from PyPI:
 
 .. code-block:: bash
 
     $ pip install NREL-pydss
-	
-Alternatively, to get the lastest code from the master branch:
+
+Or install from source for development:
 
 .. code-block:: bash
 
-    $ git clone https://github.com/NREL/PyDSS
-    $ pip install -e PyDSS
+    $ git clone https://github.com/NatLabRockies/PyDSS
+    $ cd PyDSS
+    $ pip install -e ".[dev]"
 
-Confirm the installation with this command. It should print the available commands::
+Verify the installation:
+
+.. code-block:: bash
 
     $ pydss --help
+
+.. note::
+
+   PyDSS requires Python 3.9 or later. Python 3.11 is recommended.
 
 
 *************
 Running PyDSS
 *************
-Refer to the :ref:`quick_start_label` for basic instructions on how to configure pydss to run a
+
+Refer to the :ref:`quick_start_label` for basic instructions on how to configure PyDSS to run a
 simulation with an existing OpenDSS model.
 
-Refer to :ref:`tutorial_label` for in-depth instructions on how to customize a pydss project.
+Refer to :ref:`tutorial_label` for in-depth instructions on customizing a PyDSS project, including
+data export options, controllers, and programmatic result access.
 
 
 ************************
@@ -78,39 +87,21 @@ Additional Documentation
 
    quickstart
    tutorial
-   interfaces
    project_layout
-   reports
-   hdf-data-format
+   interfaces
    co-simulation_support
    controllers_overview
-   
+   reports
+   hdf-data-format
+
 License
 =======
 
-BSD 3-Clause License
+BSD 3-Clause License. Copyright (c) 2018, Alliance for Sustainable Energy LLC. All rights reserved.
 
-Copyright (c) 2018, Alliance for Sustainable Energy LLC, All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-- Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-- Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-- Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+See the `LICENSE <https://github.com/NatLabRockies/PyDSS/blob/master/LICENSE>`_ file for details.
 
 Contact
 =======
+
 Questions? Please send an email to aadil.latif@nrel.gov or aadil.latif@gmail.com
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

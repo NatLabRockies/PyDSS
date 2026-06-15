@@ -1,6 +1,6 @@
 
-Python API interface
-------------------
+API Reference
+-------------
 
 .. autosummary::
    :toctree: _autosummary

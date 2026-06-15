@@ -36,8 +36,8 @@ def find_version(*file_paths):
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
 
-project = 'Pydss'
-copyright = '2019, Aadil Latif'
+project = 'PyDSS'
+copyright = '2018-2026, Aadil Latif'
 author = 'Aadil Latif'
 
 # The full version, including alpha/beta/rc tags

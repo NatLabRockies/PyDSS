@@ -72,14 +72,14 @@ DEFAULT_REGISTRY = {
                 "name": "DVS_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "PyDSS/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
+                    "pydss/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
                 ),
             },
             {
                 "name": "DVS_VRT_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "PyDSS/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
+                    "pydss/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
                 ),
             },
         ],

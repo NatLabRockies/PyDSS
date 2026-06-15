@@ -4,19 +4,6 @@ pydss.exceptions
 .. automodule:: pydss.exceptions
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
    .. rubric:: Exceptions
 
    .. autosummary::
@@ -30,7 +17,3 @@ pydss.exceptions
       PyDssConvergenceErrorCountExceeded
       PyDssConvergenceMaxError
    
-   
-
-
-

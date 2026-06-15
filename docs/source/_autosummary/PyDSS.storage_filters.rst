@@ -4,15 +4,6 @@ pydss.storage\_filters
 .. automodule:: pydss.storage_filters
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -25,11 +16,3 @@ pydss.storage\_filters
       StorageMovingAverageMax
       StorageSum
    
-   
-
-   
-   
-   
-
-
-

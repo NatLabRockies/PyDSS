@@ -4,15 +4,6 @@ pydss.ProfileManager.base\_definitions
 .. automodule:: pydss.ProfileManager.base_definitions
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -20,11 +11,3 @@ pydss.ProfileManager.base\_definitions
       BaseProfile
       BaseProfileManager
    
-   
-
-   
-   
-   
-
-
-

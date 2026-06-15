@@ -4,11 +4,6 @@ pydss.utils.utils
 .. automodule:: pydss.utils.utils
 
    
-   
-   
-
-   
-   
    .. rubric:: Functions
 
    .. autosummary::
@@ -24,21 +19,9 @@ pydss.utils.utils
       make_timestamps
       serialize_timedelta
    
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
    
       TomlEnumEncoder
    
-   
-
-   
-   
-   
-
-
-

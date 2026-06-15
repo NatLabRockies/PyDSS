@@ -116,7 +116,7 @@ class DynamicVoltageSupport(ControllerAbstract):
     
     def Voltage_Transducer(self,ave_v_pu):
         self.V=np.array([self.V[-1],ave_v_pu]) #update input array with the current time-step voltage
-        _,self.V_filt,vout=signal.lsim2(self.V_filter_transfer_function,self.V,self.T,self.v_out_prev) #run it through our voltage transducer to get response
+        _,self.V_filt,vout=signal.lsim(self.V_filter_transfer_function,self.V,self.T,X0=self.v_out_prev) #run it through our voltage transducer to get response
         self.v_out_prev=vout[-1] #record evolution of state vector for next step initial condition
         
         #CALCULATE V_ERROR
@@ -126,11 +126,11 @@ class DynamicVoltageSupport(ControllerAbstract):
     def Inverter_Controller(self,kw_kvar:str,new_setting):
         if kw_kvar == 'kw': #if we are controlling kw
             self.inv_control_kw=np.array([self.kw_setting_prev,new_setting]) # set to last step kvar and the desired next step
-            _,self.inv_control_filt_kw,inv_out_kw=signal.lsim2(self.inv_control_transfer_function,self.inv_control_kw,self.T,self.inv_out_kw_prev) #run through our transfer function to get response
+            _,self.inv_control_filt_kw,inv_out_kw=signal.lsim(self.inv_control_transfer_function,self.inv_control_kw,self.T,X0=self.inv_out_kw_prev) #run through our transfer function to get response
             self.inv_out_kw_prev=inv_out_kw[-1] #record evolution of state vector for next step initial conditioN
         else: #if we are controlling kvar
             self.inv_control_kvar=np.array([self.kvar_setting_prev,new_setting]) # set to last step kvar and the desired next step
-            _,self.inv_control_filt_kvar,inv_out_kvar=signal.lsim2(self.inv_control_transfer_function,self.inv_control_kvar,self.T,self.inv_out_kvar_prev) #run through our transfer function to get response
+            _,self.inv_control_filt_kvar,inv_out_kvar=signal.lsim(self.inv_control_transfer_function,self.inv_control_kvar,self.T,X0=self.inv_out_kvar_prev) #run through our transfer function to get response
             self.inv_out_kvar_prev=inv_out_kvar[-1] #record evolution of state vector for next step initial condition
         return
     

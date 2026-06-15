@@ -1,36 +1,46 @@
 
 
-The HELICS interface
-^^^^^^^^^^^^^^^^^^^^
+Co-simulation Interfaces
+========================
 
+The HELICS Interface
+--------------------
 
-Hierarchical Engine for Large-scale Infrastructure Co-Simulation (HELICS) provides an open-source, general-purpose, modular, highly-scalable co-simulation framework that runs cross-platform (Linux, Windows, and Mac OS X). It is not a modeling tool by itself, but rather an integration tool that enables multiple existing simulation tools (and/or multiple instances of the same tool), known as "federates," to exchange data during runtime and stay synchronized in time such that together they act as one large simulation, or "federation". This enables bringing together established (or new/emerging) off-the-shelf tools from multiple domains to form a complex software-simulation without having to change the individual tools (known as "black-box" modeling). All that is required is for someone to write a thin interface layer for each tool that interfaces with existing simulation time control and data value updating, such as through an existing scripting interface. Moreover, the HELICS community has a growing ecosystem of established interfaces for popular tools, such that many users can simply mix and match existing tools with their own data and run complex co-simulations with minimal coding. More information on HELICS can be found here (https://github.com/GMLC-TDC/HELICS).
+`Hierarchical Engine for Large-scale Infrastructure Co-Simulation (HELICS) <https://github.com/GMLC-TDC/HELICS>`_
+provides an open-source, general-purpose, modular, highly-scalable co-simulation framework that
+runs cross-platform (Linux, Windows, and Mac OS X). It is not a modeling tool by itself, but
+rather an integration tool that enables multiple existing simulation tools (known as "federates")
+to exchange data during runtime and stay synchronized in time such that together they act as one
+large simulation, or "federation".
 
-The HELICS interface for pydss is built to reduce complexity of setting up large scale cosimulation scenarios. The user is required to publications and suscriptions.
+The HELICS interface for PyDSS is built to reduce the complexity of setting up large-scale
+co-simulation scenarios. The user defines publications and subscriptions to exchange data
+with external federates.
 
 A minimal HELICS example is availble in the ``examples`` folder (top directory of the repository). Enabling the HELICS interface requires user to define additional parammeters in the scenario TOML file.
 
 
-Interface overview
----------------------------
+Interface Overview
+^^^^^^^^^^^^^^^^^^
 
-The HELICS interface can be enabled and setup using the simultion.toml file. 
-
-Following attributes can be configured for the HELICS interface.
+The HELICS interface can be enabled and configured using the ``simulation.toml`` file.
+The following attributes can be configured:
 
 .. autopydantic_model:: pydss.simulation_input_models.HelicsModel
 
-	
-- "co_simulation_mode" : Set to 'true' to enable the HELICS interface. By default it is set to 'false'
-- "federate_name" : Required to identify a federate in a cosimulation with a large number of federates.	
-- Additional attribution pertaining to convergence, timing and iteration can be configured here
+- ``co_simulation_mode``: Set to ``true`` to enable the HELICS interface (default: ``false``).
+- ``federate_name``: Required to identify a federate in a co-simulation with many federates.
+- Additional settings for convergence, timing, and iteration can be configured here.
 
-Default values for additional simulation settings are as follows. For more information on how to appropriately set these values please look at HELICS documentaion 
+For more information on these values, refer to the
+`HELICS documentation <https://docs.helics.org/>`_.
 
-Once the HELICS co-simulation interface has been enabled, the next step is to set up ``publications`` and ``subscriptions`` to set up information exchange with external federates. 
-PyDSS enables zero code setup of these modules. Each scenario can have its publlcation and subscription defination and is managed by two file in the ``ExportLists`` directory for a given scenario.
+Once the HELICS co-simulation interface has been enabled, the next step is to set up
+``publications`` and ``subscriptions`` for data exchange with external federates.
+PyDSS enables zero-code setup of these modules. Each scenario can have its own publication
+and subscription definitions, managed by files in the ``ExportLists`` directory.
 
-publication tags (names) follow the following convertion
+Publication tags (names) follow this convention:
 
 .. code-block::
 
@@ -41,19 +51,21 @@ publication tags (names) follow the following convertion
 	federate1.Circuit.70008.TotalPower
 	federate1.Load.load_1.VoltageMagAng
 
-where ``federate name`` is defined in the project's ``settings.toml`` file
+where ``federate name`` is defined in the project's ``simulation.toml`` file.
 
-Setting up publications
----------------------------
-Publications (information communicated to external federates) can be set up by using the ``Exports.toml``. This file is also used to define export varibles 
-for a simulation scenario. By setting the ``publish`` attribute to ``true``, enable automated setup of a HELICS publication. 
-The file enables users to use multiple filtering options such as regex operation etc. to only pushlish what is reuired for a given use case.
+Setting up Publications
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Publications (data sent to external federates) can be configured using ``Exports.toml``.
+This file is also used to define export variables for a simulation scenario. By setting the
+``publish`` attribute to ``true``, PyDSS automatically sets up a HELICS publication.
+The file supports multiple filtering options including regex to publish only what is needed.
 
 examples:
 
-The following code block will setup publications for all PV systems powers in a given model. 
-Setting the ``publish`` attribute to ``false`` will allow the data to be writtin to the h5 store, 
-but the data will not be published on the helics interface.
+The following example sets up publications for all PV system powers in the model.
+Setting ``publish`` to ``false`` will still write the data to the HDF5 store, but
+will not publish it on the HELICS interface.
 
 .. code-block:: toml	
 
@@ -63,11 +75,11 @@ but the data will not be published on the helics interface.
 	publish = true
 	store_values_type = "all"
 
-Users tave two options to filter and setup publication for a subset of object type (in this case PV systems). 
-User are able to use tag attribute ``name_regexes`` to filter PV systems matching a given list of regex expressions.
-Alternately, users can use ``names`` attribute to explicitly define objects whos property they want publiched on the HELICS interface.
+There are two options to filter and publish a subset of elements. You can use the
+``name_regexes`` attribute to filter elements matching regex expressions, or use the
+``names`` attribute to explicitly list elements.
 
-Filtering using regex expressions
+Filtering using regex expressions:
 
 .. code-block:: toml
 
@@ -78,7 +90,7 @@ Filtering using regex expressions
 	publish = true
 	store_values_type = "all"
 
-Filtering using explicitly list model names 
+Filtering using explicit element names:
 
 .. code-block:: toml
 
@@ -91,19 +103,19 @@ Filtering using explicitly list model names
 
 
 
-Setting up subscriptions
----------------------------
+Setting up Subscriptions
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Subscriptions (information ingested from external federates) can be set up 
-using the ``Subscriptions.toml`` in the ``ExportLists`` directory for a given scenario.
-Valis subscriptions should confine to teh following model
+Subscriptions (data received from external federates) are configured using
+``Subscriptions.toml`` in the ``ExportLists`` directory for a given scenario.
+Valid subscriptions should conform to the following model:
 
 .. autopydantic_model:: pydss.helics_interface.Subscription
 
-When setting up subscriptions it is important to understand that the subscription tag is generated by 
-the external federate and should be known before setting up the subscriptions. In the example below, values recieved from
-subscription tag ``test.load1.power`` are used to update the ``kw`` property of load ``Load.mpx000635970``. ``multiplier`` property can be used to
-scale values before they are used to update the coupled model. 
+When setting up subscriptions, note that the subscription tag is generated by the external
+federate and must be known before configuration. In the example below, values received from
+subscription tag ``test.load1.power`` are used to update the ``kw`` property of load
+``Load.mpx000635970``. The ``multiplier`` property can scale values before they update the model.
 
 example
 
@@ -119,25 +131,25 @@ example
 	multiplier = 1 
 
 
-Within the example folder the project named external interfaces provides an example usage of all three interafces.
+A complete example is available in ``examples/external_interfaces/``.
 
-The socket interface
-^^^^^^^^^^^^^^^^^^^^
+The Socket Interface
+--------------------
 
-The socket interface is implemented as a pydss pyController. Implmentation details and expected inputs are detailed here: :py:class:`pydss.pyControllers.Controllers.SocketController.SocketController`. 
-The socket controller is well suited in situatons where an existing controller needs to be integrated to the simulation environment. 
-An exmaple of this would be integrating a controller for thermostatically controlled loads implemeted in say Modelica or Python. 
-This allows user to integrate controller, without making changes to the implemented controller. With a little effort, 
-the same controller can be implemented as a pyController object in pydss.
+The socket interface is implemented as a PyDSS controller
+(:py:class:`pydss.pyControllers.Controllers.SocketController.SocketController`).
+It is well suited for situations where an existing external controller needs to be integrated
+into the simulation environment — for example, integrating a controller for thermostatically
+controlled loads implemented in Modelica or Python. This allows integration without modifying
+the external controller.
 
-The socket interface in pydss also come in handy, when setting up a hardware-in-loop type simulations and integrating the simulation 
-engine with actual hardware. Interfaces similar to raw socket implementations have been developed (to be  open-sourced at a later time) 
-for Modbus-TCP and DNP3 communcations have developed and tested with pydss with sucess. A minimal socket interfacing example has 
-been provided as a pydss project in ~PyDSS/examples/external_interfaces. Within the folder, 
-~/PyDSS/examples/external_interfaces/pydss_project a scenario called 'socket' has been defined. Socket 
-controller definations have been detailed with the 'pyControllerList' folder. An example of input requirements can be studied below.
-This example will publish ``voltage magnitude`` (see Even set in Index) and ``real power`` for load ``Load.mpx000635970`` in the model. Subscribed 
-values will be used to update the ``kW`` property of the coupled load (Load.mpx000635970 in this case)
+The socket interface is also useful for hardware-in-the-loop simulations, integrating the
+simulation engine with actual hardware. Interfaces for Modbus-TCP and DNP3 communications
+have been developed and tested with PyDSS.
+A minimal socket example is provided in ``examples/external_interfaces/pydss_project``.
+The ``socket`` scenario defines the socket controller in its ``pyControllerList`` folder.
+The controller configuration specifies the element to control, the socket connection details,
+and the data to exchange:
 
 .. code-block:: toml
 
