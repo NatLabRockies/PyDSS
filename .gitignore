@@ -9,6 +9,9 @@ docs/build/*
 tags
 cscope.files
 tests/data/*/Exports/*
+!tests/data/*/Exports/.gitkeep
+tests/data/*/Logs/*
+!tests/data/*/Logs/.gitkeep
 .idea/*
 .vscode/*
 store.h5

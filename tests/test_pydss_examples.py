@@ -38,7 +38,7 @@ def test_helics_interface_example(pydss_project):
     scenarios = [
         {
             'TOML': 'helics.toml',
-            'file': r"external_interfaces/helics_example/run_dummy_federate.py",
+            'file': r"external_interfaces/Helics_example/run_dummy_federate.py",
         },
     ]
     run_example(pydss_project, example_name, scenarios)
@@ -49,7 +49,7 @@ def test_helics_interface_iterative_example(pydss_project):
     scenarios = [
         {
             'TOML': 'helics_itr.toml',
-            'file': r"external_interfaces/helics_example/run_dummy_federate.py",
+            'file': r"external_interfaces/Helics_example/run_dummy_federate.py",
         },
     ]
     run_example(pydss_project, example_name, scenarios)
