@@ -77,7 +77,7 @@ def make_tables(output):
                 for prop, vals in schema["properties"].items():
                     if vals.get("internal", False):
                         continue
-                    description = format_description(vals["description"])
+                    description = format_description(vals.get("description", ""))
                     title = vals["title"]
                     type_str = property_types.get(name, {}).get(title)
                     if type_str is not None and type_str in all_names:
