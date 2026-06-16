@@ -1,0 +1,833 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reports" href="../reports.html" /><link rel="prev" title="Transformer Controller" href="xfmrController.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+        <title>Dynamic Voltage Support Controller - PyDSS 3.1.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">PyDSS 3.1.8 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">PyDSS 3.1.8 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_layout.html">PyDSS Project Layout</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../interfaces.html">Interfaces</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Interfaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../CLI%20interface.html">CLI Interface</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Python%20API%20interface.html">Python API Interface</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Python API Interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../Respository%20documentaion.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../_autosummary/pydss.html">pydss</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of pydss</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.Extensions.html">pydss.Extensions</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of pydss.Extensions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.Extensions.MonteCarlo.html">pydss.Extensions.MonteCarlo</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.html">pydss.ProfileManager</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of pydss.ProfileManager</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.ProfileInterface.html">pydss.ProfileManager.ProfileInterface</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.base_definitions.html">pydss.ProfileManager.base_definitions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.common.html">pydss.ProfileManager.common</a></li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.hooks.html">pydss.ProfileManager.hooks</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of pydss.ProfileManager.hooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.hooks.MongoDB.html">pydss.ProfileManager.hooks.MongoDB</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.ProfileManager.hooks.h5.html">pydss.ProfileManager.hooks.h5</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.ResultData.html">pydss.ResultData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.SolveMode.html">pydss.SolveMode</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.api.html">pydss.api</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of pydss.api</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.api.schema.html">pydss.api.schema</a></li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../_autosummary/pydss.api.src.html">pydss.api.src</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of pydss.api.src</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../_autosummary/pydss.api.src.app.html">pydss.api.src.app</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of pydss.api.src.app</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.app.DataWriter.html">pydss.api.src.app.DataWriter</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.app.HDF5.html">pydss.api.src.app.HDF5</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.app.JSON_writer.html">pydss.api.src.app.JSON_writer</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.app.Tester.html">pydss.api.src.app.Tester</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.app.pydss.html">pydss.api.src.app.pydss</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../_autosummary/pydss.api.src.web.html">pydss.api.src.web</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of pydss.api.src.web</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.web.create_schema.html">pydss.api.src.web.create_schema</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.api.src.web.parser.html">pydss.api.src.web.parser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.apps.html">pydss.apps</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.cli.html">pydss.cli</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pydss.cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.add_post_process.html">pydss.cli.add_post_process</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.add_scenario.html">pydss.cli.add_scenario</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.controllers.html">pydss.cli.controllers</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.convert.html">pydss.cli.convert</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.create_project.html">pydss.cli.create_project</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.edit_scenario.html">pydss.cli.edit_scenario</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.export.html">pydss.cli.export</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.extract.html">pydss.cli.extract</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.pydss.html">pydss.cli.pydss</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.reports.html">pydss.cli.reports</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.cli.run.html">pydss.cli.run</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.common.html">pydss.common</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.config_data.html">pydss.config_data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.controllers.html">pydss.controllers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dataset_buffer.html">pydss.dataset_buffer</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.defaults.html">pydss.defaults</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of pydss.defaults</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.defaults.ExportLists.html">pydss.defaults.ExportLists</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.defaults.Monte_Carlo.html">pydss.defaults.Monte_Carlo</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.defaults.pyControllerList.html">pydss.defaults.pyControllerList</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.defaults.pyPlotList.html">pydss.defaults.pyPlotList</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssBus.html">pydss.dssBus</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssCircuit.html">pydss.dssCircuit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssElement.html">pydss.dssElement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssElementFactory.html">pydss.dssElementFactory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssInstance.html">pydss.dssInstance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssObjectBase.html">pydss.dssObjectBase</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.dssTransformer.html">pydss.dssTransformer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.element_fields.html">pydss.element_fields</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.element_options.html">pydss.element_options</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.exceptions.html">pydss.exceptions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.export_list_reader.html">pydss.export_list_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.get_snapshot_timepoints.html">pydss.get_snapshot_timepoints</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.helics_interface.html">pydss.helics_interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.metrics.html">pydss.metrics</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.modes.html">pydss.modes</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of pydss.modes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.modes.Dynamic.html">pydss.modes.Dynamic</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.modes.QSTS.html">pydss.modes.QSTS</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.modes.Snapshot.html">pydss.modes.Snapshot</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.modes.solver_base.html">pydss.modes.solver_base</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.naerm.html">pydss.naerm</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.node_voltage_metrics.html">pydss.node_voltage_metrics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.pyContrReader.html">pydss.pyContrReader</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.pyControllers.html">pydss.pyControllers</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of pydss.pyControllers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.html">pydss.pyControllers.Controllers</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of pydss.pyControllers.Controllers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.DynamicVoltageSupport.html">pydss.pyControllers.Controllers.DynamicVoltageSupport</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.FaultController.html">pydss.pyControllers.Controllers.FaultController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.GenController.html">pydss.pyControllers.Controllers.GenController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.MotorStall.html">pydss.pyControllers.Controllers.MotorStall</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.MotorStallBackup.html">pydss.pyControllers.Controllers.MotorStallBackup</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.MotorStallSimple.html">pydss.pyControllers.Controllers.MotorStallSimple</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.PvController.html">pydss.pyControllers.Controllers.PvController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.PvDynamic.html">pydss.pyControllers.Controllers.PvDynamic</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.PvFrequencyRideThru.html">pydss.pyControllers.Controllers.PvFrequencyRideThru</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.PvVoltageRideThru.html">pydss.pyControllers.Controllers.PvVoltageRideThru</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.Settings.html">pydss.pyControllers.Controllers.Settings</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.SocketController.html">pydss.pyControllers.Controllers.SocketController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.StorageController.html">pydss.pyControllers.Controllers.StorageController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.ThermostaticLoad.html">pydss.pyControllers.Controllers.ThermostaticLoad</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyControllers.Controllers.xfmrController.html">pydss.pyControllers.Controllers.xfmrController</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.pyControllers.enumerations.html">pydss.pyControllers.enumerations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.pyControllers.models.html">pydss.pyControllers.models</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.pyControllers.pyController.html">pydss.pyControllers.pyController</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.pyControllers.pyControllerAbstract.html">pydss.pyControllers.pyControllerAbstract</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.pyDSS.html">pydss.pyDSS</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.html">pydss.pyPostprocessor</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of pydss.pyPostprocessor</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.PostprocessScripts.html">pydss.pyPostprocessor.PostprocessScripts</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of pydss.pyPostprocessor.PostprocessScripts</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer.html">pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer</a></li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.html">pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.opt_funcs.html">pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.opt_funcs</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.PostprocessScripts.EdLiFoControl.html">pydss.pyPostprocessor.PostprocessScripts.EdLiFoControl</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.pyPostprocess.html">pydss.pyPostprocessor.pyPostprocess</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.pyPostprocessor.pyPostprocessAbstract.html">pydss.pyPostprocessor.pyPostprocessAbstract</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.pyResults.html">pydss.pyResults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.pydss_fs_interface.html">pydss.pydss_fs_interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.pydss_project.html">pydss.pydss_project</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.pydss_results.html">pydss.pydss_results</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.registry.html">pydss.registry</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.reports.html">pydss.reports</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of pydss.reports</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.capacitor_change_count.html">pydss.reports.capacitor_change_count</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.feeder_losses.html">pydss.reports.feeder_losses</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.pv_reports.html">pydss.reports.pv_reports</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.reg_control_tap_number_change_count.html">pydss.reports.reg_control_tap_number_change_count</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.reports.html">pydss.reports.reports</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.thermal_metrics.html">pydss.reports.thermal_metrics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.reports.voltage_metrics.html">pydss.reports.voltage_metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.simulation_input_models.html">pydss.simulation_input_models</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.storage_filters.html">pydss.storage_filters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.thermal_metrics.html">pydss.thermal_metrics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.unitDefinations.html">pydss.unitDefinations</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../_autosummary/pydss.utils.html">pydss.utils</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of pydss.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.utils.dataframe_utils.html">pydss.utils.dataframe_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.utils.dss_utils.html">pydss.utils.dss_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.utils.pydss_utils.html">pydss.utils.pydss_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.utils.simulation_utils.html">pydss.utils.simulation_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.utils.timing_utils.html">pydss.utils.timing_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../_autosummary/pydss.utils.utils.html">pydss.utils.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/pydss.value_storage.html">pydss.value_storage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../Models.html">Data models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../REST%20API%20interface.html">REST API interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../co-simulation_support.html">Co-simulation Support</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Co-simulation Support</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Co-simulation%20Interfaces.html">Co-simulation Interfaces</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../controllers_overview.html">Controller Documentation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Controller Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="FaultController.html">Fault Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GenController.html">Gen Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MotorStall.html">Motor Stall Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MotorStallSimple.html">Motor Stall (simple)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PvController.html">PV System Smart Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PvDynamic.html">PV Dynamic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PvFrequencyRideThru.html">PV Frequency Ride-Through</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PvVoltageRideThru.html">PV System Voltage Ride-Through</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SocketController.html">Socket Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StorageController.html">Storage Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ThermostaticLoad.html">Thermostatic Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xfmrController.html">Transformer Controller</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Dynamic Voltage Support Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reports.html">Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdf-data-format.html">HDF Data Format</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/controllers/dynamic_voltage_support.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="dynamic-voltage-support-controller">
+<h1>Dynamic Voltage Support Controller<a class="headerlink" href="#dynamic-voltage-support-controller" title="Link to this heading">¶</a></h1>
+<p>(DynamicVoltageSupport.py)</p>
+<p>The DynamicVoltageSupport (DVS) controller will control the DER to
+provide “rapid reactive power exchanges during voltage excursions” per
+1547-2018 clause 6.4.2.6. The addition of DVS for DER objects may
+improve system stability during faults and/or improve ride-through
+capabilities for DERs.</p>
+<p>The DynamicVoltageSupport controller works with OpenDSS <strong>Generator</strong>
+objects and can be applied to one or more generators. Generator objects
+must be <strong>3ph</strong> and must have the following parameters defined: <strong>kV</strong>,
+<strong>kVA</strong>, <strong>kW</strong>, <strong>kVAr</strong>. The opendss generator model defined in the
+opendss file does not matter when using this controller as it will be
+overwritten by the controller upon initialization. The controller is
+designed to <strong>mimic the current-limited behavior of OpenDSS generator
+model 7</strong>. For comparison purposes, one can run a baseline simulation
+without this controller using generator model 7. The response of this
+controller is designed for 3ph voltage sags or swells and assumes a
+balanced response from the generator objects.</p>
+<p>DVS can be used alone or can be coupled with the <strong>PvVoltageRideThru</strong>
+controller (see notes below on required parameters). NOTE: An issue
+exists when generators re-enter service after a trip, which will be
+resolved in future revisions. One can set the reconnect time to a value
+longer than the simulation to ensure generators do not re-enter service
+after a trip. This only works when not using momentary cessation (i.e.
+with Category III Voltage Ride Through)</p>
+<section id="controller-assignment">
+<h2>Controller Assignment<a class="headerlink" href="#controller-assignment" title="Link to this heading">¶</a></h2>
+<p>The controller may be assigned to DERs via the pydss registry.</p>
+</section>
+<section id="controller-settings-toml-file">
+<h2>Controller Settings .toml File<a class="headerlink" href="#controller-settings-toml-file" title="Link to this heading">¶</a></h2>
+<p>The following is an example of the required Settings.toml file for
+implementing DVS control. Each of these fields must be defined and
+linked in the controller registry.</p>
+<div class="line-block">
+<div class="line"><strong>Example Settings.toml file:</strong></div>
+<div class="line">[DVS]</div>
+<div class="line">“Trv” = 0.001</div>
+<div class="line">“Tinv = 0.001</div>
+<div class="line">“dbd1” = -0.12</div>
+<div class="line">“dbd2” = 0.1</div>
+<div class="line">“Kqv” = 100</div>
+<div class="line">“iqh1” = 1.1</div>
+<div class="line">“kvar_max” = 0.44</div>
+<div class="line">“kvar_min” = -0.44</div>
+<div class="line">“capacitive_support” = true</div>
+<div class="line">“inductive_support” = true</div>
+<div class="line">“post_fault_reset” = 1</div>
+<div class="line">“overvoltage_kva_limited” = true</div>
+<div class="line">“current_limited_error_tolerance” = 0.0001</div>
+<div class="line">“Use with Voltage Ride Through” = false</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>Parameter Definitions:</strong></div>
+<div class="line"><strong>Trv</strong> = Time-constant for voltage transducer. Use a smaller number
+for a faster DER response following a voltage event.</div>
+<div class="line"><strong>Tinv</strong> = Time-constant for inverter controller. Use a smaller number
+for a faster change in active and reactive power values.</div>
+<div class="line"><strong>dbd1</strong> = single-sided lower deadband (∆V p.u). DER will provide DVS
+when voltage drops below this threshold.</div>
+<div class="line"><strong>dbd2</strong> = single-sided upper deadband (∆V p.u). DER will provide DVS
+when voltage rises above this threshold.</div>
+<div class="line"><strong>Kqv</strong> = proportional gain constant. Use a larger value for a faster
+reactive power ramp.</div>
+<div class="line"><strong>iqh1</strong> = current limit for injection (p.u). Typical is 1.1 p.u.</div>
+<div class="line"><strong>kvar_max</strong> = max kvar injection (p.u). This should be a positive
+number. If set to 0.44, the DER will provide 44% of its nameplate
+rating as reactive power injection. Depending on the inverter headroom
+it will curtail active power to reach this.</div>
+<div class="line"><strong>kvar_min</strong> = max kvar absorption (p.u). This should be a negative
+number. If set to -0.44, the DER will provide 44% of its nameplate
+rating as reactive power absorption. Depending on the inverter
+headroom it will curtail active power to reach this.</div>
+<div class="line"><strong>capacitive_support</strong> = bool indicating if gen will provide
+capacitive support. If true, DER will inject reactive power during
+undervoltage events. If false, DER will take no action during
+undervoltage events.</div>
+<div class="line"><strong>inductive_support</strong> = bool indicating if gen will provide inductive
+support.If true, DER will absorb reactive power during overvoltage
+events. If false, DER will take no action during overvoltage events.</div>
+<div class="line"><strong>post_fault_reset</strong> = time (s) after fault before gen provides more
+support. This can be used to avoid cyclic behavior when voltages hover
+around the deadband values.</div>
+<div class="line"><strong>overvoltage_kva_limited</strong> = bool indicating if gen is kva limited.
+If true, DER will be limited by it’s kva rating. This only makes a
+difference during overvoltage events (when the kva nameplate is more
+limiting than the current limit), or if the current limit is set below
+1.0</div>
+<div class="line"><strong>current_limited_error_tolerance</strong> = error tolerance (%) when
+evaluating current limit adherance. Use a larger number to improve
+convergence. Larger numbers may result in more noticeable
+discrepancies between the current limit using OpenDSS Generator model
+7 and that implemented by this controller.</div>
+<div class="line"><strong>Use with Voltage Ride Through</strong> = bool indicating if DVS controller
+is used in conjunction with the VRT controller. If the user is
+coupling this controller with the PvVoltageRideThru controller, this
+must be set to true. There is a an equivalent setting in the
+PvVoltageRideThru settings .toml file (‘Use with Dynamic Voltage
+Support’) to indicate it is being used alongside DVS controller, which
+also must be set to true.</div>
+</div>
+<section id="example-results-created-using-controller-version-2-0">
+<h3>Example Results (created using controller version 2.0)<a class="headerlink" href="#example-results-created-using-controller-version-2-0" title="Link to this heading">¶</a></h3>
+</section>
+</section>
+<section id="undervoltage-event-baseline-dvs-settings">
+<h2>Undervoltage Event Baseline DVS Settings<a class="headerlink" href="#undervoltage-event-baseline-dvs-settings" title="Link to this heading">¶</a></h2>
+<div class="line-block">
+<div class="line">[DVS]</div>
+<div class="line">“Trv” = 0.001</div>
+<div class="line">“Tinv = 0.001</div>
+<div class="line">“dbd1” = -0.12</div>
+<div class="line">“dbd2” = 0.1</div>
+<div class="line">“Kqv” = 100</div>
+<div class="line">“iqh1” = 1.1</div>
+<div class="line">“kvar_max” = 0.44</div>
+<div class="line">“kvar_min” = -0.44</div>
+<div class="line">“capacitive_support” = true</div>
+<div class="line">“inductive_support” = true</div>
+<div class="line">“post_fault_reset” = 1</div>
+<div class="line">“overvoltage_kva_limited” = true</div>
+<div class="line">“current_limited_error_tolerance” = 0.0001</div>
+<div class="line">“Use with Voltage Ride Through” = false</div>
+</div>
+</section>
+<section id="baseline-results">
+<h2>Baseline Results<a class="headerlink" href="#baseline-results" title="Link to this heading">¶</a></h2>
+<p>The results below show a single, 187 kVA DER’s DVS response to a simplified
+voltage sag lasting less than 1 sec with a minimum, sustained PCC voltage of
+about 0.6 p.u, and a simulation timestep of 1 cycle (0.0167 sec). We see an
+immediate increase in reactive power contributions in response to the voltage
+sag. Due to the DER enforcing its current limit and acting in VAR priority,
+we also see a coincident reduction in active power. The current limit (Iqh1)
+in this scenario is set to 1.1 p.u., leading to an increase in phase current
+of about 10%. The current limit is evaluated at the nominal voltage for the
+generator (0.48 kV) and is enforced in the simulation without any intentional
+delays. This instantaneous enforcement of the current limit is a reasonable
+approximation as inverters, whose solid-state switches are very sensitive to
+thermal overload, are generally capable of limiting current within a fraction
+of a cycle. The current increases during this simulated fault are also
+completely balanced, as inverters generally keep negative-sequence fault
+contributions to a minimum (following a very short, 1-2 cycle, transient
+period). The VAR contributions are limited by the kvar_max parameter at
+0.44 p.u or about 27 kVAR/phase. Overall, the response time here is very fast,
+given the baseline time constants for the voltage transducer and inverter
+controller of about 1 millisecond.</p>
+<p><img alt="image1" src="../_images/baseline_uv.png" /></p>
+</section>
+<section id="varying-trv-trv-0-1">
+<h2>Varying Trv: Trv=0.1<a class="headerlink" href="#varying-trv-trv-0-1" title="Link to this heading">¶</a></h2>
+<p>In this scenario, we increase the time constant for our voltage transducer,
+essentially increasing the lag between when the system voltage drops and when
+the inverter registers this drop. As such, we see a largely similar response
+to our baseline, except with a short delay initially, and when the voltage
+returns to normal. As a result of this delay, we also see a large spike in
+current for a single timestep, given that the inverter does not limit current
+at the lower voltage, until it registers the lower PCC voltage. We can also
+more clearely see the impact on PCC voltage resulting from the inverter response,
+with a rise in PCC voltage of about 0.08 p.u. (compared to the lowest point
+of the initial sag) following the rapid reactive power injection.</p>
+<p><img alt="image2" src="../_images/trv_0_1.png" /></p>
+</section>
+<section id="varying-t-inv-tinv-0-1">
+<h2>Varying T_inv: Tinv=0.1<a class="headerlink" href="#varying-t-inv-tinv-0-1" title="Link to this heading">¶</a></h2>
+<p>In this scenario, we return Trv to 0.001 s and instead increase the inverter
+controller time constant (Tinv) to 0.1. While the DER registers the voltage
+drop almost immediately, the inverter response is much slower. Increasing Tinv,
+reduces the response time of the inverter following a control input. Here we
+see an initial, rapid decrease in real power as a result of the inverter immediately
+enforcing its current limit. As reactive power contributions slowly climb, active
+power reduces further. Still, we enforce a current limit of 1.1 p.u. and a kVAR
+limit of 0.44 p.u.. Once the voltage returns to normal, we current drop below its
+pre-fault levels and slowly increase back to normal (if the simulation ran longer)
+as we reduce our kVAR contributions and proportionally increase our kW contributions.</p>
+<p><img alt="image3" src="../_images/tinv_0_1.png" /></p>
+</section>
+<section id="varying-kqv-kqv-10">
+<h2>Varying Kqv: Kqv=10<a class="headerlink" href="#varying-kqv-kqv-10" title="Link to this heading">¶</a></h2>
+<p>In this scenario, we return both time constants (Trv and Tinv) to 0.001 s and
+instead reduce our gain constant from 100 to 10. This effectively slows down the
+rate at which kVAR contributions are increased (as provided to the inverter controller
+as an input signal). The inverter controller still reacts very quickly to the input
+signals, however the lower gain constant results in a slower, linear increase in kVAR
+contributions. This does not affect the speed that the inverter returns to pre-fault
+conditions after the fault.</p>
+<p><img alt="image4" src="../_images/kqv_10.png" /></p>
+</section>
+<section id="varying-1qh1-iqh1-2-0">
+<h2>Varying 1qh1: Iqh1=2.0<a class="headerlink" href="#varying-1qh1-iqh1-2-0" title="Link to this heading">¶</a></h2>
+<p>Returning all other settings to the baseline, in this scenario we increase our
+current limit from 1.1 p.u. to 2.0 p.u. In the first set of plots below, we see
+a larger increase in current (~ 150 A increase vs. 30 A in our baseline). One
+will notice that this increase is not quite double the pre-fault current. While
+we don’t actually reach our user-defined current limit in this scenario, we instead
+hit our kVA limit of 1.0 p.u. and our kVAR limit  of 0.44 p.u.. Our generator’s kva
+parameter in the .dss file is set to the same value as its kw parameter (187 kVA).
+If you do the math during the fault (3*sqrt((27 kVAR**2)+(56 kW**2)), we get 187 kVA.
+At this PCC fault voltage of ~0.6 p.u., we will not see a further increase in DER
+contributions. If one were to rerun this scenario with a lower fault voltage, simulating
+a closer-in fault, one would see the same kVA contributions but with a larger current
+increase, closer to the 2.0 p.u. current limit. This is shown in the second plot below.</p>
+<p><img alt="image5" src="../_images/iqh1_2_1.png" /></p>
+<p><img alt="image6" src="../_images/iqh1_2_2.png" /></p>
+</section>
+<section id="varying-kvar-max-kvar-max-1">
+<h2>Varying kvar_max: Kvar_max=1<a class="headerlink" href="#varying-kvar-max-kvar-max-1" title="Link to this heading">¶</a></h2>
+<p>Returning to the 0.6 p.u. fault voltage and baseline settings, here we increase
+kvar_max from 0.44 to 1.0 p.u. This represents a theoretical inverter, which can
+curtail 100% of real power to supply only reactive power. In the first set of results
+below, we see that kW drops to zero, as kVAR increases until the DER’s current limit
+of 1.1 is reached. In the second set of results below we use a current limit (iqh1) of
+2.0 and a kVAR limit (kvar_max) of 1.0 p.u. resulting in the DER supplying a kVAR
+value equal to the prefault kW value.</p>
+<p><img alt="image7" src="../_images/kvarmax_1_1.png" /></p>
+<p><img alt="image8" src="../_images/kvarmax_1_2.png" /></p>
+</section>
+<section id="undervoltage-overvoltage-event-baseline-settings">
+<h2>UnderVoltage Overvoltage Event Baseline Settings<a class="headerlink" href="#undervoltage-overvoltage-event-baseline-settings" title="Link to this heading">¶</a></h2>
+<div class="line-block">
+<div class="line">[DVS]</div>
+<div class="line">“Trv” = 0.001</div>
+<div class="line">“Tinv” = 0.001</div>
+<div class="line">“dbd1” = -0.1</div>
+<div class="line">“dbd2” = 0.1</div>
+<div class="line">“Kqv” = 100</div>
+<div class="line">“iqh1” = 1.1</div>
+<div class="line">“kvar_max” = 0.44</div>
+<div class="line">“kvar_min” = -0.44</div>
+<div class="line">“capacitive_support” = true</div>
+<div class="line">“inductive_support” = true</div>
+<div class="line">“post_fault_reset” = 0</div>
+<div class="line">“overvoltage_kva_limited” = true</div>
+<div class="line">“current_limited_error_tolerance” = 0.001</div>
+<div class="line">“Use with Voltage Ride Through” = false</div>
+</div>
+</section>
+<section id="id1">
+<h2>Baseline Results<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>In the following scenarios we apply both and undervoltage (UV) and an overvoltage (OV) in
+quick succession, to demonstrate the ability of the DER to provide both capacitive and
+inductive support. Notice we also set the post_fault_reset period to 0 s, such that the
+inverter can provide dynamic voltage support for a second voltage event immediately following
+the first fault, with no intentional delay. Normally, setting a non-zero post_fault_reset,
+prevents oscillatory behavior when system voltages are very near the edge of the voltage
+deadband (dbd1 and dbd2).
+The results in our baseline simulation show that kVAR contributions increase during the
+UV event and decrease (absorbing) in the OV event. The UV event looks largely like the
+previous scenarios discussed above. During the OV event, we see a reduction in current
+contributions vs. pre-fault levels, indicating we are not current limited during the OV,
+but instead we are kVA-limited (set by the overvoltage_kva_limited Boolean parameter).
+We also see a reduction in active power for the sake of absorbing reactive power while
+maintaining a total kVA contribution of 187 kVA (3*sqrt((56 kW**2)+((-28)**2))).</p>
+<p><img alt="image9" src="../_images/baseline_uvov.png" /></p>
+</section>
+<section id="varying-capacitive-support-capacitive-support-false">
+<h2>Varying Capacitive Support: capacitive_support=False<a class="headerlink" href="#varying-capacitive-support-capacitive-support-false" title="Link to this heading">¶</a></h2>
+<p>By setting capacitive_support to False, we prevent the DER from providing capacitive
+support during an UV event. Instead the DER will simply operate in a current-limited manner,
+supplying only active power. This UV behavior is akin to using generator model 7 in OpenDSS. OV
+inductive support is unaffected by this parameter.</p>
+<p><img alt="image10" src="../_images/capacitive_support_false.png" /></p>
+</section>
+<section id="varying-inductive-support-inductive-support-false">
+<h2>Varying Inductive Support: inductive_support=False<a class="headerlink" href="#varying-inductive-support-inductive-support-false" title="Link to this heading">¶</a></h2>
+<p>Setting inductive_support to False, prevents the DER from providing inductive support during
+and OV event. UV capacitive support is unaffected by this parameter.</p>
+<p><img alt="image11" src="../_images/inductive_support_false.png" /></p>
+</section>
+<section id="combining-dvs-and-vrt-for-a-fidvr-event">
+<h2>Combining DVS and VRT for a FIDVR Event<a class="headerlink" href="#combining-dvs-and-vrt-for-a-fidvr-event" title="Link to this heading">¶</a></h2>
+<p>This PyDSS DVS controller can be used alone, or in conjunction with the PyDSS voltage ride-through
+(VRT) controller. Combining the two can be accomplished using the “Use with Voltage Ride Through”
+and “Use with Dynamic Voltage Support” parameters in the DVS settings .toml file and the VRT settings
+.tomly file, respectively. Below are results simulating 4 scenarios using 28 generators all with the
+same settings and controllers assigned. The simulated event is a fault induced voltage recovery
+(FIDVR) applied as a voltage profile at the slack bus. The four scenarios are as follows:</p>
+<div class="line-block">
+<div class="line">1.    Baseline_No_Trip: A baseline scenario in which the generators are not utilizing DVS nor VRT</div>
+</div>
+<p>(no controllers assigned). This provides a baseline amount of generation to compare other scenarios to.
+| 2.    NO_VRT: Generators are not utilizing DVS, and are instructed to trip instantaneously below 0.88 p.u. voltage.
+| 3.    NO_VRT_DVS: Generators are utilizing DVS, and are instructed to trip instantaneously below 0.88 p.u. voltage.
+| 4.    NO_VRT_DVS_INACTIVE: Generators are assigned the DVS controller but with both capacitive
+support and inductive support disabled, and are instructed to trip instantaneously below 0.88 p.u.
+voltage. This is meant to show that there is alignment between the DVS-controller-initiated generator
+behavior, and OpenDSS’s generator model 7.</p>
+<p>The results show that 28/28 DERs trip offline in every scenario, due to the absence of any VRT
+capability. We see a reduction in average PCC voltages compared with baseline due to the loss
+of distributed generation.</p>
+<p><img alt="image12" src="../_images/no_vrt_fidvr_1.png" />
+<img alt="image13" src="../_images/no_vrt_fidvr_2.png" />
+<img alt="image14" src="../_images/no_vrt_fidvr_3.png" /></p>
+<p>In our second set of FIDVR results, we use IEEE 1547-2018 Category I VRT settings, coupled
+with the same DVS settings described in the scenarios above. Here we see that, with DVS activated
+(VRT_CAT_I_DVS), the generators all provide reactive power support, raising the average PCC voltage
+compared to the VRT_CAT_I_DVS_INACTIVE scenario. We also see that only 23/28 generators trip offline,
+due to the addition of DVS and the PCC voltage improvements that result from it.</p>
+<p><img alt="image15" src="../_images/vrt_cat1_fidvr_1.png" />
+<img alt="image16" src="../_images/vrt_cat1_fidvr_2.png" />
+<img alt="image17" src="../_images/vrt_cat1_fidvr_3.png" /></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../reports.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Reports</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="xfmrController.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Transformer Controller</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2026, Aadil Latif
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Dynamic Voltage Support Controller</a><ul>
+<li><a class="reference internal" href="#controller-assignment">Controller Assignment</a></li>
+<li><a class="reference internal" href="#controller-settings-toml-file">Controller Settings .toml File</a><ul>
+<li><a class="reference internal" href="#example-results-created-using-controller-version-2-0">Example Results (created using controller version 2.0)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#undervoltage-event-baseline-dvs-settings">Undervoltage Event Baseline DVS Settings</a></li>
+<li><a class="reference internal" href="#baseline-results">Baseline Results</a></li>
+<li><a class="reference internal" href="#varying-trv-trv-0-1">Varying Trv: Trv=0.1</a></li>
+<li><a class="reference internal" href="#varying-t-inv-tinv-0-1">Varying T_inv: Tinv=0.1</a></li>
+<li><a class="reference internal" href="#varying-kqv-kqv-10">Varying Kqv: Kqv=10</a></li>
+<li><a class="reference internal" href="#varying-1qh1-iqh1-2-0">Varying 1qh1: Iqh1=2.0</a></li>
+<li><a class="reference internal" href="#varying-kvar-max-kvar-max-1">Varying kvar_max: Kvar_max=1</a></li>
+<li><a class="reference internal" href="#undervoltage-overvoltage-event-baseline-settings">UnderVoltage Overvoltage Event Baseline Settings</a></li>
+<li><a class="reference internal" href="#id1">Baseline Results</a></li>
+<li><a class="reference internal" href="#varying-capacitive-support-capacitive-support-false">Varying Capacitive Support: capacitive_support=False</a></li>
+<li><a class="reference internal" href="#varying-inductive-support-inductive-support-false">Varying Inductive Support: inductive_support=False</a></li>
+<li><a class="reference internal" href="#combining-dvs-and-vrt-for-a-fidvr-event">Combining DVS and VRT for a FIDVR Event</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=fe8136a3"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

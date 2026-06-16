@@ -1,0 +1,1852 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+        <title>pydss.simulation_input_models - PyDSS 3.1.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">PyDSS 3.1.8 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PyDSS 3.1.8 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project_layout.html">PyDSS Project Layout</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces.html">Interfaces</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Interfaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../CLI%20interface.html">CLI Interface</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../Python%20API%20interface.html">Python API Interface</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Python API Interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../Respository%20documentaion.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/pydss.html">pydss</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of pydss</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.Extensions.html">pydss.Extensions</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of pydss.Extensions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.Extensions.MonteCarlo.html">pydss.Extensions.MonteCarlo</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.html">pydss.ProfileManager</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of pydss.ProfileManager</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.ProfileInterface.html">pydss.ProfileManager.ProfileInterface</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.base_definitions.html">pydss.ProfileManager.base_definitions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.common.html">pydss.ProfileManager.common</a></li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.hooks.html">pydss.ProfileManager.hooks</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of pydss.ProfileManager.hooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.hooks.MongoDB.html">pydss.ProfileManager.hooks.MongoDB</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.ProfileManager.hooks.h5.html">pydss.ProfileManager.hooks.h5</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.ResultData.html">pydss.ResultData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.SolveMode.html">pydss.SolveMode</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.api.html">pydss.api</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of pydss.api</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.api.schema.html">pydss.api.schema</a></li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/pydss.api.src.html">pydss.api.src</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of pydss.api.src</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/pydss.api.src.app.html">pydss.api.src.app</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of pydss.api.src.app</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.app.DataWriter.html">pydss.api.src.app.DataWriter</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.app.HDF5.html">pydss.api.src.app.HDF5</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.app.JSON_writer.html">pydss.api.src.app.JSON_writer</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.app.Tester.html">pydss.api.src.app.Tester</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.app.pydss.html">pydss.api.src.app.pydss</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/pydss.api.src.web.html">pydss.api.src.web</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of pydss.api.src.web</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.web.create_schema.html">pydss.api.src.web.create_schema</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.api.src.web.parser.html">pydss.api.src.web.parser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.apps.html">pydss.apps</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.cli.html">pydss.cli</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pydss.cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.add_post_process.html">pydss.cli.add_post_process</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.add_scenario.html">pydss.cli.add_scenario</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.controllers.html">pydss.cli.controllers</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.convert.html">pydss.cli.convert</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.create_project.html">pydss.cli.create_project</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.edit_scenario.html">pydss.cli.edit_scenario</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.export.html">pydss.cli.export</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.extract.html">pydss.cli.extract</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.pydss.html">pydss.cli.pydss</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.reports.html">pydss.cli.reports</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.cli.run.html">pydss.cli.run</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.common.html">pydss.common</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.config_data.html">pydss.config_data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.controllers.html">pydss.controllers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dataset_buffer.html">pydss.dataset_buffer</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.defaults.html">pydss.defaults</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of pydss.defaults</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.defaults.ExportLists.html">pydss.defaults.ExportLists</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.defaults.Monte_Carlo.html">pydss.defaults.Monte_Carlo</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.defaults.pyControllerList.html">pydss.defaults.pyControllerList</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.defaults.pyPlotList.html">pydss.defaults.pyPlotList</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssBus.html">pydss.dssBus</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssCircuit.html">pydss.dssCircuit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssElement.html">pydss.dssElement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssElementFactory.html">pydss.dssElementFactory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssInstance.html">pydss.dssInstance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssObjectBase.html">pydss.dssObjectBase</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.dssTransformer.html">pydss.dssTransformer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.element_fields.html">pydss.element_fields</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.element_options.html">pydss.element_options</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.exceptions.html">pydss.exceptions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.export_list_reader.html">pydss.export_list_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.get_snapshot_timepoints.html">pydss.get_snapshot_timepoints</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.helics_interface.html">pydss.helics_interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.metrics.html">pydss.metrics</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.modes.html">pydss.modes</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of pydss.modes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.modes.Dynamic.html">pydss.modes.Dynamic</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.modes.QSTS.html">pydss.modes.QSTS</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.modes.Snapshot.html">pydss.modes.Snapshot</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.modes.solver_base.html">pydss.modes.solver_base</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.naerm.html">pydss.naerm</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.node_voltage_metrics.html">pydss.node_voltage_metrics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.pyContrReader.html">pydss.pyContrReader</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.html">pydss.pyControllers</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of pydss.pyControllers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.html">pydss.pyControllers.Controllers</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of pydss.pyControllers.Controllers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.DynamicVoltageSupport.html">pydss.pyControllers.Controllers.DynamicVoltageSupport</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.FaultController.html">pydss.pyControllers.Controllers.FaultController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.GenController.html">pydss.pyControllers.Controllers.GenController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.MotorStall.html">pydss.pyControllers.Controllers.MotorStall</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.MotorStallBackup.html">pydss.pyControllers.Controllers.MotorStallBackup</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.MotorStallSimple.html">pydss.pyControllers.Controllers.MotorStallSimple</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.PvController.html">pydss.pyControllers.Controllers.PvController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.PvDynamic.html">pydss.pyControllers.Controllers.PvDynamic</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.PvFrequencyRideThru.html">pydss.pyControllers.Controllers.PvFrequencyRideThru</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.PvVoltageRideThru.html">pydss.pyControllers.Controllers.PvVoltageRideThru</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.Settings.html">pydss.pyControllers.Controllers.Settings</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.SocketController.html">pydss.pyControllers.Controllers.SocketController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.StorageController.html">pydss.pyControllers.Controllers.StorageController</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.ThermostaticLoad.html">pydss.pyControllers.Controllers.ThermostaticLoad</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.Controllers.xfmrController.html">pydss.pyControllers.Controllers.xfmrController</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.enumerations.html">pydss.pyControllers.enumerations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.models.html">pydss.pyControllers.models</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.pyController.html">pydss.pyControllers.pyController</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.pyControllers.pyControllerAbstract.html">pydss.pyControllers.pyControllerAbstract</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.pyDSS.html">pydss.pyDSS</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.html">pydss.pyPostprocessor</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of pydss.pyPostprocessor</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.PostprocessScripts.html">pydss.pyPostprocessor.PostprocessScripts</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of pydss.pyPostprocessor.PostprocessScripts</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer.html">pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer</a></li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.html">pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.opt_funcs.html">pydss.pyPostprocessor.PostprocessScripts.DERMSOptimizer_helper_modules.opt_funcs</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.PostprocessScripts.EdLiFoControl.html">pydss.pyPostprocessor.PostprocessScripts.EdLiFoControl</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.pyPostprocess.html">pydss.pyPostprocessor.pyPostprocess</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.pyPostprocessor.pyPostprocessAbstract.html">pydss.pyPostprocessor.pyPostprocessAbstract</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.pyResults.html">pydss.pyResults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.pydss_fs_interface.html">pydss.pydss_fs_interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.pydss_project.html">pydss.pydss_project</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.pydss_results.html">pydss.pydss_results</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.registry.html">pydss.registry</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.reports.html">pydss.reports</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of pydss.reports</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.capacitor_change_count.html">pydss.reports.capacitor_change_count</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.feeder_losses.html">pydss.reports.feeder_losses</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.pv_reports.html">pydss.reports.pv_reports</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.reg_control_tap_number_change_count.html">pydss.reports.reg_control_tap_number_change_count</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.reports.html">pydss.reports.reports</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.thermal_metrics.html">pydss.reports.thermal_metrics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.reports.voltage_metrics.html">pydss.reports.voltage_metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.simulation_input_models.html">pydss.simulation_input_models</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.storage_filters.html">pydss.storage_filters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.thermal_metrics.html">pydss.thermal_metrics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.unitDefinations.html">pydss.unitDefinations</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/pydss.utils.html">pydss.utils</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of pydss.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.utils.dataframe_utils.html">pydss.utils.dataframe_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.utils.dss_utils.html">pydss.utils.dss_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.utils.pydss_utils.html">pydss.utils.pydss_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.utils.simulation_utils.html">pydss.utils.simulation_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.utils.timing_utils.html">pydss.utils.timing_utils</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/pydss.utils.utils.html">pydss.utils.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/pydss.value_storage.html">pydss.value_storage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Models.html">Data models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../REST%20API%20interface.html">REST API interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../co-simulation_support.html">Co-simulation Support</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Co-simulation Support</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Co-simulation%20Interfaces.html">Co-simulation Interfaces</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../controllers_overview.html">Controller Documentation</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Controller Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/FaultController.html">Fault Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/GenController.html">Gen Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/MotorStall.html">Motor Stall Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/MotorStallSimple.html">Motor Stall (simple)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/PvController.html">PV System Smart Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/PvDynamic.html">PV Dynamic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/PvFrequencyRideThru.html">PV Frequency Ride-Through</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/PvVoltageRideThru.html">PV System Voltage Ride-Through</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/SocketController.html">Socket Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/StorageController.html">Storage Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/ThermostaticLoad.html">Thermostatic Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/xfmrController.html">Transformer Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../controllers/dynamic_voltage_support.html">Dynamic Voltage Support Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reports.html">Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdf-data-format.html">HDF Data Format</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for pydss.simulation_input_models</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Defines user input models for a simulation.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Annotated</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">ConfigDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="c1">#from pydantic.json import isoformat, timedelta_isoformat</span>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydss.common</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ControlMode</span><span class="p">,</span>
+    <span class="n">FileFormat</span><span class="p">,</span>
+    <span class="n">LoggingLevel</span><span class="p">,</span>
+    <span class="n">ReportGranularity</span><span class="p">,</span>
+    <span class="n">SimulationType</span><span class="p">,</span>
+    <span class="n">SnapshotTimePointSelectionMode</span><span class="p">,</span>
+    <span class="n">SIMULATION_SETTINGS_FILENAME</span><span class="p">,</span>
+    <span class="n">ControllerType</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydss.dataset_buffer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_MAX_CHUNK_BYTES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydss.utils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dump_data</span><span class="p">,</span> <span class="n">load_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydss.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">DATE_FORMAT</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InputsBaseModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all input models&quot;&quot;&quot;</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;InputsBaseModel&quot;</span><span class="p">,</span> <span class="n">str_strip_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">validate_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span> <span class="n">use_enum_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">value</span>
+            <span class="c1"># elif isinstance(val, datetime):</span>
+            <span class="c1">#     data[key] = isoformat(val)</span>
+            <span class="c1"># elif isinstance(val, timedelta):</span>
+            <span class="c1">#     data[key] = timedelta_isoformat(val)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+
+<div class="viewcode-block" id="SnapshotTimePointSelectionConfigModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.SnapshotTimePointSelectionConfigModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SnapshotTimePointSelectionConfigModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for auto-selecting snapshot time points.&quot;&quot;&quot;</span>
+
+    <span class="n">mode</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SnapshotTimePointSelectionMode</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mode&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">SnapshotTimePointSelectionMode</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+    <span class="p">)]</span>
+    <span class="n">start_time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">datetime</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start time in the load shape profiles&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;2020-1-1 00:00:00.0&quot;</span><span class="p">,</span> <span class="n">DATE_FORMAT</span><span class="p">)</span>
+    <span class="p">)]</span>
+    <span class="n">search_duration_min</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;search_duration_min&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Duration in minutes to search in the load shape profiles&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">1440.0</span><span class="p">,</span>
+    <span class="p">)]</span>
+    
+<div class="viewcode-block" id="SnapshotTimePointSelectionConfigModel.double">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.SnapshotTimePointSelectionConfigModel.double">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s1">&#39;start_time&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">double</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">v</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DATE_FORMAT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span> </div>
+</div>
+
+
+<div class="viewcode-block" id="ScenarioPostProcessModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ScenarioPostProcessModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScenarioPostProcessModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines user inputs for a scenario post-process script.&quot;&quot;&quot;</span>
+
+    <span class="n">script</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;script&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Post-process script&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">config_file</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;config_file&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Post-process config file&quot;</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="ScenarioModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ScenarioModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScenarioModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for a scenario.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of scenario&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">post_process_infos</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">ScenarioPostProcessModel</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;post_process_infos&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Post-process script descriptors&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)]</span>
+    <span class="n">snapshot_time_point_selection_config</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">SnapshotTimePointSelectionConfigModel</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;snapshot_time_point_selection_config&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Descriptor for auto-selecting snapshot time points&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">SnapshotTimePointSelectionConfigModel</span><span class="p">(),</span>
+        <span class="p">)]</span></div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimulationRangeModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Governs time range when control algorithms can run in a simulation. Does not affect</span>
+<span class="sd">    simulation times.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">start</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+            <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time to start running control algorithms each day.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;00:00:00&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">end</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span> 
+        <span class="nb">str</span><span class="p">,</span>
+            <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time to stop running control algorithms each day.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;23:59:59&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+
+<div class="viewcode-block" id="ProjectModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProjectModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the project.&quot;&quot;&quot;</span>
+
+    <span class="n">project_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;project_path&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Base path of project. Join with &#39;active_project&#39; to get full path&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Project Path&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">active_project</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;active_project&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Active project name. Join with &#39;project_path&#39; to get full path&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Active Project&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">active_project_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;active_project_path&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to project. Auto-generated.&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span>
+    <span class="n">scenarios</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">ScenarioModel</span><span class="p">]],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;scenarios&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of scenarios&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)]</span>
+    <span class="n">active_scenario</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;active_scenario&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of active scenario&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Active Scenario&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">start_time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">],</span>
+            <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start time of simulation&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;2020-1-1 00:00:00.0&quot;</span><span class="p">,</span> <span class="n">DATE_FORMAT</span><span class="p">),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Start time&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">simulation_duration_min</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;simulation_duration_min&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Simulation duration in minutes.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1440.0</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">step_resolution_sec</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;step_resolution_sec&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time step resolution in seconds&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Step resolution (sec)&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">900.0</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">loadshape_start_time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;loadshape_start_time&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start time of loadshape profiles&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Loadshape start time&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;2020-01-01 00:00:00.0&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">simulation_range</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">SimulationRangeModel</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;simulation_range&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Restrict control algorithms and data collection to these hours. &quot;</span>
+            <span class="s2">&quot;Useful for skipping night when simulating PV Systems.&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Simulation range&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">SimulationRangeModel</span><span class="p">(),</span>
+        <span class="p">)]</span>
+    <span class="n">simulation_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">SimulationType</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;simulation_type&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type of simulation to run.&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Simulation Type&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">SimulationType</span><span class="o">.</span><span class="n">QSTS</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">control_mode</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ControlMode</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;control_mode&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Simulation control mode&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Control mode&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">ControlMode</span><span class="o">.</span><span class="n">STATIC</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">max_control_iterations</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;max_control_iterations&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximum outer loop control iterations&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Max Control Iterations&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">convergence_error_percent_threshold</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;convergence_error_percent_threshold&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Convergence error threshold as a percent&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Convergence error percent threshold&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">error_tolerance</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;error_tolerance&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Error tolerance in per unit&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Error tolerance&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">max_error_tolerance</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;max_error_tolerance&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Abort simulation if a convergence error exceeds this value.&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Max error tolerance&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">skip_export_on_convergence_error</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;skip_export_on_convergence_error&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Do not export data at a time point if there is a convergence error.&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Skip export on convergence error&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">dss_file</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;dss_file&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;OpenDSS master filename&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;DSS File&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Master.dss&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">dss_file_absolute_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;dss_file_absolute_path&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true if &#39;dss_file&#39; is an absolute path.&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;DSS File Absolute Path&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">disable_pydss_controllers</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;disable_pydss_controllers&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Allows disabling of the control algorithms&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Disable pydss controllers&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">use_controller_registry</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;use_controller_registry&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Use local controller registry.&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Use Controller Registry&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+<div class="viewcode-block" id="ProjectModel.double">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.double">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s1">&#39;start_time&#39;</span><span class="p">,</span> <span class="s1">&#39;loadshape_start_time&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">double</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">v</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DATE_FORMAT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span> </div>
+
+    
+<div class="viewcode-block" id="ProjectModel.pre_process">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.pre_process">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_process</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="c1"># Correct legacy files.</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;Return Results&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Simulation Type&quot;</span><span class="p">,</span> <span class="s2">&quot;simulation_type&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">],</span> <span class="n">SimulationType</span><span class="p">):</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">old_duration</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;Simulation duration (min)&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">old_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;simulation_duration_min&quot;</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;simulation_duration_min&#39; is mutually exclusive with &#39;Simulation duration (min)&#39;&quot;</span>
+                <span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;simulation_duration_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">old_duration</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+
+   
+<div class="viewcode-block" id="ProjectModel.check_project_path">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.check_project_path">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;project_path&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># We are being used in library mode rather than project mode.</span>
+            <span class="k">return</span> <span class="n">val</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;project_path=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+
+
+<div class="viewcode-block" id="ProjectModel.check_active_project">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.check_active_project">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;after&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_active_project</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span> <span class="s1">&#39;ProjectModel&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+            
+        <span class="n">active_project_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_path</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_project</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">active_project_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;project_path=</span><span class="si">{</span><span class="n">active_project_path</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+        
+<div class="viewcode-block" id="ProjectModel.assign_active_project_path">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.assign_active_project_path">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;before&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_active_project_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span> <span class="s1">&#39;ProjectModel&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;project_path&quot;</span> <span class="ow">in</span> <span class="bp">self</span> <span class="ow">and</span> <span class="s2">&quot;active_project&quot;</span> <span class="ow">in</span> <span class="bp">self</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;active_project&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;active_project_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;project_path&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;active_project&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="ProjectModel.check_scenarios">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.check_scenarios">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;after&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_scenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span> <span class="s1">&#39;ProjectModel&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;project_path&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;scenarios&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;project[&#39;scenarios&#39;] cannot be empty&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    
+<div class="viewcode-block" id="ProjectModel.dict">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProjectModel.dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;active_project_path&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ExportsModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ExportsModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExportsModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for defining data exports.&quot;&quot;&quot;</span>
+
+    <span class="n">export_results</span><span class="p">:</span>  <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_results&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to export circuit element values at each time point.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Log Results&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_elements</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_elements&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to export static information for all circuit elements.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Elements&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_element_types</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">list</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_element_types&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Restrict &#39;export_elements&#39; to these element types. Default is all types&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Element Types&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_data_tables</span><span class="p">:</span><span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_data_tables&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to export circuit element data in tabular files. While it does &quot;</span>
+                        <span class="s2">&quot;duplicate data, it provides a way to preserve a human-readable &quot;</span>
+                        <span class="s2">&quot;dataset that does not require pydss to interpret.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Data Tables&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_pv_profiles</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_pv_profiles&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to export PV profiles to tabular files.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export PV Profiles&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_data_in_memory</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_data_in_memory&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to keep circuit element data in memory rather than periodically &quot;</span>
+            <span class="s2">&quot;flushing to an HDF5 file. This can be faster but will consume more memory.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Data In Memory&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_node_names_by_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_node_names_by_type&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to export node names by primary/secondary type to a file.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Node Names By Type&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_event_log</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_event_log&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to export the OpenDSS event log.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Event Log&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">FileFormat</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_format&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Controls the file format used if export_data_tables is true.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">FileFormat</span><span class="o">.</span><span class="n">HDF5</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Format&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">export_compression</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;export_compression&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to compress data exported with &#39;export_data_tables&#39;.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Export Compression&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">hdf_max_chunk_bytes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;hdf_max_chunk_bytes&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The chunk size in bytes to use for exported data in the HDF5 data store. &quot;</span>
+                        <span class="s2">&quot;The value is passed to the h5py package. Refer to &quot;</span>
+                        <span class="s2">&quot;http://docs.h5py.org/en/stable/high/dataset.html#chunked-storage for more &quot;</span>
+                        <span class="s2">&quot;information.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_MAX_CHUNK_BYTES</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;HDF Max Chunk Bytes&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+<div class="viewcode-block" id="ExportsModel.pre_process">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ExportsModel.pre_process">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_process</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;Return Results&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;Export Mode&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;Export Style&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="ExportsModel.check_hdf_max_chunk_bytes">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ExportsModel.check_hdf_max_chunk_bytes">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;hdf_max_chunk_bytes&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_hdf_max_chunk_bytes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="nb">min</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">*</span> <span class="mi">1024</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;hdf_max_chunk_bytes must be &gt;= </span><span class="si">{</span><span class="nb">min</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">%</span> <span class="mi">512</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;hdf_max_chunk_bytes must be a multiple of 512&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FrequencyModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.FrequencyModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FrequencyModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for defining frequency parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">enable_frequency_sweep</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;enable_frequency_sweep&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Enable harmonic sweep. Works with only &#39;Static&#39; and &#39;QSTS&#39; simulation modes.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Enable frequency sweep&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">fundamental_frequency</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;fundamental_frequency&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Fundamental system frequeny in Hertz&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">60.0</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Fundamental frequency&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">start_frequency</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;start_frequency&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start system frequeny in Hertz&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Start frequency&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">end_frequency</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;end_frequency&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;End system frequeny in Hertz&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;End frequency&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">frequency_increment</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;frequency_increment&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;As multiple of fundamental&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;frequency increment&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">neglect_shunt_admittance</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;neglect_shunt_admittance&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Neglect shunt addmittance for frequency sweep&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Neglect shunt admittance&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">percentage_load_in_series</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;percentage_load_in_series&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Percent of load that is series RL for Harmonic studies&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Percentage load in series&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    
+<div class="viewcode-block" id="FrequencyModel.check_end_frequency">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.FrequencyModel.check_end_frequency">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;after&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_end_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span> <span class="s1">&#39;FrequencyModel&#39;</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_frequency</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_frequency</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;start_frequency=</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> must be less than end_frequency=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">end_frequency</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="FrequencyModel.check_fundamental_frequency">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.FrequencyModel.check_fundamental_frequency">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;fundamental_frequency&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_fundamental_frequency</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">allowed</span> <span class="o">=</span> <span class="p">(</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fundamental_frequency must be one of </span><span class="si">{</span><span class="n">allowed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="FrequencyModel.check_percentage_load_in_series">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.FrequencyModel.check_percentage_load_in_series">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;percentage_load_in_series&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_percentage_load_in_series</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;percentage_load_in_series must be between 0 and 100: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="HelicsModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.HelicsModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HelicsModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for HELICS.&quot;&quot;&quot;</span>
+
+    <span class="n">co_simulation_mode</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;co_simulation_mode&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to enable the HELICS interface for co-simulation.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Co-simulation Mode&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">iterative_mode</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;iterative_mode&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Iterative mode&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Iterative Mode&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">error_tolerance</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;error_tolerance&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Error tolerance&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Error tolerance&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">max_co_iterations</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;max_co_iterations&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Max number of co-simulation iterations&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Max co-iterations&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">broker</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;broker&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Broker name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;mainbroker&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Broker&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">broker_port</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;broker_port&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Broker port&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Broker port&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">federate_name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;federate_name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the federate&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;pydss&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Federate name&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">time_delta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;time_delta&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The property controlling the minimum time delta for a federate.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Time delta&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">core_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;core_type&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Core type to be use for communication&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;zmq&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Core type&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">uninterruptible</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;uninterruptible&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Can the federate be interrupted&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Uninterruptible&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">logging_level</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;logging_level&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Logging level for the federate. Refer to HELICS documentation.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Helics logging level&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+<div class="viewcode-block" id="HelicsModel.check_logging_level">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.HelicsModel.check_logging_level">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;logging_level&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_logging_level</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HELICS logging level must be between 0 and 10: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="HelicsModel.check_max_co_iterations">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.HelicsModel.check_max_co_iterations">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;max_co_iterations&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_max_co_iterations</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;max_co_iterations must be between 1 and 1000: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LoggingModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.LoggingModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LoggingModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for controlling logging.&quot;&quot;&quot;</span>
+
+    <span class="n">logging_level</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">LoggingLevel</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;logging_level&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pydss minimum logging level&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Logging Level&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">enable_console</span><span class="p">:</span>  <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;enable_console&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to enable console logging.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Display on screen&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">enable_file</span><span class="p">:</span>  <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;enable_file&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to enable logging to a file.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Log to external file&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">clear_old_log_file</span><span class="p">:</span>  <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;clear_old_log_file&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to clear and overwrite any existing log files.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Clear old log file&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">log_time_step_updates</span><span class="p">:</span>  <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;log_time_step_updates&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to log each completed time step.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Log time step updates&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+<div class="viewcode-block" id="LoggingModel.pre_process">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.LoggingModel.pre_process">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_process</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="c1"># Correct legacy files.</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Logging Level&quot;</span><span class="p">,</span> <span class="s2">&quot;logging_level&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MonteCarloModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.MonteCarloModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonteCarloModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for Monte Carlo simulations.&quot;&quot;&quot;</span>
+
+    <span class="n">num_scenarios</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;num_scenarios&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of Monte Carlo scenarios&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Number of Monte Carlo scenarios&quot;</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+
+<div class="viewcode-block" id="ProfilesModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProfilesModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProfilesModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines user inputs for the Profile Manager.&quot;&quot;&quot;</span>
+
+    <span class="n">use_profile_manager</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;use_profile_manager&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to enable the Profile Manager.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Use profile manager&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">source_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FileFormat</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;source_type&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;File format for source data&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">FileFormat</span><span class="o">.</span><span class="n">HDF5</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">source</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;source&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;File containing source data&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Profiles_backup.hdf5&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">profile_mapping</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;profile_mapping&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Profile mapping&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Profile mapping&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">is_relative_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;is_relative_path&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Source file path is relative&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">settings</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Dict</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;settings&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Profiles settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">{},</span>
+        <span class="p">)]</span>
+
+<div class="viewcode-block" id="ProfilesModel.pre_process">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ProfilesModel.pre_process">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_process</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;HDF5&quot;</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;source_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;h5&quot;</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ReportBaseModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ReportBaseModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReportBaseModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the base model for all report-specific user inputs.&quot;&quot;&quot;</span>
+
+    <span class="n">enabled</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;enabled&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to enable the report&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">scenarios</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;scenarios&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Scenarios to which the report applies. Default is all scenarios.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)]</span>
+    <span class="n">store_all_time_points</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;store_all_time_points&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to store data for all time points. If false, store aggregated &quot;</span>
+                        <span class="s2">&quot;metrics in memory.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="CapacitorStateChangeCountReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.CapacitorStateChangeCountReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CapacitorStateChangeCountReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the Capacitor State Change Counts report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Capacitor State Change Counts&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="FeederLossesReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.FeederLossesReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FeederLossesReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the Feeder Losses report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Feeder Losses&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="PvClippingReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.PvClippingReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PvClippingReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the PV Clipping report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;PV Clipping&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span>
+    <span class="n">diff_tolerance_percent_pmpp</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;diff_tolerance_percent_pmpp&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TBD&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">denominator_tolerance_percent_pmpp</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;denominator_tolerance_percent_pmpp&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TBD&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="PvCurtailmentReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.PvCurtailmentReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PvCurtailmentReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the PV Curtailment report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;PV Curtailment&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span>
+    <span class="n">diff_tolerance_percent_pmpp</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;diff_tolerance_percent_pmpp&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TBD&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">denominator_tolerance_percent_pmpp</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;denominator_tolerance_percent_pmpp&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TBD&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="RegControlTapNumberChangeCountsReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.RegControlTapNumberChangeCountsReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegControlTapNumberChangeCountsReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the RegControl Tap Number Change Counts report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;RegControl Tap Number Change Counts&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="ThermalMetricsReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ThermalMetricsReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ThermalMetricsReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the Thermal Metrics report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Thermal Metrics&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span>
+    <span class="n">transformer_window_size_hours</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;transformer_window_size_hours&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Transformer window size hours&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">transformer_loading_percent_threshold</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;transformer_loading_percent_threshold&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Transformer loading percent threshold&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">transformer_loading_percent_moving_average_threshold</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;transformer_loading_percent_moving_average_threshold&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Transformer loading percent moving average threshold&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">line_window_size_hours</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;line_window_size_hours&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Line window size hours&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">line_loading_percent_threshold</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;line_loading_percent_threshold&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Line loading percent threshold&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">line_loading_percent_moving_average_threshold</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;line_loading_percent_moving_average_threshold&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Line loading percent moving average threshold&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">store_per_element_data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;store_per_element_data&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to store metrics for each line and transformer.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="VoltageMetricsReportModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.VoltageMetricsReportModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VoltageMetricsReportModel</span><span class="p">(</span><span class="n">ReportBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for the Voltage Metrics report.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Report name&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Voltage Metrics&quot;</span><span class="p">,</span>
+            <span class="c1">#internal=True,</span>
+        <span class="p">)]</span>
+    <span class="n">window_size_minutes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;window_size_minutes&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Window size minutes&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">range_a_limits</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;range_a_limits&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ANSI Range A voltage limits&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">],</span>
+        <span class="p">)]</span>
+    <span class="n">range_b_limits</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;range_b_limits&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ANSI Range B voltage limits&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mf">0.90</span><span class="p">,</span> <span class="mf">1.0583</span><span class="p">],</span>
+        <span class="p">)]</span>
+    <span class="n">store_per_element_data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;store_per_element_data&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Set to true to store metrics for each node.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<span class="n">_REPORT_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Capacitor State Change Counts&quot;</span><span class="p">:</span> <span class="n">CapacitorStateChangeCountReportModel</span><span class="p">,</span>
+    <span class="s2">&quot;Feeder Losses&quot;</span><span class="p">:</span> <span class="n">FeederLossesReportModel</span><span class="p">,</span>
+    <span class="s2">&quot;PV Clipping&quot;</span><span class="p">:</span> <span class="n">PvClippingReportModel</span><span class="p">,</span>
+    <span class="s2">&quot;PV Curtailment&quot;</span><span class="p">:</span> <span class="n">PvCurtailmentReportModel</span><span class="p">,</span>
+    <span class="s2">&quot;RegControl Tap Number Change Counts&quot;</span><span class="p">:</span> <span class="n">RegControlTapNumberChangeCountsReportModel</span><span class="p">,</span>
+    <span class="s2">&quot;Thermal Metrics&quot;</span><span class="p">:</span> <span class="n">ThermalMetricsReportModel</span><span class="p">,</span>
+    <span class="s2">&quot;Voltage Metrics&quot;</span><span class="p">:</span> <span class="n">VoltageMetricsReportModel</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="ReportsModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ReportsModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReportsModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the user inputs for reports.&quot;&quot;&quot;</span>
+
+    <span class="nb">format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">FileFormat</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;format&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Controls the file format.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">FileFormat</span><span class="o">.</span><span class="n">HDF5</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Format&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">granularity</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ReportGranularity</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;granularity&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Specifies the granularity on which data is collected.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">ReportGranularity</span><span class="o">.</span><span class="n">PER_ELEMENT_PER_TIME_POINT</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Granularity&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">types</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;types&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reports to collect.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Types&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+<div class="viewcode-block" id="ReportsModel.check_types">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.ReportsModel.check_types">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;types&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">reports</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">report</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+            <span class="n">report_cls</span> <span class="o">=</span> <span class="n">_REPORT_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">report_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> is not a valid report name&quot;</span><span class="p">)</span>
+            <span class="n">reports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">report_cls</span><span class="p">(</span><span class="o">**</span><span class="n">report</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">reports</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SimulationSettingsModel">
+<a class="viewcode-back" href="../../Models.html#pydss.simulation_input_models.SimulationSettingsModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimulationSettingsModel</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines user inputs for a simulation.&quot;&quot;&quot;</span>
+
+    <span class="n">project</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ProjectModel</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="o">...</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;project&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Project settings&quot;</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">exports</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ExportsModel</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;exports&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Exports settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">ExportsModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Exports&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">frequency</span><span class="p">:</span><span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">FrequencyModel</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span> 
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Frequency settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">FrequencyModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Frequency&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">helics</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">HelicsModel</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;helics&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;HELICS settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">HelicsModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Helics&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">logging</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">LoggingModel</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;logging&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Logging settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">LoggingModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Logging&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">monte_carlo</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">MonteCarloModel</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;monte_carlo&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Monte Carlo settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">MonteCarloModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;MonteCarlo&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">profiles</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ProfilesModel</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;profiles&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Profiles settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">ProfilesModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Profiles&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+    <span class="n">reports</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ReportsModel</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reports settings&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">ReportsModel</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;Reports&quot;</span><span class="p">,</span>
+        <span class="p">)]</span></div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ControllerMap</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+    <span class="n">controller_type</span> <span class="p">:</span><span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">ControllerType</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span> 
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;controller_types&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Should be a valid controller type registered with pydss&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">ControllerType</span><span class="o">.</span><span class="n">PV_CONTROLLER</span><span class="p">,</span>
+        <span class="p">)]</span>
+    
+    <span class="n">controller_file</span> <span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Path</span><span class="p">,</span> 
+        <span class="n">Field</span><span class="p">(</span> 
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;controller_file&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to the controller settings TOML file&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="p">)]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MappedControllers</span><span class="p">(</span><span class="n">InputsBaseModel</span><span class="p">):</span>
+    <span class="n">mapping</span> <span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">ControllerMap</span><span class="p">],</span> 
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;mapping&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mapping of contoller type to controller settings TOML file&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[]</span>
+        <span class="p">)]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_simulation_settings</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">project_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scenario_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a settings file with default values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : Path</span>
+<span class="sd">        Path in which to create the project.</span>
+<span class="sd">    project_name : str</span>
+<span class="sd">        Name of the project. Will be joined with &#39;path&#39;.</span>
+<span class="sd">    scenario_names : list</span>
+<span class="sd">        Name of each scenario to create.</span>
+<span class="sd">    force : bool</span>
+<span class="sd">        If project already exists, overwrite it.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+    <span class="n">project_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">project_name</span>
+    <span class="k">if</span> <span class="n">project_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">project_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_path</span><span class="si">}</span><span class="s2"> already exists. Set force=true to overwrite.&quot;</span><span class="p">)</span>
+
+    <span class="n">project_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+    <span class="n">scenarios</span> <span class="o">=</span> <span class="p">[</span><span class="n">ScenarioModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">scenario_names</span><span class="p">]</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">ProjectModel</span><span class="p">(</span>
+        <span class="n">project_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+        <span class="n">active_project</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
+        <span class="n">scenarios</span><span class="o">=</span><span class="n">scenarios</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">SimulationSettingsModel</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">project_path</span> <span class="o">/</span> <span class="n">SIMULATION_SETTINGS_FILENAME</span>
+    <span class="n">dump_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">filename</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dump_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SimulationSettingsModel</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dump the settings into a TOML file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    settings : SimulationSettingsModel</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dump_data</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">by_alias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">filename</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_simulation_settings</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the simulation settings.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : Path</span>
+<span class="sd">        Path to simulation.toml</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SimulationSettingsModel</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Raised if any setting is invalid.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">SimulationSettingsModel</span><span class="p">(</span><span class="o">**</span><span class="n">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="n">enabled_reports</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">reports</span><span class="o">.</span><span class="n">types</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">enabled</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">enabled_reports</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">exports</span><span class="o">.</span><span class="n">export_results</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Reports are only supported with exported_results = true.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">settings</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-2026, Aadil Latif
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=fe8136a3"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
