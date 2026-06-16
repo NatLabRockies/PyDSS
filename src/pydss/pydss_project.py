@@ -38,7 +38,7 @@ from pydss.simulation_input_models import (
 from pydss.utils.dss_utils import read_pv_systems_from_dss_file
 from pydss.utils.utils import dump_data, load_data
 
-from distutils.dir_util import copy_tree
+from shutil import copytree
 
 
 DATA_FORMAT_VERSION = "1.0.2"
@@ -238,7 +238,7 @@ class PyDssProject:
             os.makedirs(os.path.join(self._project_dir, name), exist_ok=True)
         if opendss_project_folder:
             dest = os.path.join(self._project_dir, PROJECT_DIRECTORIES[0])
-            copy_tree(opendss_project_folder, dest)
+            copytree(opendss_project_folder, dest)
         self._serialize_scenarios()
         dump_settings(
             self._settings,
