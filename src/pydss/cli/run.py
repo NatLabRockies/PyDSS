@@ -7,58 +7,34 @@ import ast
 import sys
 
 from loguru import logger
-import click
+import typer
 
 from pydss.utils.utils import get_cli_string, make_human_readable_size
 from pydss.common import SIMULATION_SETTINGS_FILENAME
 from pydss.pydss_project import PyDssProject
 
-@click.argument("project-path", type=click.Path(exists=True))
-@click.option(
-    "-o", "--options",
+def run(
+    project_path: str = typer.Argument(..., exists=True),
+    options: str | None = typer.Option(None, "-o", "--options",
     help="dict-formatted simulation settings that override the config file. " \
             "Example:  pydss run ./project --options \"{\\\"Exports\\\": {\\\"Export Compression\\\": \\\"true\\\"}}\"",
-)
-
-@click.option(
-    "-s", "--simulations-file",
-    required=False,
-    default = SIMULATION_SETTINGS_FILENAME,
-    show_default=True,
+    ),
+    simulations_file: str = typer.Option(SIMULATION_SETTINGS_FILENAME, "-s", "--simulations-file",
     help="scenario toml file to run (over rides default)",
-)
-
-@click.option(
-    "-t", "--tar-project",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    tar_project: bool = typer.Option(False, "-t", "--tar-project",
     help="Tar project files after successful execution."
-)
-@click.option(
-    "-z", "--zip-project",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    zip_project: bool = typer.Option(False, "-z", "--zip-project",
     help="Zip project files after successful execution."
-)
-@click.option(
-    "--verbose",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    verbose: bool = typer.Option(False, "--verbose",
     help="Enable verbose log output."
-)
-@click.option(
-    "--dry-run",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run",
     help="Dry run for getting estimated space."
-)
-@click.command()
-
-def run(project_path, options=None, tar_project=False, zip_project=False, verbose=False, simulations_file=None, dry_run=False):
+    ),
+):
     """Run a pydss simulation."""
     project_path = Path(project_path)
     settings = PyDssProject.load_simulation_settings(project_path, simulations_file)

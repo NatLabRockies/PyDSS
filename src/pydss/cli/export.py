@@ -6,7 +6,7 @@ import sys
 import os
 
 from loguru import logger
-import click
+import typer
 
 
 from pydss.pydss_results import PyDssResults
@@ -15,34 +15,21 @@ from pydss.utils.utils import get_cli_string
 
 # TODO Make command to list scenarios.
 
-@click.argument(
-    "project-path",
-)
-@click.option(
-    "-f", "--fmt",
-    default="csv",
+def export(
+    project_path: str,
+    fmt: str = typer.Option("csv", "-f", "--fmt",
     help="Output file format (csv or h5)."
-)
-@click.option(
-    "-c", "--compress",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    compress: bool = typer.Option(False, "-c", "--compress",
     help="Compress output files.",
-)
-@click.option(
-    "-o", "--output-dir",
+    ),
+    output_dir: str | None = typer.Option(None, "-o", "--output-dir",
     help="Output directory. Default is project exports directory.",
-)
-@click.option(
-    "--verbose",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    verbose: bool = typer.Option(False, "--verbose",
     help="Enable verbose log output."
-)
-@click.command()
-def export(project_path, fmt="csv", compress=False, output_dir=None, verbose=False):
+    ),
+):
     """Export data from a pydss project."""
     if not os.path.exists(project_path):
         sys.exit(1)

@@ -1,7 +1,7 @@
 """Main CLI command for pydss."""
 
 from loguru import logger
-import click
+import typer
 
 from pydss.cli.create_project import create_project
 from pydss.cli.add_post_process import add_post_process
@@ -25,20 +25,23 @@ except ImportError:
         "Server dependencies not installed. Use 'pip install NREL-pydss[server]' to install additional dependencies"
     )
 
-@click.group()
-def cli():
+cli = typer.Typer(help="Pydss commands")
+
+
+@cli.callback()
+def main():
     """Pydss commands"""
 
-cli.add_command(create_project)
-cli.add_command(add_post_process)
-cli.add_command(export)
-cli.add_command(extract)
-cli.add_command(extract_element_files)
-cli.add_command(run)
-cli.add_command(add_scenario)
-cli.add_command(edit_scenario)
-cli.add_command(convert)
-cli.add_command(controllers)
-cli.add_command(reports)
+cli.command()(create_project)
+cli.command()(add_post_process)
+cli.command()(export)
+cli.command()(extract)
+cli.command()(extract_element_files)
+cli.command()(run)
+cli.command()(add_scenario)
+cli.add_typer(edit_scenario, name="edit-scenario")
+cli.add_typer(convert, name="convert")
+cli.add_typer(controllers, name="controllers")
+cli.command()(reports)
 if server_dependencies_installed:
-    cli.add_command(serve)
+    cli.command()(serve)

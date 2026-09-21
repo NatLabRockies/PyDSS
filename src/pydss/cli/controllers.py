@@ -5,22 +5,18 @@ CLI to add controllers to the local registry
 import sys
 import os
 
-import click
+import typer
 
 
 from pydss.common import CONTROLLER_TYPES
 from pydss.utils.utils import load_data
 from pydss.registry import Registry
 
-@click.group()
-def controllers():
-    """Manage registered pydss controllers."""
+controllers = typer.Typer(help="Manage registered pydss controllers.")
 
 
-@click.argument("filename")
-@click.argument("controller_type")
-@click.command()
-def register(controller_type, filename):
+@controllers.command()
+def register(controller_type: str, filename: str):
     """Register a controller in the local registry."""
     if controller_type not in CONTROLLER_TYPES:
         print(f"controller_type must be one of {CONTROLLER_TYPES}")
@@ -36,29 +32,21 @@ def register(controller_type, filename):
         print(f"Registered {controller_type} {name}")
 
 
-@click.argument("name")
-@click.argument("controller_type")
-@click.command()
-def unregister(controller_type, name):
+@controllers.command()
+def unregister(controller_type: str, name: str):
     """Unregister a controller."""
     Registry().unregister_controller(controller_type, name)
     print(f"Unregistered {controller_type} {name}")
 
 
-@click.command()
+@controllers.command()
 def show():
     """Show the registered controllers."""
     Registry().show_controllers()
 
 
-@click.command()
+@controllers.command()
 def reset_defaults():
     """Reset defaults."""
     Registry().reset_defaults(controllers_only=True)
     print("Reset pydss defaults")
-
-
-controllers.add_command(register)
-controllers.add_command(unregister)
-controllers.add_command(show)
-controllers.add_command(reset_defaults)

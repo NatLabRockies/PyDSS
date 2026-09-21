@@ -2,46 +2,28 @@
 CLI to run a pydss project
 """
 
-import click
+import typer
 import json
 import os
 
 from terminaltables import SingleTable
 from os.path import normpath, basename
 
-@click.argument(
-    "project-path",
-)
-
-@click.option(
-    "-l", "--list-reports",
+def reports(
+    project_path: str,
+    list_reports: bool = typer.Option(False, "-l", "--list-reports",
     help="List all reports for a given project path",
-    is_flag=True,
-    default=False,
-    show_default=True,
-)
-
-@click.option(
-    "-i", "--index",
+    ),
+    index: int = typer.Option(0, "-i", "--index",
     help="View report by index (use -l flag to see list of available reports)",
-    default=0,
-    show_default=True,
-)
-
-@click.option(
-    "-s", "--scenario",
-    required=False,
+    ),
+    scenario: str | None = typer.Option(None, "-s", "--scenario",
     help="Pydss scenario name.",
-)
-
-@click.option(
-    "-r", "--report",
-    required=False,
+    ),
+    report: str | None = typer.Option(None, "-r", "--report",
     help="Pydss report name.",
-)
-@click.command()
-
-def reports(project_path, list_reports=False, scenario=None, report=None, index=0):
+    ),
+):
     """Explore and print pydss reports."""
     assert not (list_reports and index), "Both 'list' and 'index' options cannot be set to true at the same time"
     assert os.path.exists(project_path), "The provided project path {} does not exist".format(project_path)

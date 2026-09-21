@@ -1,16 +1,15 @@
-import click
 import toml
 import sys
 import os
+import typer
 
-@click.command()
-@click.option('--pydss_path',
-              default=r'C:\Users\alatif\Desktop\pydss_test')
-@click.option('--sim_path',
-              default=r'C:\Users\alatif\Desktop\pydss_test\examples\external_interfaces\Python_example')
-@click.option('--sim_file',
-              default=r'simulation.toml')
-def run_pyDSS(pydss_path, sim_path, sim_file):
+def run_pyDSS(
+    pydss_path: str = typer.Option(r'C:\Users\alatif\Desktop\pydss_test'),
+    sim_path: str = typer.Option(
+        r'C:\Users\alatif\Desktop\pydss_test\examples\external_interfaces\Python_example'
+    ),
+    sim_file: str = typer.Option(r'simulation.toml'),
+):
     sys.path.append(pydss_path)
     sys.path.append(os.path.join(pydss_path, 'pydss'))
     file1 = open(os.path.join(sim_path, sim_file),"r")
@@ -26,6 +25,7 @@ def run_pyDSS(pydss_path, sim_path, sim_file):
     dssInstance.ResultContainer.ExportResults()
     dssInstance.DeleteInstance()
     del a
-run_pyDSS()
+if __name__ == "__main__":
+    typer.run(run_pyDSS)
 
 

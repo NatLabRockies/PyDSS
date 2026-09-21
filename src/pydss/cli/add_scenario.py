@@ -1,6 +1,6 @@
 from pathlib import Path
 import toml
-import click
+import typer
 import os
 
 from pydss.simulation_input_models import MappedControllers
@@ -38,21 +38,16 @@ def build_scenario(project_path:str, scenario_name:str, controller_mapping:str):
         )
     scenario_obj.serialize(str(scenario_dir))
 
-@click.argument("project-path", type=click.Path(exists=True))
-@click.option(
-    "-s", "--scenario_name",
-    required=True,
+def add_scenario(
+    project_path: str = typer.Argument(..., exists=True),
+    scenario_name: str = typer.Option(..., "-s", "--scenario_name", "--scenario-name",
     help="name of the new scenario",
-)
-@click.option(
-    "-c", "--controller-mapping",
-    required=True,
-    default=None,
-    type=click.Path(exists=True),
+    ),
+    controller_mapping: str = typer.Option(
+        ..., "-c", "--controller-mapping", exists=True,
     help="JSON file that maps controller type to controller definition files",
-)
-@click.command()
-def add_scenario(project_path:str, scenario_name:str, controller_mapping:str):
+    ),
+):
     """Add a new scenario to an existing project"""
     build_scenario(project_path, scenario_name, controller_mapping)
 

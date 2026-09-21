@@ -6,31 +6,22 @@ import sys
 import os
 
 from loguru import logger
-import click
+import typer
 
 from pydss.pydss_project import PyDssProject
 from pydss.pydss_results import PyDssResults
 from pydss.utils.utils import get_cli_string
 
-@click.argument(
-    "file-path",
-)
-@click.argument(
-    "project-path",
-)
-@click.option(
-    "-o", "--output-dir",
+def extract(
+    project_path: str,
+    file_path: str,
+    output_dir: str | None = typer.Option(None, "-o", "--output-dir",
     help="Output directory. Default is the project path.",
-)
-@click.option(
-    "--verbose",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    verbose: bool = typer.Option(False, "--verbose",
     help="Enable verbose log output."
-)
-@click.command()
-def extract(project_path, file_path, output_dir=None, verbose=False):
+    ),
+):
     """Extract a file from an archived pydss project."""
     if not os.path.exists(project_path):
         logger.error(f"project-path={project_path} does not exist")
@@ -66,22 +57,15 @@ def extract(project_path, file_path, output_dir=None, verbose=False):
     logger.info(f"Extracted {file_path} to {path}")
 
 
-@click.argument(
-    "project-path",
-)
-@click.option(
-    "-o", "--output-dir",
+def extract_element_files(
+    project_path: str,
+    output_dir: str | None = typer.Option(None, "-o", "--output-dir",
     help="Output directory. Default is the project path.",
-)
-@click.option(
-    "--verbose",
-    is_flag=True,
-    default=False,
-    show_default=True,
+    ),
+    verbose: bool = typer.Option(False, "--verbose",
     help="Enable verbose log output."
-)
-@click.command()
-def extract_element_files(project_path, output_dir=None, verbose=False):
+    ),
+):
     """Extract the element info files from an archived pydss project."""
     if not os.path.exists(project_path):
         logger.error(f"project-path={project_path} does not exist")

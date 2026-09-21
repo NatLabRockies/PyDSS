@@ -8,7 +8,7 @@ import textwrap
 from collections import defaultdict
 from pathlib import Path
 
-import click
+import typer
 
 from pydss import common
 from pydss import simulation_input_models
@@ -41,16 +41,11 @@ MODEL_ORDER = (
 ABSTRACT_TYPES = ("InputsBaseModel", "ReportsBaseModel", "ReportBase")
 
 
-@click.command()
-@click.option(
-    "-o",
-    "--output",
-    default="build/model_tables",
-    show_default=True,
+def make_tables(
+    output: Path = typer.Option(Path("build/model_tables"), "-o", "--output",
     help="output directory",
-    callback=lambda _, __, x: Path(x),
-)
-def make_tables(output):
+    ),
+):
     os.makedirs(output, exist_ok=True)
     ordered_names, classes = get_ordered_class_names()
     all_names = set(ordered_names)
@@ -194,4 +189,4 @@ def parse_property_types(ordered_names, classes):
 
 
 if __name__ == "__main__":
-    make_tables()
+    typer.run(make_tables)

@@ -1,46 +1,42 @@
 """CLI to edit an existing project or scenario"""
 
-import click
+import typer
 
 from pydss.common import CONTROLLER_TYPES
 from pydss.pydss_project import update_pydss_controllers
 
 
-@click.option(
-    "-p", "--project-path",
-    required=True,
+edit_scenario = typer.Typer(help="Edit scenario in a pydss project.")
+
+
+@edit_scenario.callback()
+def main(
+    project_path: str = typer.Option(..., "-p", "--project-path",
     help="project path",
-)
-@click.option(
-    "-s", "--scenario",
-    required=True,
+    ),
+    scenario: str = typer.Option(..., "-s", "--scenario",
     help="Project name (should exist)",
-)
-@click.group()
-def edit_scenario(project_path=None, scenario=None):
+    ),
+):
     """Edit scenario in a pydss project."""
 
 
-@click.option(
-    "-c", "--controller",
-    required=True,
+@edit_scenario.command()
+def update_controllers(
+    ctx: typer.Context,
+    controller: str = typer.Option(..., "-c", "--controller",
     help="controller name",
-)
-@click.option(
-    "-f", "--dss-file",
-    required=True,
+    ),
+    dss_file: str = typer.Option(..., "-f", "--dss-file",
     help="OpenDSS file containing elements",
-)
-@click.option(
-    "-t", "--controller-type",
-    required=True,
-    type=click.Choice(CONTROLLER_TYPES),
+    ),
+    controller_type: str = typer.Option(..., "-t", "--controller-type",
     help="controller type",
-)
-@click.command()
-@click.pass_context
-def update_controllers(ctx, controller_type=None, controller=None, dss_file=None):
+    ),
+):
     """Update a scenario's controllers from an OpenDSS file."""
+    if controller_type not in CONTROLLER_TYPES:
+        raise typer.BadParameter(f"must be one of {CONTROLLER_TYPES}")
     project_path = ctx.parent.params["project_path"]
     scenario = ctx.parent.params["scenario"]
     update_pydss_controllers(
@@ -50,6 +46,3 @@ def update_controllers(ctx, controller_type=None, controller=None, dss_file=None
         controller=controller,
         dss_file=dss_file
     )
-
-
-edit_scenario.add_command(update_controllers)
