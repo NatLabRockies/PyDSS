@@ -9,8 +9,8 @@ This controller implements the voltage ride-through requirements from both IEEE 
 
 The controller implements ride-through requirements in complete detail. This includes
 
-- Implementation of inverter behaviour in defined regions such as may trip, current limited, permissive etc. 
-- Implementation of inverter categories for the  IEEE 1547-2018 standard.
+- Implementation of inverter behavior in defined regions such as may-trip, current-limited, and permissive operation.
+- Implementation of inverter categories for the IEEE 1547-2018 standard.
 - System behavior under multiple disturbances.
 - System recovery under momentary cessation and trip scenarios.
 
@@ -18,26 +18,27 @@ The controller implements ride-through requirements in complete detail. This inc
   :width: 400
   :alt: Alternative text
 
-The figure above shows inverter response to a fault. 
-The inverter is configured to provide 'momentary cessation' operation in the 'may trip' region. The inverter enter momentary 
-cessation region (grey) and the PV is temporarily disconnected. Once the fault is cleared, the PV system goes back to full power 
-in 0.4s in a ramped manner as per the per IEEE 1547-2018 standard
+The figure above shows the inverter response to a fault. The inverter is configured for momentary
+cessation in the may-trip region. It enters the momentary-cessation region (gray), and the PV
+system is temporarily disconnected. Once the fault is cleared, the PV system returns to full power
+in a 0.4-second ramp, consistent with IEEE 1547-2018.
 
 .. image:: PvVoltageRideThru2.png
   :width: 400
   :alt: Alternative text
 
-The figure above shows inverter response to multiple faults fault. The inverter is modeled to trip on multiple faults. 
-As per the standard the inverter should trip on the second consecutive fault. After the first fault, PV system enter momentary 
-cessation region and starts to recover. On the second fault, the PV system trips and is required to wait at least 300s before it can reconnect
+The figure above shows the inverter response to multiple faults. The inverter is configured to trip
+after multiple faults. Under the modeled standard, it trips on the second consecutive fault. After
+the first fault, the PV system enters momentary cessation and begins to recover. After the second
+fault, it trips and must wait at least 300 seconds before reconnecting.
 
 .. image:: PvVoltageRideThru1.png
   :width: 400
   :alt: Alternative text
 
-The figure above shows inverter response to multiple faults fault. The inverter is modeled to NOT trip on multiple faults. 
-With each fault, PV system enter momentary cessation region and starts to recover in  a ramped manner. 
-It finally recovers after the third fault
+The figure above shows the inverter response to multiple faults when tripping is disabled. With
+each fault, the PV system enters momentary cessation and begins a ramped recovery. It recovers
+fully after the third fault.
 
 
 Controller model

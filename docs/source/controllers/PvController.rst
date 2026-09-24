@@ -5,13 +5,13 @@ PV System Smart Controller
 Controller overview
 -------------------
 
-This controller implments three reactive power compensation techniques namely, 
+This controller implements three reactive power compensation techniques:
 
 - constant power factor mode
 - variable power factor mode 
 - voltage droop mode (a.k.a. volt / var control)
 
-Additionally it implements the volt / watt control and finally implents the trip logic for legacy invereters.
+It also implements Volt/Watt control and inverter trip logic.
 
 In constant power factor mode, inverter reactive power follows its active power output, thus ensuring
 power factor remains constant. Constant power factor control mode is cost effective as no

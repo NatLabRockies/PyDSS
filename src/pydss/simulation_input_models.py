@@ -249,6 +249,7 @@ class ProjectModel(InputsBaseModel):
             description="Maximum outer loop control iterations",
             alias="Max Control Iterations",
             default=50,
+            ge=1,
         )]
     convergence_error_percent_threshold: Annotated[
         float,
@@ -298,12 +299,12 @@ class ProjectModel(InputsBaseModel):
             alias="DSS File Absolute Path",
             default=False,
         )]
-    disable_pydss_controllers: Annotated[
+    openmdao_reports: Annotated[
         bool,
         Field(
-            title="disable_pydss_controllers",
-            description="Allows disabling of the control algorithms",
-            alias="Disable pydss controllers",
+            title="openmdao_reports",
+            description="Generate OpenMDAO reports and nonlinear solver recordings.",
+            alias="OpenMDAO Reports",
             default=False,
         )]
     use_controller_registry: Annotated[

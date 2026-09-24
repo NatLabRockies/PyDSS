@@ -19,7 +19,6 @@
    cli
    common
    config_data
-   controllers
    dataset_buffer
    defaults
    dssBus
@@ -39,6 +38,8 @@
    modes
    naerm
    node_voltage_metrics
+   openmdao_components
+   openmdao_model
    pyContrReader
    pyControllers
    pyDSS

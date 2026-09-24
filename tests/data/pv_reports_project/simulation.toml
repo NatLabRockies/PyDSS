@@ -10,7 +10,6 @@
 "Convergence error percent threshold" = 0
 "Skip export on convergence error" = true
 "Control mode" = "Time"
-"Disable pydss controllers" = false
 "Project Path" = "./tests/data"
 "Simulation Type" = "QSTS"
 "Active Project" = "pv_reports_project"

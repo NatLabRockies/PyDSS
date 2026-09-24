@@ -123,7 +123,7 @@ PyDSS includes a Jupyter notebook UI that allows you to plot element results.
 Note that you must be in the directory where you ran
 ``pydss run <my-project>`` when you start the notebook.
 
-.. note:: plotly is required for this application. You may ned to ``pip install plotly``.
+.. note:: Plotly is required for this application. Install it with ``pip install plotly`` if needed.
 
 .. code-block:: bash
 

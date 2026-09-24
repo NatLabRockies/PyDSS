@@ -14,4 +14,3 @@ pydss.pyControllers
    enumerations
    models
    pyController
-   pyControllerAbstract

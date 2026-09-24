@@ -1,13 +1,9 @@
 ["Generator.pv_system_p1ulv3"]
 Category = "test"
-Control1 = "None"
-Control2 = "VVar"
-Control3 = "None"
 UcalcMode = "Max"
 "Model as PVsystem" = true
 PFlim = 0.95
 DampCoef = 0.8
-Priority = 0.45
 uMin = 0.95
 uDbMin = 1.00
 uDbMax = 1.00

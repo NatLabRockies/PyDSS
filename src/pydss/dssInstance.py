@@ -21,8 +21,13 @@ from pydss.simulation_input_models import SimulationSettingsModel
 from pydss.utils.simulation_utils import SimulationFilteredTimeRange
 from pydss.utils.timing_utils import Timer, timer_stats_collector, track_timing
 from pydss.get_snapshot_timepoints import get_snapshot_timepoint
+from pydss.openmdao_components import (
+    CircuitExplicitComponent, OpenDSSCircuitAdapter, VariableSpec,
+)
+from pydss.openmdao_model import build_openmdao_problem, controller_circuit_variable
 
 import opendssdirect as dss
+import openmdao.api as om
 import numpy as np
 from loguru import logger
 import json
@@ -32,8 +37,6 @@ from collections import defaultdict
 from pathlib import Path
 
 from opendssdirect.utils import run_command
-
-CONTROLLER_PRIORITIES = 3
 
 class OpenDSS:
     def __init__(self, settings: SimulationSettingsModel):
@@ -129,6 +132,11 @@ class OpenDSS:
         if ControllerList is not None:
             self._CreateControllers(ControllerList)
 
+        self._openmdao_problem = None
+        self._openmdao_adapter = None
+        if getattr(self, '_pyControls', None):
+            self._setup_openmdao_problem()
+
         self._increment_flag = True
         if settings.helics.co_simulation_mode:
             self._heilcs_interface = HI.helics_interface(self._dssSolver, self._dssObjects, self._dssObjectsByClass, settings,
@@ -155,37 +163,65 @@ class OpenDSS:
 
     def _CreateControllers(self, ControllerDict):
         self._pyControls = {}
-        self._pyControls_types = {}
         for ControllerType, ElementsDict in ControllerDict.items():
             for ElmName, SettingsDict in ElementsDict.items():
-                Controller = pyControllers.pyController.Create(ElmName, ControllerType, SettingsDict, self._dssObjects,
-                                                  self._dssInstance, self._dssSolver)
-                if Controller != -1:
-                    controller_name = 'Controller.' + ElmName
-                    self._pyControls[controller_name] = Controller
-                    class_name, element_name = Controller.ControlledElement().split(".")
-                    if controller_name not in self._pyControls_types:
-                        self._pyControls_types[controller_name] = class_name
-                    logger.info('Created pyController -> Controller.' + ElmName)
+                self._pyControls[ElmName] = pyControllers.pyController.Create(
+                    ControllerType, SettingsDict, element_name=ElmName
+                )
+                logger.info('Created OpenMDAO controller -> Controller.' + ElmName)
         return
 
-    def _update_controllers(self, Priority, Time, Iteration, UpdateResults):
-        errors = []
-        maxError = 0
-        _pyControls_types = set(self._pyControls_types.values())
+    def _setup_openmdao_problem(self):
+        controller_items = sorted(self._pyControls.items())
+        elements = {name: self._dssObjects[name] for name, _ in controller_items}
+        command_specs = []
+        measurement_specs = []
+        command_map = {}
+        measurement_map = {}
+        controllers = []
+        connections = []
 
-        for class_name in _pyControls_types:
-            self._dssInstance.Basic.SetActiveClass(class_name)
-            elm = self._dssInstance.ActiveClass.First()
-            while elm:
-                element_name = self._dssInstance.CktElement.Name()
-                controller_name = 'Controller.' + element_name
-                if controller_name in self._pyControls:
-                    controller = self._pyControls[controller_name]
-                    error = controller.Update(Priority, Time, UpdateResults)
-                    maxError = error if error > maxError else maxError
-                elm = self._dssInstance.ActiveClass.Next()
-        return maxError < self._settings.project.error_tolerance, maxError
+        for index, (element_name, controller) in enumerate(controller_items):
+            subsystem_name = f"controller_{index}"
+            controllers.append((subsystem_name, controller))
+            element_class = element_name.split('.', 1)[0]
+            if element_class.lower() == "pvsystem":
+                controller.options["rated_kva"] = float(elements[element_name].GetParameter("kVA"))
+            parameter_map = controller.command_parameters(element_class)
+            for spec in controller.output_specs():
+                if spec.name.startswith("command_"):
+                    circuit_name = controller_circuit_variable(index, spec.name)
+                    command_specs.append(VariableSpec(circuit_name, spec.shape, spec.units, spec.val))
+                    parameter = parameter_map[spec.name]
+                    command_map[circuit_name] = (element_name, parameter)
+                    connections.append((f"{subsystem_name}.{spec.name}", f"circuit.{circuit_name}"))
+            for spec in controller.input_specs():
+                circuit_name = controller_circuit_variable(index, spec.name)
+                measurement_specs.append(VariableSpec(circuit_name, spec.shape, spec.units, spec.val))
+                measurement_map[circuit_name] = (element_name, spec.name)
+                connections.append((f"circuit.{circuit_name}", f"{subsystem_name}.{spec.name}"))
+
+        self._openmdao_adapter = OpenDSSCircuitAdapter(
+            self._dssInstance, self._dssSolver, elements, command_map, measurement_map
+        )
+        circuit = CircuitExplicitComponent(
+            adapter=self._openmdao_adapter,
+            command_specs=tuple(command_specs),
+            measurement_specs=tuple(measurement_specs),
+        )
+        reports_enabled = (
+            self._settings.project.openmdao_reports
+            and 'PYTEST_CURRENT_TEST' not in os.environ
+        )
+        self._openmdao_problem = build_openmdao_problem(
+            circuit, controllers, connections,
+            max_iterations=self._settings.project.max_control_iterations,
+            tolerance=self._settings.project.error_tolerance,
+            reports=reports_enabled,
+            work_dir=(self._dssPath['dssFiles'].parent / 'OpenMDAOReports'
+                      if reports_enabled else None),
+            name=self._ActiveProject,
+        )
 
     @staticmethod
     def CreateBusObjects():
@@ -256,28 +292,17 @@ class OpenDSS:
 
         # run simulation time step and get results
         time_step_has_converged = True
-        if not self._settings.project.disable_pydss_controllers:
-            with Timer(timer_stats_collector, "UpdateControllers"):
-                for priority in range(CONTROLLER_PRIORITIES):
-                    priority_has_converged = False
-                    for i in range(self._settings.project.max_control_iterations):
-                        has_converged, error = self._update_controllers(priority, step, i, UpdateResults=False)
-                        logger.debug('Control Loop {} convergence error: {}'.format(priority, error))
-                        if has_converged:
-                            priority_has_converged = True
-                            break
-                        self._dssSolver.reSolve()
-                    if i == 0:
-                        # Don't track 0.
-                        pass
-                    elif i not in self._controller_iteration_counts:
-                        self._controller_iteration_counts[i] = 1
-                    else:
-                        self._controller_iteration_counts[i] += 1
-                    if not priority_has_converged:
-                        time_step_has_converged = False
-                        logger.warning('Control Loop {} no convergence @ {} '.format(priority, step))
-                        self._HandleConvergenceErrorChecks(step, error)
+        if self._openmdao_problem is not None:
+            self._openmdao_adapter.set_time(step * self._settings.project.step_resolution_sec)
+            self._openmdao_problem.model.reset_step()
+            try:
+                self._openmdao_problem.run_model()
+            except om.AnalysisError as exc:
+                logger.warning("OpenMDAO time step {} did not converge: {}", step, exc)
+                self._HandleConvergenceErrorChecks(step, float("inf"))
+                time_step_has_converged = False
+            else:
+                self._openmdao_problem.model.commit_step()
 
 
         if self._settings.frequency.enable_frequency_sweep and \

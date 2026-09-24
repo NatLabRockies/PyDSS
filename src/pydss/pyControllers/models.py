@@ -12,8 +12,6 @@ from pydss.pyControllers.enumerations import (
     PermissiveOperation, 
     MayTripOperation, 
     MultipleDisturbances,
-    SmartControls, 
-    ControlPriority, 
     VoltWattCurtailmentStrategy, 
 )
 
@@ -21,6 +19,18 @@ from pydss.pyControllers.enumerations import (
 
 class BaseControllerModel(BaseModel):
     ...
+
+    @model_validator(mode="before")
+    @classmethod
+    def reject_legacy_controller_settings(cls, values):
+        if isinstance(values, dict):
+            legacy = sorted(key for key in values if key in {"Control1", "Control2", "Control3", "Priority"})
+            if legacy:
+                raise ValueError(
+                    "Legacy controller settings are unsupported; use component settings and OpenMDAO variables: "
+                    + ", ".join(legacy)
+                )
+        return values
     
     
 class PvVoltageRideThruModel(BaseControllerModel):
@@ -260,30 +270,6 @@ class MotorStallSettings(BaseControllerModel):
     
 
 class PvControllerModel(BaseControllerModel):
-    control1: Annotated[
-        SmartControls,
-        Field(
-            SmartControls.VOLT_VAR,
-            title="Control1",
-            description="Algorithm to run in the first control loop",
-            alias="Control1",
-        )]
-    control2: Annotated[
-        SmartControls, 
-        Field(
-            SmartControls.NONE,
-            title="Control1",
-            description="Algorithm to run in the second control loop",
-            alias="Control2",
-        )]  
-    control3: Annotated[
-        SmartControls, 
-        Field(
-            SmartControls.NONE,
-            title="Control3",
-            description="Algorithm to run in the third control loop",
-            alias="Control3",
-        )]
     pf: Annotated[
         float,
         Field(
@@ -434,14 +420,6 @@ class PvControllerModel(BaseControllerModel):
             title="Efficiency",
             description="Efficieny of the inverter system",
             alias="Efficiency",
-        )]
-    priority: Annotated[
-        ControlPriority,
-        Field(
-            ControlPriority.VAR,
-            title="Priority",
-            description="Set export priority for active power or reactive power",
-            alias="Priority",
         )]
     damp_coef: Annotated[
         float,

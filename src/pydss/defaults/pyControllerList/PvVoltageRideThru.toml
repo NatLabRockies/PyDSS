@@ -6,7 +6,6 @@
 "%PCutin" = 10.0
 "%PCutout" = 10.0
 "UcalcMode" = "Max"
-"Priority" = "Equal"
 "Enable PF limit" = false
 "pfMin"	= 0.95
 "Follow standard" = "1547-2003"
@@ -33,7 +32,6 @@
 "%PCutin" = 0.0
 "%PCutout" = 0.0
 "UcalcMode" = "Max"
-"Priority" = "Equal"
 "Enable PF limit" = false
 "pfMin"	= 0.95
 "Follow standard" = "1547-2018"
@@ -61,7 +59,6 @@
 "%PCutin" = 0.0
 "%PCutout" = 0.0
 "UcalcMode" = "Max"
-"Priority" = "Equal"
 "Enable PF limit" = false
 "pfMin"	= 0.95
 "Follow standard" = "1547-2018"
@@ -89,7 +86,6 @@
 "%PCutin" = 0
 "%PCutout" = 0
 "UcalcMode" = "Max"
-"Priority" = "Equal"
 "Enable PF limit" = false
 "pfMin"	= 0.95
 "Follow standard" = "1547-2018"

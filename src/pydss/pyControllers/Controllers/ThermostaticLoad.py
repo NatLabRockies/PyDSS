@@ -1,66 +1,53 @@
-from pydss.pyControllers.pyControllerAbstract import ControllerAbstract
-from math import *
-import random
+from collections.abc import Mapping
+from typing import Any
+import math
 
-class ThermostaticLoad(ControllerAbstract):
-
-    def __init__(self, LoadObj, Settings, dssInstance, ElmObjectList, dssSolver):
-        super(ThermostaticLoad, self).__init__(LoadObj, Settings, dssInstance, ElmObjectList, dssSolver)
-
-        self.TimeChange = False
-        self.Time = (-1, 0)
-
-        self.__ControlledElm = LoadObj
-        self.dssSolver = dssSolver
-
-        self.eClass, self.eName = self.__ControlledElm.GetInfo()
-        self.__Name = 'pyCont_' + self.eClass + '_' + self.eName
-        self.Tmax = Settings["Tmax"]
-        self.Tmin = Settings["Tmin"]
-        self.T = random.random() * (self.Tmax - self.Tmin) + self.Tmin
-        self.On = True if random.random() > 0.5 else False
-        self.__ControlledElm.SetParameter("kw", Settings["kw"])
-        self.Prated = LoadObj.GetParameter("kw")
+from pydss.openmdao_components import ControllerExplicitComponent, VariableSpec
 
 
-        self.a = 1 / (Settings["R"] * Settings["C"])
-        self.b = Settings["mu"] / Settings["C"]
-        self.w = 0
-        return
+class ThermostaticLoad(ControllerExplicitComponent):
+    """OpenMDAO thermostatic load command component."""
+
+    def setup(self) -> None:
+        settings = self.options["settings"] or {}
+        self._temperature = float(settings.get("initial_temperature", (float(settings.get("Tmin", 18.0)) + float(settings.get("Tmax", 30.0))) / 2.0))
+        self._on = bool(settings.get("initial_on", True))
+        self._pending_state = None
+        self._step_count = 0
+        super().setup()
+
+    def input_specs(self) -> tuple[VariableSpec, ...]:
+        return (VariableSpec("time_seconds"), VariableSpec("measurement_active_power"),)
+
+    def output_specs(self) -> tuple[VariableSpec, ...]:
+        return (VariableSpec("command_active_power"), VariableSpec("diagnostic_residual"))
+
+    def compute_commands(self, inputs) -> Mapping[str, Any]:
+        settings = self.options["settings"] or {}
+        t_min = float(settings.get("t_min", settings.get("Tmin", 18.0)))
+        t_max = float(settings.get("t_max", settings.get("Tmax", 30.0)))
+        resistance = max(float(settings.get("r", settings.get("R", 1.0))), 1e-9)
+        capacitance = max(float(settings.get("c", settings.get("C", 1.0))), 1e-9)
+        ambient = 30.0 + 10.0 * math.sin(float(inputs["time_seconds"]) * 2.0 * math.pi / 86400.0)
+        rated = float(settings.get("kw", inputs["measurement_active_power"]))
+        delta = -(self._temperature - ambient) / (resistance * capacitance)
+        if self._on:
+            delta -= float(settings.get("mu", 0.0)) * rated / capacitance
+        temperature = self._temperature + delta
+        on = self._on
+        if temperature > t_max:
+            on = True
+        elif temperature < t_min:
+            on = False
+        self._pending_state = (temperature, on)
+        return {"command_active_power": rated if on else 0.0, "diagnostic_residual": temperature - self._temperature}
+
+    def commit_step(self) -> None:
+        if self._pending_state is not None:
+            self._temperature, self._on = self._pending_state
+            self._pending_state = None
+        self._step_count += 1
 
     @property
-    def Name(self):
-        return self.__Name
-
-    def debugInfo(self):
-        return
-
-    @property
-    def ControlledElement(self):
-        return "{}.{}".format(self.eClass, self.eName)
-
-    def Update(self, Priority, Time, UpdateResults):
-        self.TimeChange = self.Time != (Priority, Time)
-        self.Time = (Priority, Time)
-        if self.TimeChange:
-            timePeriods = 24 * 60 * 60
-            Tsec = self.dssSolver.GetOpenDSSTime() * 60 * 50
-            Ta = sin(Tsec * 2 * pi * (1 / timePeriods)) * 10 + 30
-
-            if self.On:
-                self.dT = -self.a * (self.T - Ta) - self.b * self.Prated + self.w
-            else:
-                self.dT = -self.a * (self.T - Ta) + self.w
-
-            self.T += self.dT
-
-            if self.T > self.Tmax:
-                self.On = True
-                self.__ControlledElm.SetParameter("kw", self.Prated)
-            elif self.T < self.Tmin:
-                self.On = False
-                self.__ControlledElm.SetParameter("kw", 0)
-        return 0
-
-    def __del__(self):
-        self.f.close()
+    def step_count(self) -> int:
+        return self._step_count

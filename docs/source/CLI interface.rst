@@ -1,7 +1,10 @@
 CLI Interface
 ^^^^^^^^^^^^^
 
-.. typer:: pydss.cli.pydss:cli
-   :prog: Command line interface
-   :nested: full
+The command-line interface is exposed as ``pydss``. Use ``pydss --help`` to list the available
+commands and ``pydss <command> --help`` for command-specific options.
+
+.. automodule:: pydss.cli.pydss
+   :members: cli
+   :undoc-members:
 

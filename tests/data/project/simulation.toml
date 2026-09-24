@@ -9,7 +9,6 @@
 # Max Control Iterations- [Int] - Maximum outer loop control iterations
 # Error tolerance- [Float] - Error tolerance in per unit
 # Control mode- [String] - Control mode options are "STATIC" or "Time"
-# Disable pydss controllers- [Bool] - Disable all pyController in pydss. All controller implemented in DSS files will still work.
 # Active Project- [String] - Name of project to run
 # Active Scenario- [String] - Project scenario to use
 # DSS File- [String] - The main OpenDSS file
@@ -22,7 +21,6 @@
 "Max Control Iterations" = 15
 "Error tolerance" = 0.001
 "Control mode" = "Time"
-"Disable pydss controllers" = false
 "Project Path" = "./tests/data"
 "Simulation Type" = "QSTS"
 "Active Project" = "project"

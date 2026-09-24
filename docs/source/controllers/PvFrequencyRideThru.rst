@@ -62,12 +62,6 @@ Controller Model
    * - ``Reconnect Pmax time - sec``
      - float
      - Time to ramp back to maximum power after reconnection (seconds)
-   * - ``Priority``
-     - string
-     - Control priority (``"Var"`` or ``"Watt"``)
-   * - ``UcalcMode``
-     - string
-     - Voltage calculation mode (``"MAX"``, ``"AVG"``, ``"MIN"``, ``"A"``, ``"B"``, ``"C"``)
 
 Usage Example
 -------------
@@ -89,5 +83,3 @@ Usage Example
    Ride-through Category = "Category III"
    Reconnect deadtime - sec = 300
    Reconnect Pmax time - sec = 300
-   Priority = "Var"
-   UcalcMode = "AVG"

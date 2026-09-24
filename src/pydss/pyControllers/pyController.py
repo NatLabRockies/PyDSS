@@ -1,35 +1,34 @@
-from os.path import dirname, basename, isfile
-import glob
+"""Deterministic registry for OpenMDAO controller components."""
 
-from  pydss.pyControllers import Controllers
+from pydss.pyControllers.Controllers.DynamicVoltageSupport import DynamicVoltageSupport
+from pydss.pyControllers.Controllers.FaultController import FaultController
+from pydss.pyControllers.Controllers.GenController import GenController
+from pydss.pyControllers.Controllers.MotorStall import MotorStall
+from pydss.pyControllers.Controllers.MotorStallBackup import MotorStallBackup
+from pydss.pyControllers.Controllers.MotorStallSimple import MotorStallSimple
+from pydss.pyControllers.Controllers.PvController import PvController
+from pydss.pyControllers.Controllers.PvDynamic import PvDynamic
+from pydss.pyControllers.Controllers.PvFrequencyRideThru import PvFrequencyRideThru
+from pydss.pyControllers.Controllers.PvVoltageRideThru import PvVoltageRideThru
+from pydss.pyControllers.Controllers.SocketController import SocketController
+from pydss.pyControllers.Controllers.StorageController import StorageController
+from pydss.pyControllers.Controllers.ThermostaticLoad import ThermostaticLoad
+from pydss.pyControllers.Controllers.xfmrController import xfmrController
 
-modules = glob.glob(Controllers.__path__[0]+"/*.py")
-pythonFiles = [ basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py') ]
-
-from pydss.dssElement import dssElement
-ControllerTypes = {}
-
-for file in pythonFiles:
-    exec('from pydss.pyControllers.Controllers import {}'.format(file))
-    exec('ControllerTypes["{}"] = {}.{}'.format(file, file, file))
-
-def Create(ElmName, ControllerType, Settings, ElmObjectList, dssInstance, dssSolver):
-
-    assert (ControllerType in ControllerTypes), "Definition for '{}' controller not found. \n " \
-                                                "Please define the controller in ~pydss\pyControllers\Controllers".format(
-        ControllerType
+ControllerTypes = {
+    cls.__name__: cls for cls in (
+        DynamicVoltageSupport, FaultController, GenController, MotorStall,
+        MotorStallBackup, MotorStallSimple, PvController, PvDynamic,
+        PvFrequencyRideThru, PvVoltageRideThru, SocketController,
+        StorageController, ThermostaticLoad, xfmrController,
     )
+}
 
-    assert (ElmName in ElmObjectList), "'{}' does not exist in the pydss master object dictionary.".format(ElmName)
-    relObject = ElmObjectList[ElmName]
-    
-    # except:
-    #     Index = dssInstance.Circuit.SetActiveElement(ElmName)
-    #     if int(Index) >= 0:
-    #         ElmObjectList[ElmName] = dssElement(dssInstance)
-    #         relObject = ElmObjectList[ElmName]
-    # else:
-    #     return -1
 
-    ObjectController = ControllerTypes[ControllerType](relObject, Settings, dssInstance, ElmObjectList, dssSolver)
-    return ObjectController
+def Create(controller_type, settings=None, *, element_name=""):
+    """Create a controller component without an OpenDSS or solver dependency."""
+    try:
+        controller_class = ControllerTypes[controller_type]
+    except KeyError as exc:
+        raise ValueError(f"Unknown OpenMDAO controller component: {controller_type}") from exc
+    return controller_class(settings=settings or {}, element_name=element_name)

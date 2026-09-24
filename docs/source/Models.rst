@@ -30,8 +30,6 @@ Simulation input models
 
 .. autopydantic_model:: pydss.simulation_input_models.FeederLossesReportModel
 
-.. autopydantic_model:: pydss.simulation_input_models.FeederLossesReportModel
-
 .. autopydantic_model:: pydss.simulation_input_models.PvClippingReportModel
 
 .. autopydantic_model:: pydss.simulation_input_models.PvCurtailmentReportModel
@@ -49,9 +47,7 @@ Simulation input models
 Scenario setup models
 ************************
 
-.. autopydantic_model:: pydss.controllers.ControllerBaseModel
-
-.. autopydantic_model:: pydss.controllers.PvControllerModel
+.. autopydantic_model:: pydss.pyControllers.models.PvControllerModel
 
 
 Thermal metrics models
@@ -77,8 +73,6 @@ Voltage metrics models
 .. autopydantic_model:: pydss.node_voltage_metrics.VoltageMetric3
 
 .. autopydantic_model:: pydss.node_voltage_metrics.VoltageMetric4
-
-.. autopydantic_model:: pydss.node_voltage_metrics.VoltageMetric5
 
 .. autopydantic_model:: pydss.node_voltage_metrics.VoltageMetric5
 

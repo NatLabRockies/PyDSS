@@ -1,7 +1,4 @@
 [NO_VRT]
-Control1 = "None"
-Control2 = "None"
-Control3 = "None"
 pf = 1
 pfMin = 0.8
 pfMax = 1
@@ -21,14 +18,10 @@ VWtype = "Rated Power"
 "%PCutin" = 10
 "%PCutout" = 10
 Efficiency = 100
-Priority = "Var"
 DampCoef = 0.8
 VmeaMethod = "Max"
 
 [cpf]
-Control1 = "None"
-Control2 = "VVar"
-Control3 = "None"
 pf = 1
 pfMin = 0.8
 pfMax = 1
@@ -48,14 +41,10 @@ VWtype = "Rated Power"
 "%PCutin" = 10
 "%PCutout" = 10
 Efficiency = 100
-Priority = "Var"
 DampCoef = 0.8
 VmeaMethod = "Max"
 
 [volt-var]
-Control1 = "None"
-Control2 = "VVar"
-Control3 = "None"
 pf = 1
 pfMin = 0.8
 pfMax = 1
@@ -75,6 +64,5 @@ VWtype = "Rated Power"
 "%PCutin" = 10
 "%PCutout" = 10
 Efficiency = 100
-Priority = "Var"
 DampCoef = 0.8
 VmeaMethod = "Max"

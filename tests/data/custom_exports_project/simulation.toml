@@ -7,7 +7,6 @@
 "Error tolerance" = 0.001
 "Skip export on convergence error" = false
 "Control mode" = "Time"
-"Disable pydss controllers" = false
 "Project Path" = "./tests/data"
 "Simulation Type" = "QSTS"
 "Active Project" = "custom_exports_project"

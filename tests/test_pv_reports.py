@@ -108,7 +108,7 @@ def verify_pv_reports(granularity):
         curtailment_name = os.path.join(PV_REPORTS_PROJECT_PATH, "Reports", "pv_curtailment.json")
         curtailment = load_data(curtailment_name)
 
-    total_cm_p1ulv53232_1_2_pv = 2237.4654
+    total_cm_p1ulv53232_1_2_pv = 2233.5718
     total_cm_p1ulv57596_1_2_3_pv = 650.3959
     overall_total_cm = total_cm_p1ulv53232_1_2_pv + total_cm_p1ulv57596_1_2_3_pv
     total_pf1_p1ulv53232_1_2_pv = 2389.4002

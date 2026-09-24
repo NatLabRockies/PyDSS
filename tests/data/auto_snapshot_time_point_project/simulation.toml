@@ -9,7 +9,6 @@
 "Convergence error percent threshold" = 0
 "Skip export on convergence error" = true
 "Control mode" = "Time"
-"Disable pydss controllers" = false
 "Project Path" = "./tests/data"
 "Simulation Type" = "QSTS"
 "Active Project" = "auto_snapshot_time_point_project"

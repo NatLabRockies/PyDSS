@@ -6,7 +6,7 @@
 "Max Control Iterations" = 50
 "Error tolerance" = 0.001
 "Control mode" = "Time"
-"Disable pydss controllers" = false
+"OpenMDAO Reports" = true
 "Simulation Type" = "Dynamic"
 "Project Path" = "./examples"
 "Active Project" = "dynamics"

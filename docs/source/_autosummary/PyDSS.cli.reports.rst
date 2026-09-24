@@ -1,4 +1,4 @@
-pydss.cli.reports
+﻿pydss.cli.reports
 =================
 
 .. automodule:: pydss.cli.reports
@@ -11,4 +11,5 @@ pydss.cli.reports
       getAvailableReports
       getReportTypes
       printReport
+      reports
    

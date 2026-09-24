@@ -28,7 +28,7 @@ __all__ = ['variable_decode']
 master_dict = {
     "Project" : ["Start Year", "Start Day", "Start Time (min)", "End Day", "End Time (min)", "Date offset",
                  "Step resolution (sec)", "Max Control Iterations", "Error tolerance", "Control mode",
-                 "Disable pydss controllers", "Simulation Type", "Project Path", "Active Project", "Active Scenario",
+                 "Simulation Type", "Project Path", "Active Project", "Active Scenario",
                  "DSS File", "DSS File Absolute Path", "Return Results"],
     "Exports" : ["Export Mode", "Export Style", "Export Format", "Export Compression", "Export Iteration Order",
                  "Export Elements", "Export Data Tables", "Export Data In Memory", "HDF Max Chunk Bytes",

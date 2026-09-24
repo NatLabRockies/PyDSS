@@ -104,14 +104,14 @@ def compare_thermal_metrics(metrics1: ThermalMetricsModel, metrics2: ThermalMetr
             logger.error("field=%s mismatch %s != %s", field, val1, val2)
             match = False
 
-    if not math.isclose(metrics1.max_moving_average_loading_pct, metrics2.max_instantaneous_loading_pct, rel_tol=rel_tol):
+    if not math.isclose(metrics1.max_moving_average_loading_pct, metrics2.max_moving_average_loading_pct, rel_tol=rel_tol):
         logger.error("max_moving_average_loading_pct mismatch %s != %s",
                      metrics1.max_moving_average_loading_pct, metrics2.max_instantaneous_loading_pct)
         match = False
 
     for name, val1 in metrics1.max_instantaneous_loadings_pct.items():
         val2 = metrics2.max_instantaneous_loadings_pct[name]
-        if val1 != val2:
+        if not math.isclose(val1, val2, rel_tol=rel_tol):
             logger.error("max_instantaneous_loadings_pct mismatch %s != %s", name, val1, val2)
             match = False
 

@@ -20,6 +20,8 @@ simulation-run.toml
 *.bak
 docs/source/pydss/*
 dist/
+examples/openmdao_reports/
+examples/**/OpenMDAOReports/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

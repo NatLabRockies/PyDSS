@@ -11,8 +11,8 @@ Motor Stall Model
 Controller overview
 -------------------
 
-This controller implments the motor stall model for single phase motors (residential air conditioners) and models two states of operations 
-i.e.  run state and stall state. As supply voltage is
+This controller implements the motor-stall model for single-phase motors, such as residential air
+conditioners, and models two operating states: run and stall. As supply voltage is
 decreased, the motor slowly begins to consume a higher amount of active and reactive power. At some voltage
 level (“stall voltage”), the supply voltage is no longer adequate to maintain stable motor operation and the motor
 “stalls” (stops). There is insufficient motor torque to overcome the load torque and therefore the motor stalls.

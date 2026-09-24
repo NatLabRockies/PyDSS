@@ -6,7 +6,7 @@
 "Max Control Iterations" = 50
 "Error tolerance" = 0.001
 "Control mode" = "Static"
-"Disable pydss controllers" = false
+"OpenMDAO Reports" = true
 "Simulation Type" = "QSTS"
 "Project Path" = "./examples"
 "Active Project" = "custom_contols"
@@ -57,7 +57,3 @@ Uninterruptible = true
 
 [MonteCarlo]
 "Number of Monte Carlo scenarios" = -1
-
-[Plots]
-"Create dynamic plots" = false
-"Open plots in browser" = true

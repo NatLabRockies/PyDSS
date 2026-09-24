@@ -193,23 +193,6 @@ class SmartControls(str, Enum):
     VOLT_WATT ='vwatt'             
     TRIP = 'trip'
     
-class ControlPriority(str, Enum):
-    """
-    Variable to prooritize at inverter capability limit
-    
-    **VAR** - *Var priority*
-     
-    **WATT** - *Watt priority*
-    
-    **PF** - *Powerfactor priority*
-        
-    """
-    
-    VAR = 'Var'           
-    WATT ='Watt' 
-    PF = "PF"           
-
-
 class VoltWattCurtailmentStrategy(str, Enum):
     """
     Curtailment strategy for volt / watt algorithm

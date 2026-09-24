@@ -17,7 +17,8 @@ Controller Model
 
 .. py:class:: pydss.pyControllers.Controllers.GenController.GenController
 
-The controller is configured with the following TOML settings:
+The controller reads component-specific settings from its TOML section. The primary settings are
+listed below using the current configuration names:
 
 .. list-table:: GenController Settings
    :header-rows: 1
@@ -26,39 +27,24 @@ The controller is configured with the following TOML settings:
    * - Parameter
      - Type
      - Description
-   * - ``Control1``
-     - string
-     - First control mode (``"None"`` or ``"VVar"``)
-   * - ``Control2``
-     - string
-     - Second control mode
-   * - ``Control3``
-     - string
-     - Third control mode
-   * - ``Priority``
-     - string
-     - Control priority (``"Var"`` or ``"Watt"``)
-   * - ``DampCoef``
+   * - ``damp_coef``
      - float
      - Damping coefficient for heavy-ball algorithm
-   * - ``PFlim``
+   * - ``q_limit``
      - float
-     - Power factor limit
-   * - ``uMin``
+     - Reactive power limit
+   * - ``u_min``
      - float
      - Minimum voltage threshold for Volt-Var curve (p.u.)
-   * - ``uMax``
+   * - ``u_max``
      - float
      - Maximum voltage threshold for Volt-Var curve (p.u.)
-   * - ``uDbMin``
+   * - ``u_db_min``
      - float
      - Lower deadband voltage (p.u.)
-   * - ``uDbMax``
+   * - ``u_db_max``
      - float
      - Upper deadband voltage (p.u.)
-   * - ``Model as PVsystem``
-     - bool
-     - If true, models the generator with PVSystem-like behavior
 
 Usage Example
 -------------
@@ -66,14 +52,9 @@ Usage Example
 .. code-block:: toml
 
    ["Generator.gen1"]
-   Control1 = "VVar"
-   Control2 = "None"
-   Control3 = "None"
-   Priority = "Var"
-   DampCoef = 0.8
-   PFlim = 0.9
-   uMin = 0.92
-   uMax = 1.08
-   uDbMin = 0.98
-   uDbMax = 1.02
-   Model as PVsystem = false
+  damp_coef = 0.8
+  q_limit = 1.0
+  u_min = 0.92
+  u_max = 1.08
+  u_db_min = 0.98
+  u_db_max = 1.02

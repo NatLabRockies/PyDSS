@@ -17,7 +17,8 @@ The HELICS interface for PyDSS is built to reduce the complexity of setting up l
 co-simulation scenarios. The user defines publications and subscriptions to exchange data
 with external federates.
 
-A minimal HELICS example is availble in the ``examples`` folder (top directory of the repository). Enabling the HELICS interface requires user to define additional parammeters in the scenario TOML file.
+A minimal HELICS example is available in the ``examples`` folder at the repository root. Enabling
+the HELICS interface requires additional parameters in the scenario TOML file.
 
 
 Interface Overview
