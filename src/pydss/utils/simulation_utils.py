@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 from collections import deque
 import time
@@ -9,6 +8,7 @@ import numpy as np
 
 from pydss.simulation_input_models import SimulationSettingsModel
 from pydss.common import TIME_FORMAT
+
 
 class CircularBufferHelper:
     def __init__(self, window_size):
@@ -29,6 +29,7 @@ class CircularBufferHelper:
 
 class SimulationFilteredTimeRange:
     """Provides filtering in a time range."""
+
     def __init__(self, start, end):
         self._start = time.strptime(start, TIME_FORMAT)
         self._end = time.strptime(end, TIME_FORMAT)
@@ -70,12 +71,20 @@ class SimulationFilteredTimeRange:
         if self._no_filtering:
             return True
 
-        ts = time.struct_time((
-            self._start.tm_year, self._start.tm_mon, self._start.tm_mday, timestamp.hour,
-            timestamp.minute, timestamp.second, self._start.tm_wday, self._start.tm_yday,
-            self._start.tm_isdst
-        ))
-        return ts >= self._start and ts <=self._end
+        ts = time.struct_time(
+            (
+                self._start.tm_year,
+                self._start.tm_mon,
+                self._start.tm_mday,
+                timestamp.hour,
+                timestamp.minute,
+                timestamp.second,
+                self._start.tm_wday,
+                self._start.tm_yday,
+                self._start.tm_isdst,
+            )
+        )
+        return ts >= self._start and ts <= self._end
 
 
 def get_start_time(settings: SimulationSettingsModel):

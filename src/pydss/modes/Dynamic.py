@@ -1,71 +1,83 @@
 from datetime import timedelta
 import math
 
-from loguru import logger 
+from loguru import logger
 
-from pydss.modes.solver_base import solver_base
+from pydss.modes.solver_base import SolverBase
 from pydss.simulation_input_models import ProjectModel
 
 
-class Dynamic(solver_base):
-    def __init__(self, dssInstance, settings: ProjectModel):
-        super().__init__(dssInstance, settings)
-        self.setMode('Dynamic')
-        self._dssInstance.utils.run_command('Set ControlMode={}'.format(settings.control_mode.value))
-        self._dssSolution.Number(1)
-        self._dssSolution.StepSize(self._sStepRes)
-        self._dssSolution.MaxControlIterations(settings.max_control_iterations)
-        self._dssSolution.DblHour(self._Hour + self._Second / 3600.0)
+class Dynamic(SolverBase):
+    def __init__(self, dss_instance, settings: ProjectModel):
+        super().__init__(dss_instance, settings)
+        self.set_mode("Dynamic")
+        self._dss_instance.utils.run_command(
+            "Set ControlMode={}".format(settings.control_mode.value)
+        )
+        self._dss_solution.Number(1)
+        self._dss_solution.StepSize(self._step_resolution)
+        self._dss_solution.MaxControlIterations(settings.max_control_iterations)
+        self._dss_solution.DblHour(self._hour + self._second / 3600.0)
         return
 
-    def setFrequency(self, frequency):
-        self._dssSolution.Frequency(frequency)
+    def set_frequency(self, frequency):
+        self._dss_solution.Frequency(frequency)
         return
 
-    def getFrequency(self):
-        return self._dssSolution.Frequency()
+    def get_frequency(self):
+        return self._dss_solution.Frequency()
 
-    def SimulationSteps(self):
-        Seconds = (self._EndTime - self._StartTime).total_seconds()
-        Steps = math.ceil(Seconds / self._sStepRes)
-        return Steps, self._StartTime, self._EndTime
+    def simulation_steps(self):
+        seconds = (self._end_time - self._start_time).total_seconds()
+        steps = math.ceil(seconds / self._step_resolution)
+        return steps, self._start_time, self._end_time
 
-    def GetOpenDSSTime(self):
-        return self._dssSolution.DblHour()
+    def get_opendss_time(self):
+        return self._dss_solution.DblHour()
 
     def reset(self):
-        self.setMode('Dynamic')
-        self._dssSolution.Hour(self._Hour)
-        self._dssSolution.Seconds(self._Second)
-        self._dssSolution.Number(1)
-        self._dssSolution.StepSize(self._sStepRes)
-        self._dssSolution.MaxControlIterations(self._settings.project.max_control_iterations)
+        self.set_mode("Dynamic")
+        self._dss_solution.Hour(self._hour)
+        self._dss_solution.Seconds(self._second)
+        self._dss_solution.Number(1)
+        self._dss_solution.StepSize(self._step_resolution)
+        self._dss_solution.MaxControlIterations(self._settings.project.max_control_iterations)
         return
 
-    def SolveFor(self, mStartTime, mTimeStep):
-        Hour = int(mStartTime/60)
-        Min = mStartTime % 60
-        self._dssSolution.DblHour(Hour + Min / 60.0)
-        self._dssSolution.Number(mTimeStep)
-        self._dssSolution.Solve()
-        return self._dssSolution.Converged()
+    def solve_for(self, start_time, time_step):
+        hour = int(start_time / 60)
+        minute = start_time % 60
+        self._dss_solution.DblHour(hour + minute / 60.0)
+        self._dss_solution.Number(time_step)
+        self._dss_solution.Solve()
+        return self._dss_solution.Converged()
 
-    def IncStep(self):
-        self._dssSolution.StepSize(self._sStepRes)
-        self._dssSolution.Solve()
-        self._Time = self._Time + timedelta(seconds=self._sStepRes)
-        self._Hour = int(self._dssSolution.DblHour() // 1)
-        self._Second = (self._dssSolution.DblHour() % 1) * 60 * 60
-        logger.debug('OpenDSS time [h] - ' + str(self._dssSolution.DblHour()))
-        logger.debug('Pydss datetime - ' + str(self._Time))
-        return self._dssSolution.Converged()
+    def inc_step(self):
+        self._dss_solution.StepSize(self._step_resolution)
+        self._dss_solution.Solve()
+        self._time = self._time + timedelta(seconds=self._step_resolution)
+        self._hour = int(self._dss_solution.DblHour() // 1)
+        self._second = (self._dss_solution.DblHour() % 1) * 60 * 60
+        logger.debug("OpenDSS time [h] - " + str(self._dss_solution.DblHour()))
+        logger.debug("Pydss datetime - " + str(self._time))
+        return self._dss_solution.Converged()
 
-    def reSolve(self):
-        self._dssSolution.StepSize(0)
-        self._dssSolution.SolveNoControl()
-        return self._dssSolution.Converged()
+    def re_solve(self):
+        self._dss_solution.StepSize(0)
+        self._dss_solution.SolveNoControl()
+        return self._dss_solution.Converged()
 
-    def Solve(self):
-        self._dssSolution.StepSize(0)
-        self._dssSolution.Solve()
-        return self._dssSolution.Converged()
+    def solve(self):
+        self._dss_solution.StepSize(0)
+        self._dss_solution.Solve()
+        return self._dss_solution.Converged()
+
+
+Dynamic.setFrequency = Dynamic.set_frequency
+Dynamic.getFrequency = Dynamic.get_frequency
+Dynamic.SimulationSteps = Dynamic.simulation_steps
+Dynamic.GetOpenDSSTime = Dynamic.get_opendss_time
+Dynamic.SolveFor = Dynamic.solve_for
+Dynamic.IncStep = Dynamic.inc_step
+Dynamic.reSolve = Dynamic.re_solve
+Dynamic.Solve = Dynamic.solve

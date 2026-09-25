@@ -20,7 +20,7 @@ frequency thresholds per the IEEE 1547-2018 standard.
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.PvFrequencyRideThru.PvFrequencyRideThru
+.. py:class:: pydss.py_controllers.controllers.pv_frequency_ride_thru.PvFrequencyRideThru
 
 .. list-table:: PvFrequencyRideThru Settings
    :header-rows: 1

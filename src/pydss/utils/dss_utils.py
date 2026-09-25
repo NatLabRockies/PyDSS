@@ -1,4 +1,3 @@
-
 import re
 
 import opendssdirect as dss
@@ -66,7 +65,7 @@ def get_load_shape_resolution_secs():
         # raise InvalidConfiguration(
         #     f"SInterval for all LoadShapes must be the same: {res}"
         # )
-        
+
     return res[0]
 
 
@@ -145,7 +144,7 @@ def list_element_names_by_class(element_class):
     if element_class is dss.PVsystems:
         class_name = "PVSystem"
     else:
-        class_name = element_class.__name__.split('.')[1]
+        class_name = element_class.__name__.split(".")[1]
         # TODO: confirm that this covers everything.
         if class_name.endswith("s"):
             class_name = class_name[:-1]

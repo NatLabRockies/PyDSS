@@ -15,7 +15,7 @@ generators with grid-support functions.
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.GenController.GenController
+.. py:class:: pydss.py_controllers.controllers.gen_controller.GenController
 
 The controller reads component-specific settings from its TOML section. The primary settings are
 listed below using the current configuration names:

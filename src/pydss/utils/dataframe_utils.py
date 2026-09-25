@@ -1,4 +1,3 @@
-
 import shutil
 import gzip
 import os
@@ -9,8 +8,15 @@ import pandas as pd
 from pydss.exceptions import InvalidParameter
 
 
-def read_dataframe(filename, index_col=None, columns=None, parse_dates=False,
-                   remove_unnamed=True, strip_column_units=False, **kwargs):
+def read_dataframe(
+    filename,
+    index_col=None,
+    columns=None,
+    parse_dates=False,
+    remove_unnamed=True,
+    strip_column_units=False,
+    **kwargs,
+):
     """Convert filename to a dataframe. Supports .csv, .json, .h5.
     Handles compressed files.
 
@@ -47,14 +53,13 @@ def read_dataframe(filename, index_col=None, columns=None, parse_dates=False,
     ext = os.path.splitext(filename)
     if ext[1] == ".gz":
         ext = os.path.splitext(ext[0])[1]
-        open_func = gzip.open
     else:
         ext = ext[1]
-        open_func = open
 
     if ext == ".csv":
-        df = pd.read_csv(filename, index_col=index_col, usecols=columns,
-                         parse_dates=parse_dates, **kwargs)
+        df = pd.read_csv(
+            filename, index_col=index_col, usecols=columns, parse_dates=parse_dates, **kwargs
+        )
     elif ext == ".json":
         df = pd.read_json(filename, **kwargs)
     elif ext == ".h5":
@@ -85,9 +90,8 @@ def read_dataframe(filename, index_col=None, columns=None, parse_dates=False,
 
     return df
 
-def write_dataframe(df, file_path, compress=False, keep_original=False,
-                    **kwargs):
 
+def write_dataframe(df, file_path, compress=False, keep_original=False, **kwargs):
     """Write the dataframe to a file with in a format matching the extension.
 
     Note that the h5 format does not support row indices.
@@ -111,8 +115,9 @@ def write_dataframe(df, file_path, compress=False, keep_original=False,
     InvalidParameter if the DataFrame index is set.
 
     """
-    if not isinstance(df.index, pd.RangeIndex) and not \
-            isinstance(df.index, pd.core.indexes.base.Index):
+    if not isinstance(df.index, pd.RangeIndex) and not isinstance(
+        df.index, pd.core.indexes.base.Index
+    ):
         raise InvalidParameter("DataFrame index must not be set")
 
     ext = os.path.splitext(file_path)[1]
@@ -127,9 +132,9 @@ def write_dataframe(df, file_path, compress=False, keep_original=False,
             complevel = 9
         else:
             complevel = 0
-        kwargs["complevel"] =  complevel
-        kwargs["mode"]="w"
-        kwargs["key"]= "data"
+        kwargs["complevel"] = complevel
+        kwargs["mode"] = "w"
+        kwargs["key"] = "data"
         df.to_hdf(file_path, **kwargs)
     elif ext == ".json":
         df.to_json(file_path, **kwargs)

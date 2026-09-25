@@ -5,8 +5,10 @@ import time
 
 from loguru import logger
 
+
 def timed_info(func):
     """Decorator to measure and logger.info a function's execution time."""
+
     @functools.wraps(func)
     def timed_(*args, **kwargs):
         return _timed(func, logger.info, *args, **kwargs)
@@ -16,6 +18,7 @@ def timed_info(func):
 
 def timed_debug(func):
     """Decorator to measure and logger.debug a function's execution time."""
+
     @functools.wraps(func)
     def timed_(*args, **kwargs):
         return _timed(func, logger.debug, *args, **kwargs)
@@ -27,8 +30,7 @@ def _timed(func, log_func, *args, **kwargs):
     start = time.time()
     result = func(*args, **kwargs)
     total = time.time() - start
-    log_func("execution-time=%s func=%s", get_time_duration_string(total),
-             func.__name__)
+    log_func("execution-time=%s func=%s", get_time_duration_string(total), func.__name__)
     return result
 
 
@@ -36,9 +38,9 @@ def get_time_duration_string(seconds):
     """Returns a string with the time converted to reasonable units."""
     if seconds >= 1:
         val = "{:.3f} s".format(seconds)
-    elif seconds >= .001:
+    elif seconds >= 0.001:
         val = "{:.3f} ms".format(seconds * 1000)
-    elif seconds >= .000001:
+    elif seconds >= 0.000001:
         val = "{:.3f} us".format(seconds * 1000000)
     elif seconds == 0:
         val = "0 s"
@@ -50,6 +52,7 @@ def get_time_duration_string(seconds):
 
 class TimerStats:
     """Tracks timing stats for one code block."""
+
     def __init__(self, name):
         self._name = name
         self._count = 0
@@ -99,6 +102,7 @@ class TimerStats:
 
 class Timer:
     """Times a code block."""
+
     def __init__(self, timer_stats, name):
         self._start = None
         self._timer_stat = timer_stats.get_stat(name)
@@ -110,9 +114,9 @@ class Timer:
         self._timer_stat.update(time.perf_counter() - self._start)
 
 
-
 class TimerStatsCollector:
     """Collects statistics for timed code segments."""
+
     def __init__(self):
         self._stats = {}
 
@@ -177,9 +181,11 @@ def track_timing(timer_stats):
     timer_stats : TimerStatsCollector
 
     """
+
     def wrap(func):
         def timed_(*args, **kwargs):
             return _timed_func(timer_stats, func, *args, **kwargs)
+
         return timed_
 
     return wrap

@@ -1,7 +1,7 @@
-pydss.api.src.app.Tester
+pydss.api.src.app.tester
 ========================
 
-.. automodule:: pydss.api.src.app.Tester
+.. automodule:: pydss.api.src.app.tester
 
    
    .. rubric:: Functions

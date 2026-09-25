@@ -1,4 +1,3 @@
-
 from typing import Annotated, Dict
 from datetime import timedelta
 import math
@@ -10,38 +9,51 @@ from loguru import logger
 
 from pydss.reports.reports import ReportBase
 
+
 class FeederLossesMetricsModel(BaseModel):
     """Data model for metrics describing feeder losses"""
-    model_config = ConfigDict(title="FeederLossesMetricsModel", str_strip_whitespace=True, validate_assignment=True, validate_default=True, extra="forbid", use_enum_values=False)
+
+    model_config = ConfigDict(
+        title="FeederLossesMetricsModel",
+        str_strip_whitespace=True,
+        validate_assignment=True,
+        validate_default=True,
+        extra="forbid",
+        use_enum_values=False,
+    )
 
     total_losses_kwh: Annotated[
         float,
         Field(
-            None, 
+            None,
             title="total_losses_kwh",
             description="Total losses in the circuit",
-        )]
-    line_losses_kwh:  Annotated[
+        ),
+    ]
+    line_losses_kwh: Annotated[
         float,
         Field(
-            None, 
+            None,
             title="line_losses_kwh",
             description="Total line losses",
-        )]
-    transformer_losses_kwh:  Annotated[
+        ),
+    ]
+    transformer_losses_kwh: Annotated[
         float,
         Field(
-            None, 
+            None,
             title="transformer_losses_kwh",
             description="Total transformer losses",
-        )]
-    total_load_demand_kwh:  Annotated[
+        ),
+    ]
+    total_load_demand_kwh: Annotated[
         float,
         Field(
-            None, 
+            None,
             title="total_load_demand_kwh",
             description="Total power output of loads",
-        )]
+        ),
+    ]
 
 
 class SimulationFeederLossesMetricsModel(BaseModel):
@@ -52,9 +64,9 @@ class SimulationFeederLossesMetricsModel(BaseModel):
 
 
 def compare_feeder_losses(
-        metrics1: SimulationFeederLossesMetricsModel,
-        metrics2: SimulationFeederLossesMetricsModel,
-        rel_tol=0.000001,
+    metrics1: SimulationFeederLossesMetricsModel,
+    metrics2: SimulationFeederLossesMetricsModel,
+    rel_tol=0.000001,
 ):
     """Compares the values of two instances of FeederLossesMetricsModel.
 
@@ -111,10 +123,12 @@ class FeederLossesReport(ReportBase):
 
     def _generate_from_in_memory_metrics(self, scenario, to_kwh):
         total_losses_dict = scenario.get_summed_element_total("Circuits", "LossesSum")
-        total_losses = abs(next(iter(total_losses_dict.values()))) / 1000 # OpenDSS reports total losses in Watts
+        total_losses = (
+            abs(next(iter(total_losses_dict.values()))) / 1000
+        )  # OpenDSS reports total losses in Watts
         line_losses_dict = scenario.get_summed_element_total("Circuits", "LineLossesSum")
         line_losses = abs(next(iter(line_losses_dict.values())))
-        transformer_losses = (total_losses - line_losses)
+        transformer_losses = total_losses - line_losses
         total_load_power_dict = scenario.get_summed_element_total("Loads", "PowersSum")
         total_load_power = 0
         for val in total_load_power_dict.values():
@@ -135,7 +149,7 @@ class FeederLossesReport(ReportBase):
         df_line_losses = scenario.get_full_dataframe("Circuits", "LineLosses")
         assert len(df_line_losses.columns) == 1
         df_loads_powers = scenario.get_full_dataframe("Loads", "Powers")
-        total_losses = abs(df_losses.sum().sum()) / 1000 # OpenDSS reports total losses in Watts
+        total_losses = abs(df_losses.sum().sum()) / 1000  # OpenDSS reports total losses in Watts
         line_losses = abs(df_line_losses.sum().sum())
         transformer_losses = total_losses - line_losses
         return FeederLossesMetricsModel(
@@ -160,7 +174,7 @@ class FeederLossesReport(ReportBase):
                     {
                         "property": "LineLosses",
                         "store_values_type": "all",
-                    }
+                    },
                 ],
                 "Loads": [
                     {
@@ -168,7 +182,7 @@ class FeederLossesReport(ReportBase):
                         "store_values_type": "all",
                         "data_conversion": "abs_sum",
                     },
-                ]
+                ],
             }
 
         return {
@@ -182,7 +196,7 @@ class FeederLossesReport(ReportBase):
                     "property": "LineLosses",
                     "store_values_type": "sum",
                     "sum_elements": True,
-                }
+                },
             ],
             "Loads": [
                 {
@@ -191,7 +205,7 @@ class FeederLossesReport(ReportBase):
                     "sum_elements": True,
                     "data_conversion": "abs_sum",
                 },
-            ]
+            ],
         }
 
     @staticmethod

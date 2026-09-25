@@ -1,4 +1,3 @@
-
 import datetime
 import os
 import re
@@ -10,10 +9,10 @@ import pytest
 
 from pydss.common import PROJECT_TAR, PROJECT_ZIP
 from pydss.exceptions import InvalidParameter
-from pydss.pydss_fs_interface import PROJECT_DIRECTORIES, SCENARIOS, STORE_FILENAME
+from pydss.pydss_fs_interface import SCENARIOS
 from pydss.pydss_project import PyDssProject, PyDssScenario, DATA_FORMAT_VERSION
 from pydss.pydss_results import PyDssResults, PyDssScenarioResults
-from tests.common import RUN_PROJECT_PATH, SCENARIO_NAME, cleanup_project
+from tests.common import RUN_PROJECT_PATH
 from pydss.common import SIMULATION_SETTINGS_FILENAME
 
 
@@ -104,13 +103,13 @@ def run_test_project_by_property(tar_project, zip_project):
         zip_project=zip_project,
         simulation_file=SIMULATION_SETTINGS_FILENAME,
     )
-    
+
     results = PyDssResults(RUN_PROJECT_PATH)
     assert len(results.scenarios) == 1
     assert results._hdf_store.attrs["version"] == DATA_FORMAT_VERSION
     scenario = results.scenarios[0]
     print(scenario)
-    
+
     assert isinstance(scenario, PyDssScenarioResults)
     elem_classes = scenario.list_element_classes()
     expected_elem_classes = list(EXPECTED_ELEM_CLASSES_PROPERTIES.keys())
@@ -140,12 +139,16 @@ def run_test_project_by_property(tar_project, zip_project):
     step = datetime.timedelta(seconds=project.simulation_config.project.step_resolution_sec)
     assert df.index[1] - df.index[0] == step
 
-    df = scenario.get_dataframe("Lines", "CurrentsMagAng", "Line.sw0", phase_terminal="A1", mag_ang="mag")
+    df = scenario.get_dataframe(
+        "Lines", "CurrentsMagAng", "Line.sw0", phase_terminal="A1", mag_ang="mag"
+    )
     assert isinstance(df, pd.DataFrame)
     assert len(df) == 96
     assert len(df.columns) == 1
 
-    df = scenario.get_dataframe("Lines", "CurrentsMagAng", "Line.sw0", phase_terminal=None, mag_ang="ang")
+    df = scenario.get_dataframe(
+        "Lines", "CurrentsMagAng", "Line.sw0", phase_terminal=None, mag_ang="ang"
+    )
     assert isinstance(df, pd.DataFrame)
     assert len(df.columns) == 2
     assert len(df) == 96
@@ -176,4 +179,4 @@ def run_test_project_by_property(tar_project, zip_project):
     df = scenario.read_element_info_file("PVSystems")
     assert isinstance(df, pd.DataFrame)
 
-    cap_changes = scenario.read_capacitor_changes()
+    scenario.read_capacitor_changes()

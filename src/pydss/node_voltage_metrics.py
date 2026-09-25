@@ -8,8 +8,16 @@ from pydantic import ConfigDict
 
 from pydss.utils.simulation_utils import CircularBufferHelper
 
+
 class VoltageMetricsBaseModel(BaseModel):
-    model_config = ConfigDict(title="VoltageMetricsBaseModel", str_strip_whitespace=True, validate_assignment=True, validate_default=True, extra="forbid", use_enum_values=False)
+    model_config = ConfigDict(
+        title="VoltageMetricsBaseModel",
+        str_strip_whitespace=True,
+        validate_assignment=True,
+        validate_default=True,
+        extra="forbid",
+        use_enum_values=False,
+    )
 
 
 class VoltageMetric1(VoltageMetricsBaseModel):
@@ -19,14 +27,16 @@ class VoltageMetric1(VoltageMetricsBaseModel):
             None,
             title="time_points",
             description="time points that contain voltages between ANSI A and ANSI B thresholds",
-        )]
+        ),
+    ]
     duration: Annotated[
         timedelta,
         Field(
             None,
             title="duration",
             description="amount of time where metric 1 existed (len(time_points) * resolution)",
-        )]
+        ),
+    ]
 
 
 class VoltageMetric2(VoltageMetricsBaseModel):
@@ -35,13 +45,15 @@ class VoltageMetric2(VoltageMetricsBaseModel):
         Field(
             title="duration",
             description="amount of time where a node experienced ANSI A violations",
-        )]
+        ),
+    ]
     duration_percentage: Annotated[
         float,
         Field(
             title="duration_percentage",
             description="percentage of overall time",
-        )]
+        ),
+    ]
 
 
 class VoltageMetric3(VoltageMetricsBaseModel):
@@ -50,13 +62,15 @@ class VoltageMetric3(VoltageMetricsBaseModel):
         Field(
             title="time_points",
             description="time points where moving average voltages violated ANSI A thresholds",
-        )]
-    duration:Annotated[
+        ),
+    ]
+    duration: Annotated[
         timedelta,
         Field(
             title="duration",
             description="amount of time where metric 3 existed (len(time_points) * resolution)",
-        )]
+        ),
+    ]
 
 
 class VoltageMetric4(VoltageMetricsBaseModel):
@@ -66,7 +80,8 @@ class VoltageMetric4(VoltageMetricsBaseModel):
             title="percent_node_ansi_a_violations",
             description="percent of nodes with ANSI A violations at time points. Excludes time "
             "points with no violations. Inner list is [timestamp, percent].",
-        )]
+        ),
+    ]
 
 
 class VoltageMetric5(VoltageMetricsBaseModel):
@@ -75,13 +90,15 @@ class VoltageMetric5(VoltageMetricsBaseModel):
         Field(
             title="min_voltage_by_node",
             description="Mapping of node name to minimum voltage",
-        )]
+        ),
+    ]
     max_voltages: Annotated[
         Dict,
         Field(
             title="max_voltage_by_node",
             description="Mapping of node name to maximum voltage",
-        )]
+        ),
+    ]
 
 
 class VoltageMetric6(VoltageMetricsBaseModel):
@@ -90,19 +107,22 @@ class VoltageMetric6(VoltageMetricsBaseModel):
         Field(
             title="num_time_points",
             description="number of time points that violate ANSI B thresholds",
-        )]
+        ),
+    ]
     percent_time_points: Annotated[
         float,
         Field(
             title="percent_time_points",
             description="percentage of time points that violate ANSI B thresholds",
-        )]
+        ),
+    ]
     duration: Annotated[
         timedelta,
         Field(
             title="duration",
             description="amount of time where metric 6 existed (len(num_time_points) * resolution)",
-        )]
+        ),
+    ]
 
 
 class VoltageMetricsSummaryModel(VoltageMetricsBaseModel):
@@ -111,73 +131,85 @@ class VoltageMetricsSummaryModel(VoltageMetricsBaseModel):
         Field(
             title="voltage_duration_between_ansi_a_and_b_minutes",
             description="time in minutes that contain voltages between ANSI A and ANSI B thresholds",
-        )]
+        ),
+    ]
     max_per_node_voltage_duration_outside_ansi_a_minutes: Annotated[
         float,
-            Field(
+        Field(
             title="max_per_node_voltage_duration_outside_ansi_a_minutes",
             description="maximum time in minutes that a node was outside ANSI A thresholds",
-        )]
+        ),
+    ]
     moving_average_voltage_duration_outside_ansi_a_minutes: Annotated[
         float,
         Field(
             title="moving_average_voltage_duration_outside_ansi_a_minutes",
             description="time in minutes the moving average voltage was outside ANSI A",
-        )]
+        ),
+    ]
     moving_window_minutes: Annotated[
         int,
         Field(
             title="moving_window_minutes",
             description="window size in minutes for moving average metrics",
-        )]
+        ),
+    ]
     max_voltage: Annotated[
         float,
         Field(
             title="max_voltage",
             description="maximum voltage seen on any node",
-        )]
+        ),
+    ]
     min_voltage: Annotated[
         float,
         Field(
             title="min_voltage",
             description="minimum voltage seen on any node",
-        )]
+        ),
+    ]
     num_nodes_always_inside_ansi_a: Annotated[
         int,
-            Field(
+        Field(
             title="num_nodes_always_inside_ansi_a",
             description="number of nodes always inside ANSI A thresholds",
-        )]
+        ),
+    ]
     num_nodes_any_outside_ansi_a_always_inside_ansi_b: Annotated[
         int,
         Field(
             title="num_nodes_any_outside_ansi_a_always_inside_ansi_b",
             description="number of nodes with some ANSI A violations but no ANSI B violations",
-        )]
+        ),
+    ]
     num_nodes_any_outside_ansi_b: Annotated[
         int,
         Field(
             title="num_nodes_always_outside_ansi_b",
             description="number of nodes with some ANSI B violations",
-        )]
+        ),
+    ]
     num_time_points_with_ansi_b_violations: Annotated[
         int,
         Field(
             title="num_time_points_with_ansi_b_violations",
             description="number of time points with ANSI B violations",
-        )]
+        ),
+    ]
     total_num_time_points: Annotated[
         int,
         Field(
             title="total_num_time_points",
             description="number of time points in the simulation",
-        )]
+        ),
+    ]
     total_simulation_duration: Annotated[
         timedelta,
         Field(
             title="total_simulation_duration",
             description="total length of time of the simulation",
-        )]
+        ),
+    ]
 
 
 VOLTAGE_METRIC_FIELDS_TO_INCLUDE_AS_PASS_CRITERIA = (
@@ -199,60 +231,70 @@ class VoltageMetricsModel(VoltageMetricsBaseModel):
         Field(
             title="metric_1",
             description="metric 1",
-        )]
+        ),
+    ]
     metric_2: Annotated[
         Dict[str, VoltageMetric2],
         Field(
             title="metric_2",
             description="metric 2",
-        )]
+        ),
+    ]
     metric_3: Annotated[
         VoltageMetric3,
         Field(
             title="metric_3",
             description="metric 3",
-        )]
+        ),
+    ]
     metric_4: Annotated[
         VoltageMetric4,
         Field(
             title="metric_4",
             description="metric 4",
-        )]
+        ),
+    ]
     metric_5: Annotated[
         VoltageMetric5,
         Field(
             title="metric_5",
             description="metric 5",
-        )]
+        ),
+    ]
     metric_6: Annotated[
         VoltageMetric6,
         Field(
             title="metric_6",
             description="metric 6",
-        )]
+        ),
+    ]
     summary: Annotated[
         Union[VoltageMetricsSummaryModel, None],
         Field(
             title="summary",
             description="summary of metrics",
-        )]
+        ),
+    ]
 
 
 class VoltageMetricsByBusTypeModel(VoltageMetricsBaseModel):
     """Metrics separated by bus type"""
+
     primaries: Annotated[
         VoltageMetricsModel,
         Field(
             title="primaries",
             description="metrics for primary buses",
-        )]
+        ),
+    ]
     secondaries: Annotated[
         Union[VoltageMetricsModel, None],
         Field(
             title="secondaries",
             description="metrics for secondary buses",
             default=None,
-        )]
+        ),
+    ]
 
 
 class SimulationVoltageMetricsModel(VoltageMetricsBaseModel):
@@ -261,10 +303,13 @@ class SimulationVoltageMetricsModel(VoltageMetricsBaseModel):
         Field(
             title="scenarios",
             description="voltage metrics by pydss scenario name",
-        )]
+        ),
+    ]
 
 
-def compare_voltage_metrics(metrics1: VoltageMetricsByBusTypeModel, metrics2: VoltageMetricsByBusTypeModel):
+def compare_voltage_metrics(
+    metrics1: VoltageMetricsByBusTypeModel, metrics2: VoltageMetricsByBusTypeModel
+):
     """Compares the values of two instances of VoltageMetricsModel.
 
     Returns
@@ -328,9 +373,19 @@ class NodeVoltageMetricsByType:
         self._num_time_points = 0
 
     @staticmethod
-    def create_summary(metric_1, metric_2, metric_3, metric_5, metric_6, node_names,
-                       num_time_points, resolution, range_a_limits, range_b_limits,
-                       moving_window_minutes):
+    def create_summary(
+        metric_1,
+        metric_2,
+        metric_3,
+        metric_5,
+        metric_6,
+        node_names,
+        num_time_points,
+        resolution,
+        range_a_limits,
+        range_b_limits,
+        moving_window_minutes,
+    ):
         if not node_names:
             # There may not be any secondary nodes.
             return None
@@ -347,15 +402,9 @@ class NodeVoltageMetricsByType:
         for node in node_names:
             min_voltage = metric_5.min_voltages[node]
             max_voltage = metric_5.max_voltages[node]
-            if (
-                min_voltage < range_b_limits.min
-                or max_voltage > range_b_limits.max
-            ):
+            if min_voltage < range_b_limits.min or max_voltage > range_b_limits.max:
                 num_nodes_any_outside_range_b += 1
-            elif (
-                min_voltage < range_a_limits.min
-                or max_voltage > range_a_limits.max
-            ):
+            elif min_voltage < range_a_limits.min or max_voltage > range_a_limits.max:
                 num_nodes_any_outside_range_a_no_b += 1
             else:
                 num_nodes_always_inside_range_a += 1
@@ -400,24 +449,20 @@ class NodeVoltageMetricsByType:
         )
         metric_5 = VoltageMetric5(
             min_voltages={
-                self._node_names[i]: x
-                for i, x in enumerate(self._metric_5_min_violations)
+                self._node_names[i]: x for i, x in enumerate(self._metric_5_min_violations)
             },
             max_voltages={
-                self._node_names[i]: x
-                for i, x in enumerate(self._metric_5_max_violations)
+                self._node_names[i]: x for i, x in enumerate(self._metric_5_max_violations)
             },
         )
         metric_6 = VoltageMetric6(
             num_time_points=self._num_metric_6_time_points_outside_range_b,
             percent_time_points=self._num_metric_6_time_points_outside_range_b
-                / self._num_time_points
-                * 100,
+            / self._num_time_points
+            * 100,
             duration=self._num_metric_6_time_points_outside_range_b * self._resolution,
         )
-        moving_window_minutes = int(
-            (self._window_size * self._resolution).total_seconds() / 60
-        )
+        moving_window_minutes = int((self._window_size * self._resolution).total_seconds() / 60)
 
         metrics = VoltageMetricsModel(
             metric_1=metric_1,
@@ -427,10 +472,18 @@ class NodeVoltageMetricsByType:
             metric_5=metric_5,
             metric_6=metric_6,
             summary=self.create_summary(
-                metric_1, metric_2, metric_3, metric_5, metric_6, self._node_names,
-                self._num_time_points, self._resolution, self._range_a_limits, self._range_b_limits,
+                metric_1,
+                metric_2,
+                metric_3,
+                metric_5,
+                metric_6,
+                self._node_names,
+                self._num_time_points,
+                self._resolution,
+                self._range_a_limits,
+                self._range_b_limits,
                 moving_window_minutes,
-            )
+            ),
         )
 
         if not store_per_element_data:
@@ -449,7 +502,9 @@ class NodeVoltageMetricsByType:
     def update(self, time_step, voltages):
         cur_time = self._start_time + self._resolution * time_step
         if self._bufs is None:
-            self._bufs = [CircularBufferHelper(self._window_size) for _ in range(len(self._node_names))]
+            self._bufs = [
+                CircularBufferHelper(self._window_size) for _ in range(len(self._node_names))
+            ]
             self._metric_2_violation_counts = [0] * len(self._node_names)
             self._metric_5_min_violations = [None] * len(self._node_names)
             self._metric_5_max_violations = [None] * len(self._node_names)

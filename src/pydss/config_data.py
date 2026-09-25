@@ -9,6 +9,7 @@ import pandas as pd
 from pydss.exceptions import InvalidParameter
 from pydss.utils.utils import dump_data
 
+
 def convert_config_data_to_toml(filename, name=None):
     """Converts an Excel config file to TOML.
 
@@ -41,7 +42,12 @@ def _get_config_type(basename):
 
 
 def _convert_controller(filename, name_field):
-    df = pd.read_excel(filename, skiprows=[0,])
+    df = pd.read_excel(
+        filename,
+        skiprows=[
+            0,
+        ],
+    )
     controllers = df.to_dict(orient="records")
     data = {}
     for controller in controllers:
@@ -66,14 +72,22 @@ def _convert_storage_controller(filename):
 def _convert_xfmr_controller(filename):
     return _convert_controller(filename, "Controlled XFMR")
 
+
 def _convert_motorstall(filename):
     return _convert_controller(filename, "Controlled Motor")
 
-def _convert_PvVoltageRideThru(filename):
+
+def _convert_pv_voltage_ride_thru(filename):
     return _convert_controller(filename, "Controlled PV")
 
+
 def _convert_exports(filename, name_field):
-    df = pd.read_excel(filename, skiprows=[0,])
+    df = pd.read_excel(
+        filename,
+        skiprows=[
+            0,
+        ],
+    )
     exports = {}
     for export in df.to_dict(orient="records"):
         cls = export.pop(name_field)
@@ -99,7 +113,12 @@ def _convert_export_by_element(filename):
 
 
 def _convert_plot_config(filename):
-    df = pd.read_excel(filename, skiprows=[0,])
+    df = pd.read_excel(
+        filename,
+        skiprows=[
+            0,
+        ],
+    )
     data = {}
     for item in df.to_dict(orient="records"):
         if "Filename" in item:
@@ -132,7 +151,7 @@ _CONFIG_TYPES = {
         "convert": _convert_motorstall,
     },
     "PvVoltageRideThru": {
-        "convert": _convert_PvVoltageRideThru,
+        "convert": _convert_pv_voltage_ride_thru,
     },
     "xfmrController": {
         "convert": _convert_xfmr_controller,
@@ -144,9 +163,9 @@ _CONFIG_TYPES = {
         "convert": _convert_export_by_element,
     },
     # TODO: this needs customization
-    #"GIS overlay": {
+    # "GIS overlay": {
     #    "convert": _convert_plot_config,
-    #},
+    # },
     "Histogram": {
         "convert": _convert_plot_config,
     },

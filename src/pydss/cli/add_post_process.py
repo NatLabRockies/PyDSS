@@ -1,8 +1,5 @@
 """CLI to create a new pydss project"""
 
-
-import typer
-
 from pydss.pydss_project import PyDssProject
 
 

@@ -1,12 +1,12 @@
-pydss.dssElement
+pydss.dss_element
 ================
 
-.. automodule:: pydss.dssElement
+.. automodule:: pydss.dss_element
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      dssElement
+      DssElement
    

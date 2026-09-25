@@ -1,10 +1,7 @@
 import os
 
-import pytest
 
 from pydss.pydss_project import PyDssProject
-
-from tests.common import cleanup_project
 
 
 RUN_PROJECT_PATH = os.path.join("tests", "data", "project")

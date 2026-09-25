@@ -11,11 +11,17 @@ edit_scenario = typer.Typer(help="Edit scenario in a pydss project.")
 
 @edit_scenario.callback()
 def main(
-    project_path: str = typer.Option(..., "-p", "--project-path",
-    help="project path",
+    project_path: str = typer.Option(
+        ...,
+        "-p",
+        "--project-path",
+        help="project path",
     ),
-    scenario: str = typer.Option(..., "-s", "--scenario",
-    help="Project name (should exist)",
+    scenario: str = typer.Option(
+        ...,
+        "-s",
+        "--scenario",
+        help="Project name (should exist)",
     ),
 ):
     """Edit scenario in a pydss project."""
@@ -24,14 +30,23 @@ def main(
 @edit_scenario.command()
 def update_controllers(
     ctx: typer.Context,
-    controller: str = typer.Option(..., "-c", "--controller",
-    help="controller name",
+    controller: str = typer.Option(
+        ...,
+        "-c",
+        "--controller",
+        help="controller name",
     ),
-    dss_file: str = typer.Option(..., "-f", "--dss-file",
-    help="OpenDSS file containing elements",
+    dss_file: str = typer.Option(
+        ...,
+        "-f",
+        "--dss-file",
+        help="OpenDSS file containing elements",
     ),
-    controller_type: str = typer.Option(..., "-t", "--controller-type",
-    help="controller type",
+    controller_type: str = typer.Option(
+        ...,
+        "-t",
+        "--controller-type",
+        help="controller type",
     ),
 ):
     """Update a scenario's controllers from an OpenDSS file."""
@@ -44,5 +59,5 @@ def update_controllers(
         scenario=scenario,
         controller_type=controller_type,
         controller=controller,
-        dss_file=dss_file
+        dss_file=dss_file,
     )

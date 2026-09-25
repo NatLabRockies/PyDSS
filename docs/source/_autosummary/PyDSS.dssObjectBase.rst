@@ -1,12 +1,12 @@
-pydss.dssObjectBase
+pydss.dss_object_base
 ===================
 
-.. automodule:: pydss.dssObjectBase
+.. automodule:: pydss.dss_object_base
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      dssObjectBase
+      DssObjectBase
    

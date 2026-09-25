@@ -16,7 +16,7 @@ the controller re-enables the RegControl to allow normal voltage regulation.
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.xfmrController.xfmrController
+.. py:class:: pydss.py_controllers.controllers.xfmr_controller.XfmrController
 
 .. list-table:: xfmrController Settings
    :header-rows: 1

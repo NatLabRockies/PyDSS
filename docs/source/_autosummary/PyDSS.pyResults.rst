@@ -1,14 +1,14 @@
-pydss.pyResults
+pydss.py_results
 ===============
 
-.. automodule:: pydss.pyResults
+.. automodule:: pydss.py_results
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      pyContrReader
-      pyExportReader
-      pySubscriptionReader
+      PyContrReader
+      PyExportReader
+      PySubscriptionReader
    

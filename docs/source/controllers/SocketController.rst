@@ -22,7 +22,7 @@ For detailed co-simulation usage, see :doc:`../Co-simulation Interfaces`.
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.SocketController.SocketController
+.. py:class:: pydss.py_controllers.controllers.socket_controller.SocketController
 
 .. list-table:: SocketController Settings
    :header-rows: 1

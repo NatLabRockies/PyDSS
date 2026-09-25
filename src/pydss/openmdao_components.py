@@ -100,7 +100,7 @@ class OpenDSSCircuitAdapter(CircuitAdapter):
 
     @staticmethod
     def _element_power(element, index: int) -> float:
-        powers = element.GetValue("Powers")
+        powers = element.get_value("Powers")
         values = np.asarray(powers).reshape(-1)
         return float(-np.sum(values[index::2]))
 
@@ -128,7 +128,9 @@ class CircuitExplicitComponent(om.ExplicitComponent):
             adapter.apply_commands(commands)
             if not adapter.solve():
                 raise om.AnalysisError("OpenDSS circuit solve did not converge")
-            measurements = adapter.read_measurements(tuple(spec.name for spec in self._measurement_specs))
+            measurements = adapter.read_measurements(
+                tuple(spec.name for spec in self._measurement_specs)
+            )
         except om.AnalysisError:
             raise
         except Exception as exc:
@@ -163,6 +165,11 @@ class ControllerExplicitComponent(om.ExplicitComponent, ABC):
         for spec in self._output_specs:
             self.add_output(spec.name, shape=spec.shape or None, units=spec.units, val=spec.val)
 
+    @staticmethod
+    def input_value(inputs, name: str) -> float:
+        """Return a scalar input from either a test value or OpenMDAO array."""
+        return float(np.asarray(inputs[name]).reshape(-1)[0])
+
     def compute(self, inputs, outputs) -> None:
         values = self.compute_commands(inputs)
         for spec in self._output_specs:
@@ -176,8 +183,11 @@ class ControllerExplicitComponent(om.ExplicitComponent, ABC):
 
     def output_specs(self) -> tuple[VariableSpec, ...]:
         """Return the circuit commands and diagnostics produced by the controller."""
-        return (VariableSpec("command.active_power"), VariableSpec("command.reactive_power"),
-                VariableSpec("diagnostic.residual"))
+        return (
+            VariableSpec("command.active_power"),
+            VariableSpec("command.reactive_power"),
+            VariableSpec("diagnostic.residual"),
+        )
 
     def command_parameters(self, element_class: str) -> Mapping[str, str]:
         """Return OpenDSS parameter names for this component's command outputs."""

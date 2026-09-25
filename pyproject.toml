@@ -50,6 +50,8 @@ dev = [
     "mock~=5.2.0",
     "pytest~=9.1.0",
     "pytest-cov~=7.1.0",
+    "pre-commit~=4.3.0",
+    "ruff~=0.15.5",
     "setuptools~=75.8.0",
     "sphinx~=7.4.7",
     "sphinx-rtd-theme~=3.1.0",
@@ -72,6 +74,19 @@ pydss = "pydss.cli.pydss:cli"
 [project.urls]
 Homepage = "https://github.com/NatLabRockies/PyDSS"
 Documentation = "https://natlabrockies.github.io/PyDSS/"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = [
+    "docs/build",
+    "examples/**/Exports",
+    "examples/**/Logs",
+    "examples/**/OpenMDAOReports",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "N"]
 
 
 [tool.hatch.build.targets.sdist]

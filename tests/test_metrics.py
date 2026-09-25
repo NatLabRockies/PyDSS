@@ -1,5 +1,3 @@
-
-
 from pathlib import Path
 import tempfile
 import shutil
@@ -15,10 +13,7 @@ from pydss.value_storage import ValueByNumber, ValueByList
 from pydss.export_list_reader import ExportListProperty
 from pydss.metrics import MultiValueTypeMetricBase
 from pydss.dataset_buffer import DatasetBuffer
-from pydss.simulation_input_models import (
-    create_simulation_settings, 
-    load_simulation_settings
-)
+from pydss.simulation_input_models import create_simulation_settings, load_simulation_settings
 from pydss.common import LimitsFilter
 from tests.common import FakeElement
 
@@ -26,7 +21,10 @@ from tests.common import FakeElement
 STORE_FILENAME = os.path.join(tempfile.gettempdir(), "store.h5")
 FLOATS = (1.0, 2.0, 3.0, 4.0, 5.0)
 COMPLEX_NUMS = (
-    complex(1, 2), complex(3, 4), complex(5, 6), complex(7, 8),
+    complex(1, 2),
+    complex(3, 4),
+    complex(5, 6),
+    complex(7, 8),
     complex(9, 10),
 )
 LIST_COMPLEX_NUMS = (
@@ -59,7 +57,6 @@ def simulation_settings():
 
 
 class FakeMetric(MultiValueTypeMetricBase):
-
     def __init__(self, prop, dss_objs, options, values):
         super().__init__(prop, dss_objs, options)
         self._elem_index = 0
@@ -72,7 +69,9 @@ class FakeMetric(MultiValueTypeMetricBase):
             val = ValueByList(obj.FullName, prop.name, self._values[self._val_index], ["", ""])
         else:
             val = ValueByNumber(obj.FullName, prop.name, self._values[self._val_index])
-        logger.debug("elem_index=%s val_index=%s, val=%s", self._elem_index, self._val_index, val.value)
+        logger.debug(
+            "elem_index=%s val_index=%s, val=%s", self._elem_index, self._val_index, val.value
+        )
         self._elem_index += 1
         if self._elem_index == len(self._dss_objs):
             self._elem_index = 0
@@ -106,7 +105,7 @@ def test_metrics_store_all(simulation_settings):
         for column in df.columns:
             for val1, val2 in zip(df[column].values, values):
                 assert val1 == val2
-        assert metric.max_num_bytes() == len(values) * len(OBJS) * 8 
+        assert metric.max_num_bytes() == len(values) * len(OBJS) * 8
 
 
 def test_metrics_store_all_complex_abs(simulation_settings):
@@ -273,7 +272,7 @@ def test_metrics_store_moving_average_with_limits(simulation_settings):
         "limits_filter": LimitsFilter.OUTSIDE,
     }
     values = [float(x) for x in range(1, 101)]
-    expected_values = [x for x in values if x < limits[0] or x > limits[1]]
+    [x for x in values if x < limits[0] or x > limits[1]]
     base_df = pd.DataFrame(values)
     base_series = base_df.iloc[:, 0]
     base_rm = base_series.rolling(window_size).mean()

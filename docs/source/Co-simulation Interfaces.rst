@@ -138,7 +138,7 @@ The Socket Interface
 --------------------
 
 The socket interface is implemented as a PyDSS controller
-(:py:class:`pydss.pyControllers.Controllers.SocketController.SocketController`).
+(:py:class:`pydss.py_controllers.controllers.socket_controller.SocketController`).
 It is well suited for situations where an existing external controller needs to be integrated
 into the simulation environment — for example, integrating a controller for thermostatically
 controlled loads implemented in Modelica or Python. This allows integration without modifying

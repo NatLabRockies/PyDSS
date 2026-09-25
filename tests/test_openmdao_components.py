@@ -21,7 +21,7 @@ class FakeCircuit(CircuitAdapter):
 
     def apply_commands(self, commands):
         self.apply_count += 1
-        self.command = float(commands["command"])
+        self.command = float(commands["command"][0])
 
     def solve(self):
         self.solve_count += 1
@@ -112,10 +112,15 @@ class FakeDssElement:
     def __init__(self):
         self.parameters = {}
 
-    def SetParameter(self, name, value):
+    def set_parameter(self, name, value):
         self.parameters[name] = value
 
-    def GetValue(self, name):
+    def __getattr__(self, name):
+        if name == "SetParameter":
+            return self.set_parameter
+        raise AttributeError(name)
+
+    def get_value(self, name):
         assert name == "Powers"
         return [2.0, 3.0]
 
@@ -125,18 +130,37 @@ class FakeDss:
         active_bus = None
 
         @classmethod
-        def SetActiveBus(cls, name):
+        def set_active_bus(cls, name):
             cls.active_bus = name
+
+        SetActiveBus = set_active_bus
+
+        def __getattr__(self, name):
+            if name == "SetActiveBus":
+                return self.set_active_bus
+            raise AttributeError(name)
 
     class Bus:
         @staticmethod
-        def puVmagAngle():
+        def pu_vmag_angle():
             return [1.02, 0.0]
+
+        def __getattr__(self, name):
+            if name == "puVmagAngle":
+                return self.pu_vmag_angle
+            raise AttributeError(name)
 
     class Solution:
         @staticmethod
-        def Converged():
+        def converged():
             return True
+
+        Converged = converged
+
+        def __getattr__(self, name):
+            if name == "Converged":
+                return self.converged
+            raise AttributeError(name)
 
 
 class FakeSolver:
@@ -144,11 +168,23 @@ class FakeSolver:
         self.solve_count = 0
         self.time_index = 0
 
-    def reSolve(self):
+    def resolve(self):
         self.solve_count += 1
 
-    def IncStep(self):
+    def increment_step(self):
         self.time_index += 1
+
+    IncStep = increment_step
+
+    def __getattr__(self, name):
+        external_names = {"reSolve": self.resolve, "IncStep": self.increment_step}
+        if name in external_names:
+            return external_names[name]
+        raise AttributeError(name)
+
+
+setattr(FakeDss.Bus, "puVmagAngle", FakeDss.Bus.pu_vmag_angle)
+setattr(FakeSolver, "reSolve", FakeSolver.resolve)
 
 
 def test_opendss_circuit_adapter_maps_generic_io():
@@ -171,11 +207,13 @@ def test_opendss_circuit_adapter_maps_generic_io():
     )
 
     adapter.set_time(60.0)
-    adapter.apply_commands({
-        "command_active_power": np.asarray(4.0),
-        "command_reactive_power": np.asarray(-1.0),
-        "command_enabled": np.asarray(1.0),
-    })
+    adapter.apply_commands(
+        {
+            "command_active_power": np.asarray(4.0),
+            "command_reactive_power": np.asarray(-1.0),
+            "command_enabled": np.asarray(1.0),
+        }
+    )
 
     assert element.parameters == {"kW": 4.0, "kvar": -1.0, "enabled": "Yes"}
     assert adapter.solve()
@@ -190,9 +228,7 @@ def test_opendss_circuit_adapter_maps_generic_io():
 def test_open_dss_resolve_does_not_advance_time_index():
     solver = FakeSolver()
     element = FakeDssElement()
-    adapter = OpenDSSCircuitAdapter(
-        FakeDss(), solver, {"PVSystem.pv1": element}, {}, {}
-    )
+    adapter = OpenDSSCircuitAdapter(FakeDss(), solver, {"PVSystem.pv1": element}, {}, {})
 
     adapter.solve()
     adapter.solve()

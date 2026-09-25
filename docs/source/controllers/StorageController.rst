@@ -26,7 +26,7 @@ Available control modes:
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.StorageController.StorageController
+.. py:class:: pydss.py_controllers.controllers.storage_controller.StorageController
 
 The component accepts ``control`` or ``mode`` for dispatch selection. Other settings depend on the
 selected mode. For example, scheduled dispatch uses ``schedule`` and ``schedule_period_sec``;

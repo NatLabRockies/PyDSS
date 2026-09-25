@@ -8,12 +8,17 @@ import sys
 import tarfile
 import zipfile
 
-from loguru import logger
 import pandas as pd
 import toml
 
-from pydss.common import PLOTS_FILENAME, PROJECT_TAR, PROJECT_ZIP, \
-    ControllerType, ExportMode, SIMULATION_SETTINGS_FILENAME
+from pydss.common import (
+    PLOTS_FILENAME,
+    PROJECT_TAR,
+    PROJECT_ZIP,
+    ControllerType,
+    ExportMode,
+    SIMULATION_SETTINGS_FILENAME,
+)
 from pydss.exceptions import InvalidConfiguration
 from pydss.simulation_input_models import SimulationSettingsModel, load_simulation_settings
 from pydss.utils.utils import load_data
@@ -22,6 +27,7 @@ from pydss.utils.utils import load_data
 STORE_FILENAME = "store.h5"
 SCENARIOS = "Scenarios"
 PROJECT_DIRECTORIES = ("DSSfiles", "Exports", "Logs", "Scenarios")
+
 
 class PyDssFileSystemInterface(abc.ABC):
     """Interface to read pydss files on differing filesystem structures."""
@@ -140,7 +146,6 @@ class PyDssFileSystemInterface(abc.ABC):
 
         """
 
-
     @property
     def scenario_names(self):
         """Return the scenario names in the project.
@@ -191,14 +196,13 @@ class PyDssFileSystemInterface(abc.ABC):
 
 class PyDssFileSystemInterface(PyDssFileSystemInterface):
     """Reads pydss files when the project is expanded into directories."""
+
     def __init__(self, project_dir, simulation_file):
         self._project_dir = project_dir
         self._scenarios_dir = os.path.join(self._project_dir, SCENARIOS)
         self._dss_dir = os.path.join(self._project_dir, "DSSfiles")
 
-        self._settings = load_simulation_settings(
-            os.path.join(self._project_dir, simulation_file)
-        )
+        self._settings = load_simulation_settings(os.path.join(self._project_dir, simulation_file))
 
         self._check_scenarios()
 
@@ -217,7 +221,8 @@ class PyDssFileSystemInterface(PyDssFileSystemInterface):
 
     def _list_scenario_names(self):
         scenarios = [
-            x for x in os.listdir(self._scenarios_dir)
+            x
+            for x in os.listdir(self._scenarios_dir)
             if os.path.isdir(os.path.join(self._scenarios_dir, x))
         ]
         scenarios.sort()
@@ -280,6 +285,7 @@ class PyDssFileSystemInterface(PyDssFileSystemInterface):
 
 class PyDssArchiveFileInterfaceBase(PyDssFileSystemInterface):
     """Base class for archive types."""
+
     def __init__(self, project_dir):
         self._project_dir = project_dir
         data = self._load_data(SIMULATION_SETTINGS_FILENAME)
@@ -308,7 +314,7 @@ class PyDssArchiveFileInterfaceBase(PyDssFileSystemInterface):
 
         scenarios = None
         with pd.HDFStore(store_filename, "r") as store:
-            for (path, subgroups, _) in store.walk():
+            for path, subgroups, _ in store.walk():
                 if path == "/Exports":
                     scenarios = subgroups
                     break
@@ -369,6 +375,7 @@ class PyDssArchiveFileInterfaceBase(PyDssFileSystemInterface):
 
 class PyDssTarFileInterface(PyDssArchiveFileInterfaceBase):
     """Reads pydss files when the project is archived in tar file."""
+
     def __init__(self, project_dir):
         tar_path = os.path.join(project_dir, PROJECT_TAR)
         self._tar = tarfile.open(tar_path)
@@ -390,10 +397,9 @@ class PyDssTarFileInterface(PyDssArchiveFileInterfaceBase):
         return pd.read_csv(self._tar.extractfile(os.path.normpath(path).replace("\\", "/")))
 
 
-
-
 class PyDssZipFileInterface(PyDssArchiveFileInterfaceBase):
     """Reads pydss files when the project is archived in zip file."""
+
     def __init__(self, project_dir):
         self._zip = zipfile.ZipFile(os.path.join(project_dir, PROJECT_ZIP))
         super(PyDssZipFileInterface, self).__init__(project_dir)

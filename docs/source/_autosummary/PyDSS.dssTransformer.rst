@@ -1,12 +1,12 @@
-pydss.dssTransformer
+pydss.dss_transformer
 ====================
 
-.. automodule:: pydss.dssTransformer
+.. automodule:: pydss.dss_transformer
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      dssTransformer
+      DssTransformer
    

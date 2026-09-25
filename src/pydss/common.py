@@ -1,13 +1,11 @@
-
 import enum
 import os
 from collections import namedtuple
 
 import pydss
-from pydss.utils.utils import load_data
 
-DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f' # '%Y-%m-%d %H:%M:%S.%f', "%m/%d/%Y %H:%M:%S"
-TIME_FORMAT = '%H:%M:%S'
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"  # '%Y-%m-%d %H:%M:%S.%f', "%m/%d/%Y %H:%M:%S"
+TIME_FORMAT = "%H:%M:%S"
 
 PLOTS_FILENAME = "plots.toml"
 SIMULATION_SETTINGS_FILENAME = "simulation.toml"
@@ -24,6 +22,7 @@ PV_PROFILES_FILENAME = "pv_profiles.json"
 NODE_NAMES_BY_TYPE_FILENAME = "node_names_by_type.json"
 INTEGER_NAN = -9999
 
+
 class ControllerType(enum.Enum):
     FAULT_CONTROLLER = "FaultController"
     GENERATOR_CONTROLLER = "GenController"
@@ -39,17 +38,21 @@ class ControllerType(enum.Enum):
     XMFR_CONTROLLER = "xmfrController"
     DYNAMIC_VOLTAGE_SUPPORT = "DynamicVoltageSupport"
 
+
 CONTROLLER_TYPES = tuple(x.value for x in ControllerType)
 CONFIG_EXT = ".toml"
+
 
 class ExportMode(enum.Enum):
     BY_CLASS = "ExportMode-byClass"
     BY_ELEMENT = "ExportMode-byElement"
-    SUBSCRIPTIONS = 'Subscriptions'
+    SUBSCRIPTIONS = "Subscriptions"
     EXPORTS = "Exports"
+
 
 def filename_from_enum(obj):
     return obj.value + CONFIG_EXT
+
 
 FAULT_CONTROLLER_FILENAME = filename_from_enum(ControllerType.FAULT_CONTROLLER)
 GENERATOR_CONTROLLER_FILENAME = filename_from_enum(ControllerType.GENERATOR_CONTROLLER)
@@ -61,7 +64,9 @@ PV_FREQUENCY_RIDETHROUGH_FILENAME = filename_from_enum(ControllerType.PV_FREQUEN
 PV_VOLTAGE_RIDETHROUGH_FILENAME = filename_from_enum(ControllerType.PV_VOLTAGE_RIDETHROUGH)
 SOCKET_CONTROLLER_FILENAME = filename_from_enum(ControllerType.SOCKET_CONTROLLER)
 STORAGE_CONTROLLER_FILENAME = filename_from_enum(ControllerType.STORAGE_CONTROLLER)
-THERMOSTATIC_LOAD_CONTROLLER_FILENAME = filename_from_enum(ControllerType.THERMOSTATIC_LOAD_CONTROLLER)
+THERMOSTATIC_LOAD_CONTROLLER_FILENAME = filename_from_enum(
+    ControllerType.THERMOSTATIC_LOAD_CONTROLLER
+)
 XMFR_CONTROLLER_FILENAME = filename_from_enum(ControllerType.XMFR_CONTROLLER)
 
 EXPORT_BY_CLASS_FILENAME = filename_from_enum(ExportMode.BY_CLASS)
@@ -161,10 +166,7 @@ DEFAULT_SIMULATION_SETTINGS_FILE = os.path.join(
 )
 
 DEFAULT_PLOT_SETTINGS_FILE = os.path.join(
-    os.path.dirname(getattr(pydss, "__path__")[0]),
-    "pydss",
-    "defaults",
-    PLOTS_FILENAME
+    os.path.dirname(getattr(pydss, "__path__")[0]), "pydss", "defaults", PLOTS_FILENAME
 )
 DEFAULT_EXPORT_BY_CLASS_SETTINGS_FILE = os.path.join(
     os.path.dirname(getattr(pydss, "__path__")[0]),
@@ -194,10 +196,15 @@ DEFAULT_MONTE_CARLO_SETTINGS_FILE = os.path.join(
     "Monte_Carlo",
     MONTE_CARLO_SETTINGS_FILENAME,
 )
+
+
 class ControlMode(enum.Enum):
     """Supported control modes"""
+
     STATIC = "Static"
     TIME = "Time"
+
+
 class DataConversion(enum.Enum):
     NONE = "none"
     ABS = "abs"
@@ -205,14 +212,19 @@ class DataConversion(enum.Enum):
     SUM = "sum"
     SUM_REAL = "sum_real"
     SUM_ABS_REAL = "sum_abs_real"
+
+
 class DatasetPropertyType(enum.Enum):
     PER_TIME_POINT = "per_time_point"  # data is stored at every time point
     FILTERED = "filtered"  # data is stored after being filtered
     METADATA = "metadata"  # metadata for another dataset
     TIME_STEP = "time_step"  # data are time indices, tied to FILTERED
     VALUE = "value"  # Only a single value is written for each element
+
+
 class FileFormat(enum.Enum):
     """Supported file formats"""
+
     CSV = "csv"
     HDF5 = "h5"
 
@@ -224,6 +236,7 @@ class LimitsFilter(enum.Enum):
 
 class LoggingLevel(enum.Enum):
     """Supported logging levels"""
+
     DEBUG = "debug"
     INFO = "info"
     WARNING = "warning"
@@ -232,6 +245,7 @@ class LoggingLevel(enum.Enum):
 
 class ReportGranularity(enum.Enum):
     """Specifies the granularity on which data is collected."""
+
     PER_ELEMENT_PER_TIME_POINT = "per_element_per_time_point"
     PER_ELEMENT_TOTAL = "per_element_total"
     ALL_ELEMENTS_PER_TIME_POINT = "all_elements_per_time_point"
@@ -240,6 +254,7 @@ class ReportGranularity(enum.Enum):
 
 class SimulationType(enum.Enum):
     """Supported simulation types"""
+
     DYNAMIC = "dynamic"
     QSTS = "qsts"
     SNAPSHOT = "snapshot"

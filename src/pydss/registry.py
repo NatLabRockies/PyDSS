@@ -21,21 +21,21 @@ DEFAULT_REGISTRY = {
                 "name": "NO_VRT",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/PvControllers.toml",
+                    "pydss/py_controllers/controllers/settings/PvControllers.toml",
                 ),
             },
             {
                 "name": "cpf",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/PvControllers.toml",
+                    "pydss/py_controllers/controllers/settings/PvControllers.toml",
                 ),
             },
             {
                 "name": "volt-var",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/PvControllers.toml",
+                    "pydss/py_controllers/controllers/settings/PvControllers.toml",
                 ),
             },
         ],
@@ -44,21 +44,21 @@ DEFAULT_REGISTRY = {
                 "name": "NO_VRT_DVS_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
+                    "pydss/py_controllers/controllers/settings/VoltageRideThru.toml",
                 ),
             },
             {
                 "name": "1547_CAT_III_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
+                    "pydss/py_controllers/controllers/settings/VoltageRideThru.toml",
                 ),
             },
             {
                 "name": "1547_CAT_III_DVS_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
+                    "pydss/py_controllers/controllers/settings/VoltageRideThru.toml",
                 ),
             },
         ],
@@ -68,18 +68,19 @@ DEFAULT_REGISTRY = {
         ControllerType.MOTOR_STALL.value: [],
         ControllerType.MOTOR_STALL_SIMPLE.value: [],
         ControllerType.FAULT_CONTROLLER.value: [],
-        ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value:[{
+        ControllerType.DYNAMIC_VOLTAGE_SUPPORT.value: [
+            {
                 "name": "DVS_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
+                    "pydss/py_controllers/controllers/settings/DynamicVoltageSupport.toml",
                 ),
             },
             {
                 "name": "DVS_VRT_test",
                 "filename": os.path.join(
                     os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/DynamicVoltageSupport.toml"
+                    "pydss/py_controllers/controllers/settings/DynamicVoltageSupport.toml",
                 ),
             },
         ],
@@ -276,7 +277,7 @@ class Registry:
         if not self.is_controller_registered(controller_type, name):
             raise InvalidParameter(f"{controller_type} / {name} isn't registered")
         if self._is_default_controller(controller_type, name):
-            raise InvalidParameter(f"Cannot unregister a default controller")
+            raise InvalidParameter("Cannot unregister a default controller")
 
         self._controllers[controller_type].pop(name)
         self._serialize_registry()

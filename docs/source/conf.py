@@ -18,24 +18,25 @@ import re
 
 # -- Project information -----------------------------------------------------
 
+
 def read(*names, **kwargs):
     with io.open(
-        os.path.join(os.path.dirname(__file__), *names),
-        encoding=kwargs.get("encoding", "utf8")
+        os.path.join(os.path.dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")
     ) as fp:
         return fp.read()
 
+
 def find_version(*file_paths):
     version_file = read(*file_paths)
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
-                              version_file, re.M)
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
 
-project = 'PyDSS'
-copyright = '2018-2026, Aadil Latif'
-author = 'Aadil Latif'
+
+project = "PyDSS"
+copyright = "2018-2026, Aadil Latif"
+author = "Aadil Latif"
 
 # The full version, including alpha/beta/rc tags
 release = find_version("../../src/pydss", "__init__.py")
@@ -46,16 +47,31 @@ release = find_version("../../src/pydss", "__init__.py")
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.napoleon', 'sphinx.ext.ifconfig', "sphinx_click", "sphinxcontrib.openapi", 'sphinxcontrib.redoc',
-    'sphinx.ext.autosectionlabel', 'sphinx.ext.githubpages', 'sphinx.ext.todo', "sphinxcontrib.autodoc_pydantic",
-    'sphinx.ext.todo', 'sphinx.ext.autosummary', 'sphinx.ext.extlinks',
-    'sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.doctest',
-    'sphinx.ext.inheritance_diagram', 'sphinx.ext.imgmath', "sphinx_enum_extend",
-    'sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'enum_tools.autoenum',
+    "sphinx.ext.napoleon",
+    "sphinx.ext.ifconfig",
+    "sphinx_click",
+    "sphinxcontrib.openapi",
+    "sphinxcontrib.redoc",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.todo",
+    "sphinxcontrib.autodoc_pydantic",
+    "sphinx.ext.todo",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.imgmath",
+    "sphinx_enum_extend",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "enum_tools.autoenum",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -68,8 +84,8 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'classic'
-html_theme = 'furo'
+# html_theme = 'classic'
+html_theme = "furo"
 
 # html_theme_options = {
 #     'collapse_navigation': False,
@@ -80,16 +96,16 @@ html_theme = 'furo'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 autosectionlabel_prefix_document = True
 
 redoc = [
     {
-        'name': 'Pydss API',
-        'page': 'api',
-        'spec': 'spec/swagger.yml',
-        'embed': True,
+        "name": "Pydss API",
+        "page": "api",
+        "spec": "spec/swagger.yml",
+        "embed": True,
     },
 ]
 

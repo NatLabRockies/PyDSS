@@ -1,7 +1,7 @@
-pydss.modes.QSTS
+pydss.modes.qsts
 ================
 
-.. automodule:: pydss.modes.QSTS
+.. automodule:: pydss.modes.qsts
 
    
    .. rubric:: Classes

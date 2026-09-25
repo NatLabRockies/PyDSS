@@ -12,6 +12,7 @@ from pydss.thermal_metrics import (
 )
 from pydss.utils.utils import load_data
 
+
 class ThermalMetrics(ReportBase):
     """Reports thermal metrics.
 
@@ -112,7 +113,9 @@ class ThermalMetrics(ReportBase):
 
         return scenarios
 
-    def _make_thermal_metrics_model(self, df, window_size, window_size_hours, inst_threshold, mavg_threshold):
+    def _make_thermal_metrics_model(
+        self, df, window_size, window_size_hours, inst_threshold, mavg_threshold
+    ):
         df_mavg = df.rolling(window=window_size).mean()
         max_instantaneous = self._get_max_values(df)
         max_mavg = self._get_max_values(df_mavg)
@@ -122,8 +125,12 @@ class ThermalMetrics(ReportBase):
             max_moving_average_loadings_pct=max_mavg,
             max_moving_average_loading_pct=max(max_mavg.values()),
             window_size_hours=window_size_hours,
-            num_time_points_with_instantaneous_violations=self._get_num_time_points_with_violations(df, inst_threshold),
-            num_time_points_with_moving_average_violations=self._get_num_time_points_with_violations(df_mavg, mavg_threshold),
+            num_time_points_with_instantaneous_violations=self._get_num_time_points_with_violations(
+                df, inst_threshold
+            ),
+            num_time_points_with_moving_average_violations=self._get_num_time_points_with_violations(
+                df_mavg, mavg_threshold
+            ),
             instantaneous_threshold=inst_threshold,
             moving_average_threshold=mavg_threshold,
         )
@@ -177,7 +184,7 @@ class ThermalMetrics(ReportBase):
                     "property": "OverloadsMetricInMemory",
                     "opendss_classes": ["Lines", "Transformers"],
                 }
-             ]
+            ]
         }
 
     @staticmethod

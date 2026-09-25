@@ -15,20 +15,23 @@ from pydss.utils.utils import get_cli_string
 
 # TODO Make command to list scenarios.
 
+
 def export(
     project_path: str,
-    fmt: str = typer.Option("csv", "-f", "--fmt",
-    help="Output file format (csv or h5)."
+    fmt: str = typer.Option("csv", "-f", "--fmt", help="Output file format (csv or h5)."),
+    compress: bool = typer.Option(
+        False,
+        "-c",
+        "--compress",
+        help="Compress output files.",
     ),
-    compress: bool = typer.Option(False, "-c", "--compress",
-    help="Compress output files.",
+    output_dir: str | None = typer.Option(
+        None,
+        "-o",
+        "--output-dir",
+        help="Output directory. Default is project exports directory.",
     ),
-    output_dir: str | None = typer.Option(None, "-o", "--output-dir",
-    help="Output directory. Default is project exports directory.",
-    ),
-    verbose: bool = typer.Option(False, "--verbose",
-    help="Enable verbose log output."
-    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Enable verbose log output."),
 ):
     """Export data from a pydss project."""
     if not os.path.exists(project_path):
@@ -36,10 +39,8 @@ def export(
 
     filename = "pydss_export.log"
     console_level = "INFO"
-    file_level = "INFO"
     if verbose:
         console_level = "DEBUG"
-        file_level = "DEBUG"
 
     logger.level(console_level)
     if filename:

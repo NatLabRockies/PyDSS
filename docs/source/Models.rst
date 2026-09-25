@@ -47,7 +47,7 @@ Simulation input models
 Scenario setup models
 ************************
 
-.. autopydantic_model:: pydss.pyControllers.models.PvControllerModel
+.. autopydantic_model:: pydss.py_controllers.models.PvControllerModel
 
 
 Thermal metrics models

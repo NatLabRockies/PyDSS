@@ -1,6 +1,3 @@
-
-import os
-
 import pytest
 
 from pydss.common import LimitsFilter, StoreValuesType
@@ -14,10 +11,15 @@ LEGACY_FILE = "tests/data/project/Scenarios/scenario1/ExportLists/ExportMode-byC
 
 def test_export_list_reader():
     reader = ExportListReader(EXPORT_LIST_FILE)
-    assert reader.list_element_classes() == \
-        ["Buses", "Circuits", "Lines", "Loads", "PVSystems", "Transformers"]
-    assert reader.list_element_property_names("Buses") == \
-        ["Distance", "puVmagAngle"]
+    assert reader.list_element_classes() == [
+        "Buses",
+        "Circuits",
+        "Lines",
+        "Loads",
+        "PVSystems",
+        "Transformers",
+    ]
+    assert reader.list_element_property_names("Buses") == ["Distance", "puVmagAngle"]
     prop = reader.get_element_properties("Buses", "puVmagAngle")[0]
     assert prop.store_values_type == StoreValuesType.ALL
     assert prop.should_store_name("bus2")
@@ -50,7 +52,7 @@ def test_export_list_reader__name_regexes():
 def test_export_list_reader__name_and_name_regexes():
     data = {"property": "puVmagAngle", "names": ["bus1"], "name_regexes": [r"busFoo\d+"]}
     with pytest.raises(InvalidConfiguration):
-        export_prop = ExportListProperty("Buses", data)
+        ExportListProperty("Buses", data)
 
 
 def test_export_list_reader__limits():
@@ -69,7 +71,9 @@ def test_export_list_reader__limits():
     assert export_prop.limits.max == 1.0
     assert not export_prop.should_store_value(-2.0)
     assert not export_prop.should_store_value(2.0)
-    assert export_prop.should_store_value(-0.5,)
+    assert export_prop.should_store_value(
+        -0.5,
+    )
     assert export_prop.should_store_value(0.5)
 
     with pytest.raises(InvalidConfiguration):
@@ -81,10 +85,15 @@ def test_export_list_reader__limits():
 
 def test_export_list_reader__legacy_file():
     reader = ExportListReader(LEGACY_FILE)
-    assert reader.list_element_classes() == \
-        ["Buses", "Circuits", "Lines", "Loads", "Storages", "Transformers"]
-    assert reader.list_element_property_names("Buses") == \
-        ["Distance", "puVmagAngle"]
+    assert reader.list_element_classes() == [
+        "Buses",
+        "Circuits",
+        "Lines",
+        "Loads",
+        "Storages",
+        "Transformers",
+    ]
+    assert reader.list_element_property_names("Buses") == ["Distance", "puVmagAngle"]
     prop = reader.get_element_properties("Buses", "puVmagAngle")[0]
     assert prop.store_values_type == StoreValuesType.ALL
     assert prop.should_store_name("bus2")

@@ -12,15 +12,17 @@ from pydss.pydss_project import PyDssProject
 from pydss.pydss_results import PyDssResults
 from pydss.utils.utils import get_cli_string
 
+
 def extract(
     project_path: str,
     file_path: str,
-    output_dir: str | None = typer.Option(None, "-o", "--output-dir",
-    help="Output directory. Default is the project path.",
+    output_dir: str | None = typer.Option(
+        None,
+        "-o",
+        "--output-dir",
+        help="Output directory. Default is the project path.",
     ),
-    verbose: bool = typer.Option(False, "--verbose",
-    help="Enable verbose log output."
-    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Enable verbose log output."),
 ):
     """Extract a file from an archived pydss project."""
     if not os.path.exists(project_path):
@@ -29,15 +31,13 @@ def extract(
 
     filename = "pydss_extract.log"
     console_level = "INFO"
-    file_level = "INFO"
     if verbose:
         console_level = "DEBUG"
-        file_level = "DEBUG"
 
     logger.level(console_level)
     if filename:
         logger.add(filename)
-  
+
     logger.info("CLI: [%s]", get_cli_string())
 
     project = PyDssProject.load_project(project_path)
@@ -59,12 +59,13 @@ def extract(
 
 def extract_element_files(
     project_path: str,
-    output_dir: str | None = typer.Option(None, "-o", "--output-dir",
-    help="Output directory. Default is the project path.",
+    output_dir: str | None = typer.Option(
+        None,
+        "-o",
+        "--output-dir",
+        help="Output directory. Default is the project path.",
     ),
-    verbose: bool = typer.Option(False, "--verbose",
-    help="Enable verbose log output."
-    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Enable verbose log output."),
 ):
     """Extract the element info files from an archived pydss project."""
     if not os.path.exists(project_path):
@@ -73,15 +74,13 @@ def extract_element_files(
 
     filename = "pydss_extract.log"
     console_level = "INFO"
-    file_level = "INFO"
     if verbose:
         console_level = "DEBUG"
-        file_level = "DEBUG"
 
     logger.level(console_level)
     if filename:
         logger.add(filename)
-    
+
     logger.info("CLI: [%s]", get_cli_string())
 
     project = PyDssProject.load_project(project_path)

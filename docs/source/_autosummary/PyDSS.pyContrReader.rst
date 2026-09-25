@@ -1,7 +1,7 @@
-pydss.pyContrReader
+pydss.py_contr_reader
 ===================
 
-.. automodule:: pydss.pyContrReader
+.. automodule:: pydss.py_contr_reader
 
    
    .. rubric:: Functions
@@ -14,7 +14,7 @@ pydss.pyContrReader
 
    .. autosummary::
    
-      pyContrReader
-      pyExportReader
-      pySubscriptionReader
+      PyContrReader
+      PyExportReader
+      PySubscriptionReader
    

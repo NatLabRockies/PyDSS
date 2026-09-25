@@ -30,7 +30,7 @@ When the temperature reaches ``Tmax``, the load turns on (cooling). When it drop
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.ThermostaticLoad.ThermostaticLoad
+.. py:class:: pydss.py_controllers.controllers.thermostatic_load.ThermostaticLoad
 
 .. list-table:: ThermostaticLoad Settings
    :header-rows: 1

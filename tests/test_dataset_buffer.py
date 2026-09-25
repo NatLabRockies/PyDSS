@@ -1,4 +1,3 @@
-
 import os
 import tempfile
 
@@ -11,23 +10,25 @@ from pydss.dataset_buffer import DatasetBuffer
 
 def test_dataset_buffer__compute_chunk_count():
     one_year_at_5_minutes = 60 / 5 * 24 * 365
-    assert DatasetBuffer.compute_chunk_count(
-        num_columns=4,
-        max_size=96,
-        dtype=float
-    ) == 96
-    assert DatasetBuffer.compute_chunk_count(
-        num_columns=4,
-        max_size=one_year_at_5_minutes,
-        dtype=float,
-        max_chunk_bytes=128 * 1024,
-    ) == 4096
-    assert DatasetBuffer.compute_chunk_count(
-        num_columns=6,
-        max_size=one_year_at_5_minutes,
-        dtype=complex,
-        max_chunk_bytes=128 * 1024,
-    ) == 1365
+    assert DatasetBuffer.compute_chunk_count(num_columns=4, max_size=96, dtype=float) == 96
+    assert (
+        DatasetBuffer.compute_chunk_count(
+            num_columns=4,
+            max_size=one_year_at_5_minutes,
+            dtype=float,
+            max_chunk_bytes=128 * 1024,
+        )
+        == 4096
+    )
+    assert (
+        DatasetBuffer.compute_chunk_count(
+            num_columns=6,
+            max_size=one_year_at_5_minutes,
+            dtype=complex,
+            max_chunk_bytes=128 * 1024,
+        )
+        == 1365
+    )
 
 
 def test_dataset_buffer__max_num_bytes():
@@ -48,8 +49,9 @@ def test_dataset_buffer__write_value():
         with h5py.File(filename, "w") as store:
             columns = ("1", "2", "3", "4")
             max_size = 5000
-            dataset = DatasetBuffer(store, "data", max_size, float, columns,
-                                    max_chunk_bytes=128 * 1024)
+            dataset = DatasetBuffer(
+                store, "data", max_size, float, columns, max_chunk_bytes=128 * 1024
+            )
             assert dataset.chunk_count == 4096
             for i in range(max_size):
                 data = np.ones(4)

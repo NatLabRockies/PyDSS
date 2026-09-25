@@ -3,15 +3,13 @@ import copy
 import os
 import re
 import sys
-from collections import defaultdict
+from importlib.util import find_spec
 
 import ipywidgets as widgets
 import pandas as pd
 from IPython.display import display
 
-try:
-    import plotly
-except ImportError:
+if find_spec("plotly") is None:
     print("plotly is required to run the DataViewer. Please run 'pip install plotly'")
     sys.exit(1)
 

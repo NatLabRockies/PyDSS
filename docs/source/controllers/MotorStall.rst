@@ -29,7 +29,7 @@ This is because once the motor stops (stalls), its electrical behavior is essent
 Controller model
 ----------------
 
-.. autopydantic_model:: pydss.pyControllers.models.MotorStallSettings
+.. autopydantic_model:: pydss.py_controllers.models.MotorStallSettings
 
 
 

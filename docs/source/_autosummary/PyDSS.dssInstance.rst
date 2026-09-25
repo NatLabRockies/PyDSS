@@ -1,7 +1,7 @@
-pydss.dssInstance
+pydss.dss_instance
 =================
 
-.. automodule:: pydss.dssInstance
+.. automodule:: pydss.dss_instance
 
    
    .. rubric:: Classes

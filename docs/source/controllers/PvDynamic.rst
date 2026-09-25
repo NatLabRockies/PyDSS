@@ -22,7 +22,7 @@ This controller is intended for dynamic simulations (sub-second time steps) and 
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.PvDynamic.PvDynamic
+.. py:class:: pydss.py_controllers.controllers.pv_dynamic.PvDynamic
 
 The controller accepts an extensive set of parameters organized into categories:
 

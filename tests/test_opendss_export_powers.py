@@ -11,10 +11,7 @@ import mock
 from pydss.export_list_reader import ExportListProperty
 from pydss.dataset_buffer import DatasetBuffer
 from pydss.metrics import ExportPowersMetric
-from pydss.simulation_input_models import (
-    create_simulation_settings, 
-    load_simulation_settings
-)
+from pydss.simulation_input_models import create_simulation_settings, load_simulation_settings
 from tests.common import FakeElement
 
 OBJS = [
@@ -52,6 +49,8 @@ def simulation_settings():
 
 
 powers_file_id = 1
+
+
 def mock_run_command():
     filename = f"{EXPORTED_POWERS_BASE_FILENAME}{powers_file_id}.CSV"
     return filename

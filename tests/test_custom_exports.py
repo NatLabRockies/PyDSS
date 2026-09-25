@@ -1,11 +1,9 @@
-
 import math
 import os
 
 
 import numpy as np
 import pandas as pd
-from pandas.testing import assert_series_equal
 
 
 from pydss.utils.utils import load_data
@@ -14,13 +12,12 @@ from pydss.pydss_results import PyDssResults
 from tests.common import (
     run_project_with_custom_exports,
     CUSTOM_EXPORTS_PROJECT_PATH,
-    cleanup_project,
 )
 from pydss.common import SIMULATION_SETTINGS_FILENAME
 
 
 def test_custom_exports(cleanup_project):
-    all_node_voltages = _get_all_node_voltages()
+    _get_all_node_voltages()
 
     PyDssProject.run_project(
         CUSTOM_EXPORTS_PROJECT_PATH,
@@ -39,20 +36,20 @@ def test_custom_exports(cleanup_project):
     df = scenario.get_dataframe("Buses", "DistanceAvg", "t9")
     assert isinstance(df, pd.DataFrame)
     assert len(df) == int(96)
-    #assert len(df) == int(96 / 5)
+    # assert len(df) == int(96 / 5)
     for val in df.iloc[9:, 0]:
         assert round(val, 3) == 0.082
 
     # TODO DT: these values are no longer correct. What should they be?
     # Filtered value on custom function.
-    #df = scenario.get_dataframe("Lines", "LoadingPercent", "Line.sl_22")
-    #assert len(df) == 14
+    # df = scenario.get_dataframe("Lines", "LoadingPercent", "Line.sl_22")
+    # assert len(df) == 14
 
-    #df = scenario.get_dataframe("Lines", "LoadingPercentAvg", "Line.sl_22")
+    # df = scenario.get_dataframe("Lines", "LoadingPercentAvg", "Line.sl_22")
     # This was computed from raw data.
-    #assert len(df) == 9
+    # assert len(df) == 9
     # TODO incorrect after more decimal points
-    #assert round(df.iloc[:, 0].values[8], 2) == 22.79
+    # assert round(df.iloc[:, 0].values[8], 2) == 22.79
 
     # Subset of names. VoltagesMagAng has specific names, CurrentsMagAng has regex
     for name in ("Line.pvl_110", "Line.pvl_111", "Line.pvl_112", "Line.pvl_113"):
@@ -60,18 +57,18 @@ def test_custom_exports(cleanup_project):
         assert "VoltagesMagAng" in properties
         assert "CurrentsMagAng" in properties
 
-    properties  = scenario.list_element_properties("Lines", element_name="Line.SL_14")
+    properties = scenario.list_element_properties("Lines", element_name="Line.SL_14")
     assert "VoltagesMagAng" not in properties
     assert "CurrentsMagAng" not in properties
 
     # TODO: This metric no longer stores voltages in a dataframe.
     # That functionality could be recovered in PyDSS/metrics.py or we could implement this with
     # a different export property.
-    #node_names = scenario.list_element_names("Nodes", "VoltageMetric")
-    #dfs = scenario.get_filtered_dataframes("Nodes", "VoltageMetric")
-    #assert len(node_names) == len(dfs)
-    #assert sorted(node_names) == sorted(dfs.keys())
-    #for i, node_name in enumerate(node_names):
+    # node_names = scenario.list_element_names("Nodes", "VoltageMetric")
+    # dfs = scenario.get_filtered_dataframes("Nodes", "VoltageMetric")
+    # assert len(node_names) == len(dfs)
+    # assert sorted(node_names) == sorted(dfs.keys())
+    # for i, node_name in enumerate(node_names):
     #    column = node_name + "__Voltage"
     #    df = dfs[node_name]
     #    # TODO: Slight rounding errors make this intermittent.
@@ -89,10 +86,7 @@ def test_custom_exports(cleanup_project):
     scenario.get_element_property_value("Circuits", "LossesSum", "Circuit.heco19021")
 
     sums_json = os.path.join(
-        CUSTOM_EXPORTS_PROJECT_PATH,
-        "Exports",
-        "scenario1",
-        "element_property_values.json"
+        CUSTOM_EXPORTS_PROJECT_PATH, "Exports", "scenario1", "element_property_values.json"
     )
     assert os.path.exists(sums_json)
     data = load_data(sums_json)
@@ -133,7 +127,7 @@ def test_export_moving_averages(cleanup_project):
     run_project_with_custom_exports(path, "scenario1", sim_file, data)
     results = PyDssResults(path)
     assert len(results.scenarios) == 1
-    scenario = results.scenarios[0]
+    results.scenarios[0]
 
     # This DataFrame will have moving averages.
     df2 = _get_dataframe(path, "Circuits", "LineLossesAvg", circuit, real_only=True)
@@ -172,7 +166,9 @@ def test_pv_powers_by_customer_type(cleanup_project):
     }
     run_project_with_custom_exports(path, "scenario1", SIMULATION_SETTINGS_FILENAME, data)
     total_sum2 = sum(_get_summed_element_total(path, "PVSystems", "PowersSum").values())
-    assert math.isclose(total_sum1.real, total_sum2.real) and math.isclose(total_sum1.imag, total_sum2.imag)
+    assert math.isclose(total_sum1.real, total_sum2.real) and math.isclose(
+        total_sum1.imag, total_sum2.imag
+    )
 
     # Collect power for PVSystems aggregated by customer type at every time point.
     data = {
@@ -187,7 +183,7 @@ def test_pv_powers_by_customer_type(cleanup_project):
                     {
                         "name": "res",
                         "elements": list(res_pv_systems),
-                    }
+                    },
                 ],
             },
         }
@@ -211,7 +207,7 @@ def test_pv_powers_by_customer_type(cleanup_project):
                     {
                         "name": "res",
                         "elements": list(res_pv_systems),
-                    }
+                    },
                 ],
             },
         }
@@ -278,4 +274,4 @@ def _get_all_node_voltages():
     run_project_with_custom_exports(path, "scenario1", sim_file, data)
     results = PyDssResults(path)
     assert len(results.scenarios) == 1
-    scenario = results.scenarios[0]
+    results.scenarios[0]

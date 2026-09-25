@@ -1,4 +1,5 @@
 """Provides access to pydss result data."""
+
 from collections import defaultdict
 import json
 import os
@@ -9,24 +10,23 @@ import numpy as np
 import pandas as pd
 from loguru import logger
 
-from pydss.common import  DatasetPropertyType
+from pydss.common import DatasetPropertyType
 from pydss.dataset_buffer import DatasetBuffer
 from pydss.element_options import ElementOptions
 from pydss.exceptions import InvalidParameter
 from pydss.pydss_project import PyDssProject, RUN_SIMULATION_FILENAME
 from pydss.reports.reports import Reports, REPORTS_DIR
 from pydss.utils.dataframe_utils import read_dataframe, write_dataframe
-from pydss.utils.utils import dump_data, load_data, make_json_serializable, \
-    make_timestamps
-from pydss.value_storage import ValueStorageBase, get_dataset_property_type, \
-    get_time_step_path
+from pydss.utils.utils import dump_data, load_data, make_json_serializable, make_timestamps
+from pydss.value_storage import ValueStorageBase, get_dataset_property_type, get_time_step_path
+
 
 class PyDssResults:
     """Interface to perform analysis on pydss output data."""
+
     def __init__(
-            self, project_path=None, project=None, in_memory=False,
-            frequency=False, mode=False
-        ):
+        self, project_path=None, project=None, in_memory=False, frequency=False, mode=False
+    ):
         """Constructs PyDssResults object.
 
         Parameters
@@ -80,7 +80,7 @@ class PyDssResults:
             self._hdf_store.flush()
             self._hdf_store.close()
             logger.info("store closed sucessfully")
-    
+
     def generate_reports(self):
         """Generate all reports specified in the configuration.
 
@@ -221,10 +221,10 @@ class PyDssResults:
 
 class PyDssScenarioResults:
     """Contains results for one scenario."""
+
     def __init__(
-            self, name, project_path, store, fs_intf, metadata, options,
-            frequency=False, mode=False
-        ):
+        self, name, project_path, store, fs_intf, metadata, options, frequency=False, mode=False
+    ):
         self._name = name
         self._project_path = project_path
         self._hdf_store = store
@@ -249,9 +249,7 @@ class PyDssScenarioResults:
             return
 
         self._group = self._hdf_store[f"Exports/{name}"]
-        self._elem_classes = [
-            x for x in self._group if isinstance(self._group[x], h5py.Group)
-        ]
+        self._elem_classes = [x for x in self._group if isinstance(self._group[x], h5py.Group)]
 
         self._parse_datasets()
 
@@ -268,8 +266,8 @@ class PyDssScenarioResults:
                         self._elem_values_by_prop[elem_class][prop] = []
                         prop_names = self._elem_values_by_prop
                     elif dataset_property_type in (
-                            DatasetPropertyType.PER_TIME_POINT,
-                            DatasetPropertyType.FILTERED,
+                        DatasetPropertyType.PER_TIME_POINT,
+                        DatasetPropertyType.FILTERED,
                     ):
                         self._elem_data_by_prop[elem_class][prop] = []
                         prop_names = self._elem_data_by_prop
@@ -279,8 +277,9 @@ class PyDssScenarioResults:
                     self._props_by_class[elem_class].append(prop)
                     self._elem_indices_by_prop[elem_class][prop] = {}
                     names = DatasetBuffer.get_names(dataset)
-                    self._column_ranges_per_elem[elem_class][prop] = \
+                    self._column_ranges_per_elem[elem_class][prop] = (
                         DatasetBuffer.get_column_ranges(dataset)
+                    )
                     for i, name in enumerate(names):
                         self._elems_by_class[elem_class].add(name)
                         prop_names[elem_class][prop].append(name)
@@ -377,7 +376,7 @@ class PyDssScenarioResults:
                     if length == 1:
                         val = dataset[:][0][start]
                     else:
-                        val = dataset[:][0][start: start + length]
+                        val = dataset[:][0][start : start + length]
                     if prop not in elem_prop_nums[elem_class]:
                         elem_prop_nums[elem_class][prop] = {}
                     elem_prop_nums[elem_class][prop][name] = val
@@ -418,7 +417,9 @@ class PyDssScenarioResults:
         filename = os.path.join(path, "summed_element_property_values.json")
         dump_data(self._summed_elem_props, filename, default=make_json_serializable)
 
-    def get_dataframe(self, element_class, prop, element_name, real_only=False, abs_val=False, **kwargs):
+    def get_dataframe(
+        self, element_class, prop, element_name, real_only=False, abs_val=False, **kwargs
+    ):
         """Return the dataframe for an element.
 
         Parameters
@@ -450,13 +451,23 @@ class PyDssScenarioResults:
         prop_type = get_dataset_property_type(dataset)
         if prop_type == DatasetPropertyType.PER_TIME_POINT:
             return self._get_elem_prop_dataframe(
-                element_class, prop, element_name, dataset, real_only=real_only,
-                abs_val=abs_val, **kwargs
+                element_class,
+                prop,
+                element_name,
+                dataset,
+                real_only=real_only,
+                abs_val=abs_val,
+                **kwargs,
             )
         elif prop_type == DatasetPropertyType.FILTERED:
             return self._get_filtered_dataframe(
-                element_class, prop, element_name, dataset, real_only=real_only,
-                abs_val=abs_val, **kwargs
+                element_class,
+                prop,
+                element_name,
+                dataset,
+                real_only=real_only,
+                abs_val=abs_val,
+                **kwargs,
             )
         assert False, str(prop_type)
 
@@ -604,7 +615,7 @@ class PyDssScenarioResults:
         length = col_range[1]
         if length == 1:
             return dataset[:][0][start]
-        return dataset[:][0][start: start + length]
+        return dataset[:][0][start : start + length]
 
     def get_option_values(self, element_class, prop, element_name):
         """Return the option values for the element property.
@@ -621,7 +632,9 @@ class PyDssScenarioResults:
         df = self.get_dataframe(element_class, prop, element_name)
         return ValueStorageBase.get_option_values(df, element_name)
 
-    def get_summed_element_dataframe(self, element_class, prop, real_only=False, abs_val=False, group=None):
+    def get_summed_element_dataframe(
+        self, element_class, prop, real_only=False, abs_val=False, group=None
+    ):
         """Return the dataframe for a summed element property.
 
         Parameters
@@ -867,9 +880,7 @@ class PyDssScenarioResults:
                 if basename.replace("Info", "") == filename:
                     actual = _file
             if actual is None:
-                raise InvalidParameter(
-                    f"element info file for {filename} is not stored"
-                )
+                raise InvalidParameter(f"element info file for {filename} is not stored")
             filename = actual
 
         return self._fs_intf.read_csv(filename)
@@ -983,7 +994,9 @@ class PyDssScenarioResults:
             cols.append(ValueStorageBase.DELIMITER.join(fields))
         return cols
 
-    def _get_elem_prop_dataframe(self, elem_class, prop, name, dataset, real_only=False, abs_val=False, **kwargs):
+    def _get_elem_prop_dataframe(
+        self, elem_class, prop, name, dataset, real_only=False, abs_val=False, **kwargs
+    ):
         col_range = self._get_element_column_range(elem_class, prop, name)
         df = DatasetBuffer.to_dataframe(dataset, column_range=col_range)
 
@@ -1000,8 +1013,9 @@ class PyDssScenarioResults:
         col_range = self._column_ranges_per_elem[elem_class][prop][elem_index]
         return col_range
 
-    def _get_filtered_dataframe(self, elem_class, prop, name, dataset,
-                                real_only=False, abs_val=False, **kwargs):
+    def _get_filtered_dataframe(
+        self, elem_class, prop, name, dataset, real_only=False, abs_val=False, **kwargs
+    ):
         indices_df = self._get_indices_df()
         elem_index = self._elem_indices_by_prop[elem_class][prop][name]
         length = dataset.attrs["length"]
@@ -1040,9 +1054,7 @@ class PyDssScenarioResults:
         return self._indices_df
 
     def _make_indices_df(self):
-        data = {
-            "Timestamp": make_timestamps(self._group["Timestamp"][:, 0])
-        }
+        data = {"Timestamp": make_timestamps(self._group["Timestamp"][:, 0])}
         if self._add_frequency:
             data["Frequency"] = self._group["Frequency"][:, 0]
         if self._add_mode:

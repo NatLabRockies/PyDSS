@@ -11,10 +11,7 @@ import mock
 from pydss.export_list_reader import ExportListProperty
 from pydss.dataset_buffer import DatasetBuffer
 from pydss.metrics import ExportLoadingsMetric
-from pydss.simulation_input_models import (
-    create_simulation_settings, 
-    load_simulation_settings
-)
+from pydss.simulation_input_models import create_simulation_settings, load_simulation_settings
 from tests.common import FakeElement
 
 OBJS = [
@@ -48,6 +45,8 @@ def simulation_settings():
 
 
 overloads_file_id = 1
+
+
 def mock_run_command():
     filename = f"{EXPORTED_LOADINGS_BASE_FILENAME}{overloads_file_id}.CSV"
     return filename

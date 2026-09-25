@@ -1,7 +1,7 @@
-pydss.modes.Snapshot
+pydss.modes.snapshot
 ====================
 
-.. automodule:: pydss.modes.Snapshot
+.. automodule:: pydss.modes.snapshot
 
    
    .. rubric:: Classes

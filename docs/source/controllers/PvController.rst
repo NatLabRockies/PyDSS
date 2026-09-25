@@ -59,19 +59,19 @@ it is possible to increase the installed PV capacity and energy yield while prev
 Controller model
 ----------------
 
-.. autopydantic_model:: pydss.pyControllers.models.PvControllerModel
+.. autopydantic_model:: pydss.py_controllers.models.PvControllerModel
 
 
 Controller options
 ------------------
 
-.. autoenum:: pydss.pyControllers.enumerations.SmartControls
+.. autoenum:: pydss.py_controllers.enumerations.SmartControls
 
-.. autoenum:: pydss.pyControllers.enumerations.ControlPriority
+.. autoenum:: pydss.py_controllers.enumerations.ControlPriority
 
-.. autoenum:: pydss.pyControllers.enumerations.VoltWattCurtailmentStrategy
+.. autoenum:: pydss.py_controllers.enumerations.VoltWattCurtailmentStrategy
 
-.. autoenum:: pydss.pyControllers.enumerations.VoltageCalcModes
+.. autoenum:: pydss.py_controllers.enumerations.VoltageCalcModes
 
 
 Usage example

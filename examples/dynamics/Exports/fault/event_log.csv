@@ -1,5 +1,2 @@
 Hour=0, Sec=0.3, ControlIter=1, Element=Fault.thefault, Action=**APPLIED**
-Hour=0, Sec=0.49817, ControlIter=1, Element=Recloser.rec1, Action=OPENED, FAST
-Hour=0, Sec=0.49817, ControlIter=1, Element= , Action=PHASE TARGET
-Hour=0, Sec=0.49817, ControlIter=2, Element=Fault.thefault, Action=**CLEARED**
-Hour=0, Sec=0.99817, ControlIter=1, Element=Recloser.rec1, Action=CLOSED
+Hour=0, Sec=0.3, ControlIter=1, Element=Fault.thefault, Action=**CLEARED**

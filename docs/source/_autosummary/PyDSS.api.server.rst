@@ -14,7 +14,7 @@
    .. autosummary::
    
       find_version
-      getJSONschema
+      get_json_schema
       read
    
    
@@ -25,7 +25,7 @@
 
    .. autosummary::
    
-      pydss_server
+      PydssServer
    
    
 

@@ -19,8 +19,10 @@ from pydss.utils.utils import dump_data, make_json_serializable
 
 REPORTS_DIR = "Reports"
 
+
 class Reports:
     """Generate reports from a pydss project"""
+
     def __init__(self, results):
         self._results = results
         self._report_names = []
@@ -63,8 +65,7 @@ class Reports:
             scenarios = report.scenarios
             active_scenario = settings.project.active_scenario
             if scenarios and active_scenario not in scenarios:
-                logger.debug("report %s is not enabled for scenario %s", name,
-                             active_scenario)
+                logger.debug("report %s is not enabled for scenario %s", name, active_scenario)
                 continue
 
             required = all_reports[name].get_required_exports(settings)
@@ -73,12 +74,15 @@ class Reports:
                     found = False
                     store_type = req_prop.get("store_values_type", "all")
                     for prop in exports.list_element_properties(elem_class):
-                        if prop.name == req_prop["property"] and \
-                                prop.store_values_type.value == store_type:
+                        if (
+                            prop.name == req_prop["property"]
+                            and prop.store_values_type.value == store_type
+                        ):
                             if prop.opendss_classes or req_prop.get("opendss_classes"):
                                 assert prop.sum_elements == req_prop.get("sum_elements", False)
-                                assert prop.data_conversion == \
-                                    req_prop.get("data_conversion", DataConversion.NONE)
+                                assert prop.data_conversion == req_prop.get(
+                                    "data_conversion", DataConversion.NONE
+                                )
                                 prop.append_opendss_classes(req_prop["opendss_classes"])
                             found = True
                     if not found:
@@ -146,8 +150,10 @@ class Reports:
 # in order to be automatically imported. Otherwise, add a direct import in
 # PyDSS/reports/__init__.py.
 
+
 class ReportBase(abc.ABC):
     """Base class for reports"""
+
     def __init__(self, name, results, settings):
         self._results = results
         self._scenarios = results.scenarios

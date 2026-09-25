@@ -16,8 +16,10 @@ convert = typer.Typer(help="Convert input files to new formats.")
 def excel_to_toml(
     filenames: list[str] = typer.Argument(...),
     name: str | None = typer.Option(
-        None, "-n", "--name",
-    help="new filename; default is to use the basename of the XLSX file",
+        None,
+        "-n",
+        "--name",
+        help="new filename; default is to use the basename of the XLSX file",
     ),
 ):
     """Convert an Excel configuration file to TOML."""
@@ -29,8 +31,10 @@ def excel_to_toml(
 def simulation_file(
     filenames: list[str] = typer.Argument(...),
     name: str | None = typer.Option(
-        None, "-n", "--name",
-    help="new filename; default is Exports.toml",
+        None,
+        "-n",
+        "--name",
+        help="new filename; default is Exports.toml",
     ),
 ):
     """Convert a legacy simulation TOML file to the new format."""

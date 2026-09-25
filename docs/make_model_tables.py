@@ -42,8 +42,11 @@ ABSTRACT_TYPES = ("InputsBaseModel", "ReportsBaseModel", "ReportBase")
 
 
 def make_tables(
-    output: Path = typer.Option(Path("build/model_tables"), "-o", "--output",
-    help="output directory",
+    output: Path = typer.Option(
+        Path("build/model_tables"),
+        "-o",
+        "--output",
+        help="output directory",
     ),
 ):
     os.makedirs(output, exist_ok=True)
@@ -126,8 +129,7 @@ def get_ordered_class_names():
 
     items = inspect.getmembers(
         simulation_input_models,
-        lambda x: inspect.isclass(x)
-        and issubclass(x, simulation_input_models.InputsBaseModel),
+        lambda x: inspect.isclass(x) and issubclass(x, simulation_input_models.InputsBaseModel),
     )
     classes = {x[0]: x[1] for x in items}
     class_names = set(classes.keys())
@@ -184,7 +186,7 @@ def parse_property_types(ordered_names, classes):
                     definition = match.group(1)
                     property_types[name][title] = definition
                 else:
-                    print(f"WARNING: Possible bug: need handling of %s", vals["allOf"])
+                    print("WARNING: Possible bug: need handling of %s", vals["allOf"])
     return property_types
 
 
