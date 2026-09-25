@@ -341,8 +341,8 @@ class PyDssProject:
     def list_scenario_names(self):
         return [x.name for x in self.scenarios]
 
-    def run(self, logging_configured=True, tar_project=False, zip_project=False, dry_run=False):
-        """Run all scenarios in the project."""
+    def run(self, logging_configured=True, tar_project=False, zip_project=False, dry_run=False, scenario_names=None):
+        """Run all project scenarios, or an explicit selected subset."""
         if isinstance(self._fs_intf, PyDssArchiveFileInterfaceBase):
             raise InvalidConfiguration("cannot run from an archived project")
         if tar_project and zip_project:
@@ -376,11 +376,20 @@ class PyDssProject:
         if os.path.exists(store_filename):
             os.remove(store_filename)
 
+        if scenario_names is None:
+            scenarios = self._scenarios
+        else:
+            requested = set(scenario_names)
+            scenarios = [scenario for scenario in self._scenarios if scenario.name in requested]
+            if len(scenarios) != len(requested):
+                missing = requested.difference(scenario.name for scenario in scenarios)
+                raise InvalidParameter(f"invalid scenario names: {sorted(missing)}")
+
         try:
             # This ensures that all datasets are flushed and closed after each
             # scenario. If there is an unexpected crash in a later scenario then
             # the file will still be valid for completed scenarios.
-            for scenario in self._scenarios:
+            for scenario in scenarios:
                 with h5py.File(store_filename, mode="a", driver=driver) as hdf_store:
                     self._hdf_store = hdf_store
                     self._hdf_store.attrs["version"] = DATA_FORMAT_VERSION

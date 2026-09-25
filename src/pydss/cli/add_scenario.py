@@ -1,10 +1,10 @@
 from pathlib import Path
-import toml
 import typer
 
 from pydss.simulation_input_models import MappedControllers
 from pydss.pydss_project import PyDssScenario
 from pydss.common import CONTROLLER_TYPES, ControllerType
+from pydss.utils import toml_utils
 
 
 def build_scenario(project_path: str, scenario_name: str, controller_mapping: str):
@@ -17,7 +17,7 @@ def build_scenario(project_path: str, scenario_name: str, controller_mapping: st
         "controller_mapping should be a TOML file"
     )
 
-    controller_map = toml.load(controller_mapping_path)
+    controller_map = toml_utils.load(controller_mapping_path)
     mapped_controllers = MappedControllers(**controller_map)
     acceptable_controller_types = CONTROLLER_TYPES
     controllers = {}
@@ -29,7 +29,7 @@ def build_scenario(project_path: str, scenario_name: str, controller_mapping: st
         assert settings_path_obj.exists(), (
             f"file for controller type {controller.controller_type} does not exist"
         )
-        controller_data = toml.load(settings_path_obj)
+        controller_data = toml_utils.load(settings_path_obj)
         if controller_data:
             if controller.controller_type in controllers:
                 msg = (
@@ -37,7 +37,7 @@ def build_scenario(project_path: str, scenario_name: str, controller_mapping: st
                     "Each controller type can only be attached to a single file."
                 )
                 raise ValueError(msg)
-            controllers[controller.controller_type] = toml.load(settings_path_obj)
+            controllers[controller.controller_type] = toml_utils.load(settings_path_obj)
     scenario_dir = project_path / "Scenarios" / scenario_name
     scenario_obj = PyDssScenario([scenario_name], controllers=controllers, export_modes=None)
     scenario_obj.serialize(str(scenario_dir))

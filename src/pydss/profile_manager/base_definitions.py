@@ -1,9 +1,9 @@
 from pydss.common import PROFILE_MAPPING
-import toml
 import abc
 import os
 
 from pydss.simulation_input_models import SimulationSettingsModel
+from pydss.utils import toml_utils
 
 
 class BaseProfileManager(abc.ABC):
@@ -25,7 +25,7 @@ class BaseProfileManager(abc.ABC):
             settings.project.active_project_path, "Profiles", PROFILE_MAPPING
         )
         self.Profiles = {}
-        self.mapping = toml.load(open(self.mapping_file, "r"))
+        self.mapping = toml_utils.load(self.mapping_file)
         self.sTime = None
         self.eTime = None
         self.simRes = None

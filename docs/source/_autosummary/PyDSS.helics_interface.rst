@@ -9,4 +9,5 @@ pydss.helics\_interface
    .. autosummary::
    
       HelicsInterface
+      helics_interface
    

@@ -1,5 +1,5 @@
-pydss.py_postprocessor.postprocess_scripts.derms_optimizer
-=======================================================
+pydss.py\_postprocessor.postprocess\_scripts.derms\_optimizer
+=============================================================
 
 .. automodule:: pydss.py_postprocessor.postprocess_scripts.derms_optimizer
 
@@ -8,5 +8,5 @@ pydss.py_postprocessor.postprocess_scripts.derms_optimizer
 
    .. autosummary::
    
-      derms_optimizer
+      DermsOptimizer
    

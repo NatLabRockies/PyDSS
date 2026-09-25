@@ -1371,7 +1371,11 @@ def dump_settings(settings: SimulationSettingsModel, filename):
     settings : SimulationSettingsModel
 
     """
-    dump_data(settings.dict(by_alias=False), filename)
+    if hasattr(settings, "model_dump"):
+        data = settings.model_dump(mode="json", by_alias=False)
+    else:
+        data = settings.dict(by_alias=False)
+    dump_data(data, filename)
 
 
 def load_simulation_settings(path: Path):

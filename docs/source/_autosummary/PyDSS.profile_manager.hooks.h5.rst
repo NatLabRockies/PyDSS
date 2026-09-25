@@ -1,5 +1,5 @@
-pydss.profile_manager.hooks.h5
-=============================
+pydss.profile\_manager.hooks.h5
+===============================
 
 .. automodule:: pydss.profile_manager.hooks.h5
 

@@ -1,4 +1,4 @@
-pydss.api.src.app.JSON\_writer
+pydss.api.src.app.json\_writer
 ==============================
 
 .. automodule:: pydss.api.src.app.json_writer
@@ -8,5 +8,6 @@ pydss.api.src.app.JSON\_writer
 
    .. autosummary::
    
+      JSONwriter
       JsonWriter
    

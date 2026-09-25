@@ -550,6 +550,19 @@ class OpenDSS:
         )
         for i in range(samples):
             monte_carlo.create_scenario()
+            if i:
+                # Each completed sample closes its metric buffers. Rebuild them so the
+                # next HDF scenario group receives the full exported element datasets.
+                self.ResultContainer = ResultData(
+                    self._settings,
+                    self._dssPath,
+                    self._dssObjects,
+                    self._dssObjectsByClass,
+                    self._dssBuses,
+                    self._dssSolver,
+                    self._dssCommand,
+                    self._dssInstance,
+                )
             for is_complete, _, _, _ in self.run_simulation(project, scenario, i):
                 if is_complete:
                     break

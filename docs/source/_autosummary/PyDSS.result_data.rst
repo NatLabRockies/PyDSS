@@ -1,5 +1,5 @@
-pydss.result_data
-================
+pydss.result\_data
+==================
 
 .. automodule:: pydss.result_data
 

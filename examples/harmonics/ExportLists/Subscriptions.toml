@@ -1,0 +1,47 @@
+[[subscriptions]]
+model = "Load.mpx000635970"
+property = "kw"
+id = "test.load1.power"
+unit = "kW"
+subscribe = true
+data_type = "double"
+multiplier = 1.0
+states = [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+]
+
+[[subscriptions]]
+model = "Vsource.source"
+property = "pu"
+id = "test.feederhead.voltage"
+unit = ""
+subscribe = true
+data_type = "double"
+multiplier = 1.0
+states = [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+]
+
+[[subscriptions]]
+model = "Vsource.source"
+property = "angle"
+id = "test.feederhead.angle"
+unit = ""
+subscribe = true
+data_type = "double"
+multiplier = 1.0
+states = [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+]

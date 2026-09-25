@@ -1,5 +1,5 @@
-pydss.profile_manager.hooks
-==========================
+pydss.profile\_manager.hooks
+============================
 
 .. automodule:: pydss.profile_manager.hooks
 
@@ -10,5 +10,4 @@ pydss.profile_manager.hooks
    :toctree:
    :recursive:
 
-   MongoDB
    h5

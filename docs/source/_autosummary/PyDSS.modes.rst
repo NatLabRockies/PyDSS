@@ -10,7 +10,7 @@ pydss.modes
    :toctree:
    :recursive:
 
-   Dynamic
-   QSTS
-   Snapshot
+   dynamic
+   qsts
+   snapshot
    solver_base

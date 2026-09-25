@@ -9,4 +9,5 @@ pydss.api.src.app.hdf5
    .. autosummary::
    
       Hdf5Writer
+      hdf5Writer
    

@@ -1,5 +1,5 @@
-pydss.profile_manager
-====================
+pydss.profile\_manager
+======================
 
 .. automodule:: pydss.profile_manager
 
@@ -10,7 +10,7 @@ pydss.profile_manager
    :toctree:
    :recursive:
 
-   ProfileInterface
    base_definitions
    common
    hooks
+   profile_interface

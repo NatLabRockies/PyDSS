@@ -1,5 +1,5 @@
-pydss.profile_manager.profile_interface
-=====================================
+pydss.profile\_manager.profile\_interface
+=========================================
 
 .. automodule:: pydss.profile_manager.profile_interface
 
@@ -9,4 +9,5 @@ pydss.profile_manager.profile_interface
    .. autosummary::
    
       Create
+      create
    

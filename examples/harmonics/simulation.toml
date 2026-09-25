@@ -1,63 +1,92 @@
-[Project]
-"Start time" = "2020-1-1 00:00:00.0"
-"Simulation duration (min)" = 74.0
-"Loadshape start time" = "2020-1-1 00:00:00.0"
-"Step resolution (sec)" = 900.0
-"Max Control Iterations" = 50
-"Error tolerance" = 0.001
-"Control mode" = "Time"
-"OpenMDAO Reports" = true
-"Simulation Type" = "QSTS"
-"Project Path" = "./examples"
-"Active Project" = "harmonics"
-"Active Scenario" = ""
-"DSS File" = "Run_Scan.dss"
-"DSS File Absolute Path" = false
-"Return Results" = false
+[project]
+project_path = "examples"
+active_project = "harmonics"
+active_project_path = "examples/harmonics"
+active_scenario = "qsts"
+start_time = "2020-01-01T00:00:00"
+simulation_duration_min = 1.0
+step_resolution_sec = 900.0
+loadshape_start_time = "2020-01-01T00:00:00"
+simulation_type = "qsts"
+control_mode = "Time"
+max_control_iterations = 50
+convergence_error_percent_threshold = 0.0
+error_tolerance = 0.001
+max_error_tolerance = 0.0
+skip_export_on_convergence_error = true
+dss_file = "Run_Scan.dss"
+dss_file_absolute_path = false
+openmdao_reports = true
+use_controller_registry = false
 
-[[Project.Scenarios]]
+[[project.scenarios]]
 name = "qsts"
 post_process_infos = []
 
-# [[Project.Scenarios]]
-# name = "static"
-# post_process_infos = []
+[project.scenarios.snapshot_time_point_selection_config]
+mode = "none"
+start_time = "2020-01-01T00:00:00"
+search_duration_min = 1440.0
 
-[Exports]
-"Export Mode" = "byClass"
-"Export Style" = "Single file"
-"Export Format" = "csv"
-"Export Compression" = false
-"Export Elements" = true
-"Export Data Tables" = false
-"Export Data In Memory" = false
-"HDF Max Chunk Bytes" = 32768
-"Export Event Log" = true
-"Log Results" = true
+[project.simulation_range]
+start = "00:00:00"
+end = "23:59:59"
 
-[Frequency]
-"Enable frequency sweep" = true
-"Fundamental frequency" = 60
-"Start frequency" = 1.0
-"End frequency" = 15.0
-"frequency increment" = 0.0833333333333333
-"Neglect shunt admittance" = false
-"Percentage load in series" = 50.0
+[exports]
+export_results = true
+export_elements = true
+export_element_types = []
+export_data_tables = false
+export_pv_profiles = false
+export_data_in_memory = false
+export_node_names_by_type = false
+export_event_log = true
+export_format = "csv"
+export_compression = false
+hdf_max_chunk_bytes = 32768
 
-[Helics]
-"Co-simulation Mode" = false
-"Federate name" = "pydss"
-"Time delta" = 0.01
-"Core type" = "zmq"
-Uninterruptible = true
-"Helics logging level" = 5
+[frequency]
+enable_frequency_sweep = true
+fundamental_frequency = 60.0
+start_frequency = 1.0
+end_frequency = 15.0
+frequency_increment = 0.0833333333333333
+neglect_shunt_admittance = false
+percentage_load_in_series = 50.0
 
-[Logging]
-"Logging Level" = "INFO"
-"Log to external file" = true
-"Display on screen" = true
-"Clear old log file" = false
+[helics]
+co_simulation_mode = false
+iterative_mode = false
+error_tolerance = 0.0001
+max_co_iterations = 15
+broker = "mainbroker"
+broker_port = 0
+federate_name = "pydss"
+time_delta = 0.01
+core_type = "zmq"
+uninterruptible = true
+logging_level = 5
 
-[MonteCarlo]
-"Number of Monte Carlo scenarios" = -1
+[logging]
+logging_level = "info"
+enable_console = true
+enable_file = true
+clear_old_log_file = false
+log_time_step_updates = true
 
+[monte_carlo]
+num_scenarios = -1
+
+[profiles]
+use_profile_manager = false
+source_type = "h5"
+source = "Profiles_backup.hdf5"
+profile_mapping = ""
+is_relative_path = true
+
+[profiles.settings]
+
+[reports]
+format = "h5"
+granularity = "per_element_per_time_point"
+types = []

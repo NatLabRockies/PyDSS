@@ -9,7 +9,6 @@ import tarfile
 import zipfile
 
 import pandas as pd
-import toml
 
 from pydss.common import (
     PLOTS_FILENAME,
@@ -22,6 +21,7 @@ from pydss.common import (
 from pydss.exceptions import InvalidConfiguration
 from pydss.simulation_input_models import SimulationSettingsModel, load_simulation_settings
 from pydss.utils.utils import load_data
+from pydss.utils import toml_utils
 
 
 STORE_FILENAME = "store.h5"
@@ -305,7 +305,7 @@ class PyDssArchiveFileInterfaceBase(PyDssFileSystemInterface):
         return json.loads(self.read_file(path))
 
     def _read_toml(self, path):
-        return toml.loads(self.read_file(path))
+        return toml_utils.loads(self.read_file(path))
 
     def _list_scenario_names(self):
         store_filename = os.path.join(self._project_dir, STORE_FILENAME)

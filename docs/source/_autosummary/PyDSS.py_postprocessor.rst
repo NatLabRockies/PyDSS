@@ -1,5 +1,5 @@
-pydss.py_postprocessor
-=====================
+pydss.py\_postprocessor
+=======================
 
 .. automodule:: pydss.py_postprocessor
 
@@ -10,6 +10,6 @@ pydss.py_postprocessor
    :toctree:
    :recursive:
 
-   PostprocessScripts
+   postprocess_scripts
    py_postprocess
    py_postprocess_abstract

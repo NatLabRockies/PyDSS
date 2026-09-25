@@ -9,11 +9,15 @@ pydss.exceptions
    .. autosummary::
    
       InvalidConfiguration
+      InvalidConfigurationError
       InvalidParameter
+      InvalidParameterError
       OpenDssConvergenceError
       OpenDssConvergenceErrorCountExceeded
+      OpenDssConvergenceErrorCountExceededError
       OpenDssModelError
       PyDssConvergenceError
       PyDssConvergenceErrorCountExceeded
+      PyDssConvergenceErrorCountExceededError
       PyDssConvergenceMaxError
    

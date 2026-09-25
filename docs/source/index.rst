@@ -88,8 +88,12 @@ Additional Documentation
 
    quickstart
    tutorial
+  CLI interface
+  Python API interface
+  REST API interface
    project_layout
    interfaces
+  Co-simulation Interfaces
    co-simulation_support
    controllers_overview
   openmdao_convergence

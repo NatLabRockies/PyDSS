@@ -1,5 +1,5 @@
-pydss.py_postprocessor.postprocess_scripts.ed_li_fo_control
-======================================================
+pydss.py\_postprocessor.postprocess\_scripts.ed\_li\_fo\_control
+================================================================
 
 .. automodule:: pydss.py_postprocessor.postprocess_scripts.ed_li_fo_control
 
@@ -22,5 +22,5 @@ pydss.py_postprocessor.postprocess_scripts.ed_li_fo_control
 
    .. autosummary::
    
-      ed_li_fo_control
+      EdLifoControl
    

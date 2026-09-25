@@ -1,0 +1,53 @@
+[Loads]
+Publish = [
+    "Powers",
+]
+NoPublish = [
+    "VoltagesMagAng",
+]
+
+[PVSystems]
+Publish = [
+    "Powers",
+    "VoltagesMagAng",
+]
+NoPublish = []
+
+[Storages]
+Publish = []
+NoPublish = [
+    "Powers",
+    "VoltagesMagAng",
+    "%stored",
+]
+
+[Buses]
+Publish = []
+NoPublish = [
+    "puVmagAngle",
+    "Distance",
+]
+
+[Circuits]
+Publish = [
+    "TotalPower",
+    "LineLosses",
+    "Losses",
+    "SubstationLosses",
+]
+NoPublish = []
+
+[Lines]
+Publish = []
+NoPublish = [
+    "CurrentsMagAng",
+    "normamps",
+]
+
+[Transformers]
+Publish = []
+NoPublish = [
+    "CurrentsMagAng",
+    "normamps",
+    "taps",
+]

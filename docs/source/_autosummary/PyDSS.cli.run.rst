@@ -3,9 +3,10 @@
 
 .. automodule:: pydss.cli.run
 
-
+   
    .. rubric:: Functions
 
    .. autosummary::
-
+   
       run
+   

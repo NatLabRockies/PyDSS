@@ -1,5 +1,5 @@
-pydss.py_controllers
-===================
+pydss.py\_controllers
+=====================
 
 .. automodule:: pydss.py_controllers
 
@@ -10,7 +10,7 @@ pydss.py_controllers
    :toctree:
    :recursive:
 
-   Controllers
+   controllers
    enumerations
    models
    py_controller

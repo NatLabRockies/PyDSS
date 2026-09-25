@@ -8,5 +8,6 @@ pydss.modes.solver\_base
 
    .. autosummary::
    
+      SolverBase
       solver_base
    

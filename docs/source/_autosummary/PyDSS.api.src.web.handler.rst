@@ -3,9 +3,10 @@
 
 .. automodule:: pydss.api.src.web.handler
 
-
+   
    .. rubric:: Classes
 
    .. autosummary::
-
+   
       Handler
+   

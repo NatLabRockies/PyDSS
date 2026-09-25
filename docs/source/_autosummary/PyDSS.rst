@@ -10,10 +10,6 @@
    :toctree:
    :recursive:
 
-   extensions
-   profile_manager
-   result_data
-   solve_mode
    api
    apps
    cli
@@ -21,17 +17,18 @@
    config_data
    dataset_buffer
    defaults
-   DssBus
-   DssCircuit
-   DssElement
-   DssElementFactory
-   dssInstance
-   DssObjectBase
-   DssTransformer
+   dss_bus
+   dss_circuit
+   dss_element
+   dss_element_factory
+   dss_instance
+   dss_object_base
+   dss_transformer
    element_fields
    element_options
    exceptions
    export_list_reader
+   extensions
    get_snapshot_timepoints
    helics_interface
    metrics
@@ -40,9 +37,10 @@
    node_voltage_metrics
    openmdao_components
    openmdao_model
-   PyContrReader
+   profile_manager
+   py_contr_reader
    py_controllers
-   pyDSS
+   py_dss
    py_postprocessor
    py_results
    pydss_fs_interface
@@ -50,7 +48,9 @@
    pydss_results
    registry
    reports
+   result_data
    simulation_input_models
+   solve_mode
    storage_filters
    thermal_metrics
    unit_definitions

@@ -1,0 +1,116 @@
+{
+  "id": "58731f39-17d3-41dd-b422-03ac71b835de",
+  "project_path": "/Users/alatif/Documents/GitHub/PyDSS/examples/harmonics",
+  "project": "harmonics",
+  "scenario": "qsts",
+  "created_at": "2026-09-25T16:04:57.173781Z",
+  "status": "ready",
+  "effective_settings": {
+    "project": {
+      "project_path": "examples",
+      "active_project": "harmonics",
+      "active_project_path": "examples/harmonics",
+      "scenarios": [
+        {
+          "name": "qsts",
+          "post_process_infos": [],
+          "snapshot_time_point_selection_config": {
+            "mode": "none",
+            "start_time": "2020-01-01T00:00:00",
+            "search_duration_min": 1440.0
+          }
+        }
+      ],
+      "active_scenario": "qsts",
+      "start_time": "2020-01-01T00:00:00",
+      "simulation_duration_min": 1.0,
+      "step_resolution_sec": 900.0,
+      "loadshape_start_time": "2020-01-01T00:00:00",
+      "simulation_range": {
+        "start": "00:00:00",
+        "end": "23:59:59"
+      },
+      "simulation_type": "qsts",
+      "control_mode": "Time",
+      "max_control_iterations": 50,
+      "convergence_error_percent_threshold": 0.0,
+      "error_tolerance": 0.001,
+      "max_error_tolerance": 0.0,
+      "skip_export_on_convergence_error": true,
+      "dss_file": "Run_Scan.dss",
+      "dss_file_absolute_path": false,
+      "openmdao_reports": true,
+      "use_controller_registry": false
+    },
+    "exports": {
+      "export_results": true,
+      "export_elements": true,
+      "export_element_types": [],
+      "export_data_tables": false,
+      "export_pv_profiles": false,
+      "export_data_in_memory": false,
+      "export_node_names_by_type": false,
+      "export_event_log": true,
+      "export_format": "csv",
+      "export_compression": false,
+      "hdf_max_chunk_bytes": 32768
+    },
+    "frequency": {
+      "enable_frequency_sweep": true,
+      "fundamental_frequency": 60.0,
+      "start_frequency": 1.0,
+      "end_frequency": 15.0,
+      "frequency_increment": 0.0833333333333333,
+      "neglect_shunt_admittance": false,
+      "percentage_load_in_series": 50.0
+    },
+    "helics": {
+      "co_simulation_mode": false,
+      "iterative_mode": false,
+      "error_tolerance": 0.0001,
+      "max_co_iterations": 15,
+      "broker": "mainbroker",
+      "broker_port": 0,
+      "federate_name": "pydss",
+      "time_delta": 0.01,
+      "core_type": "zmq",
+      "uninterruptible": true,
+      "logging_level": 5
+    },
+    "logging": {
+      "logging_level": "info",
+      "enable_console": true,
+      "enable_file": true,
+      "clear_old_log_file": false,
+      "log_time_step_updates": true
+    },
+    "monte_carlo": {
+      "num_scenarios": -1
+    },
+    "profiles": {
+      "use_profile_manager": false,
+      "source_type": "h5",
+      "source": "Profiles_backup.hdf5",
+      "profile_mapping": "",
+      "is_relative_path": true,
+      "settings": {}
+    },
+    "reports": {
+      "format": "h5",
+      "granularity": "per_element_per_time_point",
+      "types": []
+    }
+  },
+  "controllers": {},
+  "events": [
+    {
+      "sequence": 0,
+      "timestamp": "2026-09-25T16:04:59.069027Z",
+      "payload": {
+        "Status": 200,
+        "Message": "Pydss 58731f39-17d3-41dd-b422-03ac71b835de successfully initialized.",
+        "UUID": "58731f39-17d3-41dd-b422-03ac71b835de"
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-pydss.py_postprocessor.postprocess_scripts.derms_optimizer\_helper\_modules.opt\_funcs
-===================================================================================
+pydss.py\_postprocessor.postprocess\_scripts.derms\_optimizer\_helper\_modules.opt\_funcs
+=========================================================================================
 
 .. automodule:: pydss.py_postprocessor.postprocess_scripts.derms_optimizer_helper_modules.opt_funcs
 
@@ -8,19 +8,19 @@ pydss.py_postprocessor.postprocess_scripts.derms_optimizer\_helper\_modules.opt\
 
    .. autosummary::
    
-      PV_costFun_gradient
-      check_VI_correct
-      costFun
+      check_vi_correct
+      cost_fun
       current_constraint
       current_constraint_gradient
       dual_update
       linear_powerflow_model
-      matrix_cal_for_subPower
-      project_PV
+      matrix_cal_for_sub_power
       project_dualvariable
+      project_pv
       projection
-      subPower_PQ
-      sub_costFun_gradient
+      pv_cost_fun_gradient
+      sub_cost_fun_gradient
+      sub_power_pq
       validate_linear_model
       voltage_constraint
       voltage_constraint_gradient
@@ -29,5 +29,5 @@ pydss.py_postprocessor.postprocess_scripts.derms_optimizer\_helper\_modules.opt\
 
    .. autosummary::
    
-      DERMS
+      Derms
    

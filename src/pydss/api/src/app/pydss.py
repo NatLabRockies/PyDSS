@@ -7,6 +7,7 @@ from loguru import logger
 from pydss.simulation_input_models import SimulationSettingsModel
 from pydss.api.src.app.json_writer import JsonWriter
 from pydss.dss_instance import OpenDSS
+from pydss.pydss_project import PyDssProject
 
 
 class PyDSS:
@@ -26,12 +27,18 @@ class PyDSS:
 
         try:
             settings = SimulationSettingsModel(**parameters["parameters"])
-            self.pydss_obj = OpenDSS(settings)
-            export_path = os.path.join(
-                self.pydss_obj._dssPath["Export"], settings.project.active_scenario
-            )
-            steps, start_time, end_time = self.pydss_obj._dssSolver.SimulationSteps()
-            self.a_writer = JsonWriter(export_path, steps)
+            self.project = None
+            project_path = parameters.get("project_path")
+            if project_path:
+                self.project = PyDssProject.load_project(project_path)
+                self.project._settings = settings
+            else:
+                self.pydss_obj = OpenDSS(settings)
+                export_path = os.path.join(
+                    self.pydss_obj._dssPath["Export"], settings.project.active_scenario
+                )
+                steps, start_time, end_time = self.pydss_obj._dssSolver.SimulationSteps()
+                self.a_writer = JsonWriter(export_path, steps)
             self.initalized = True
         except Exception:
             result = {"Status": 500, "Message": "Failed to create a pydss instance"}
@@ -90,6 +97,10 @@ class PyDSS:
     def run(self, params):
         if self.initalized:
             try:
+                if self.project is not None:
+                    self.project.run(scenario_names=[self.project.simulation_config.project.active_scenario])
+                    self.initalized = False
+                    return 200, "Simulation complete..."
                 steps, start_time, end_time = self.pydss_obj._dssSolver.SimulationSteps()
                 for i in range(steps):
                     results = self.pydss_obj.run_step(i)

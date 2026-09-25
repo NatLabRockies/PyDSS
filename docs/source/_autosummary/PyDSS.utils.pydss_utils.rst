@@ -1,4 +1,4 @@
-pydss.utils.pydss\_utils
+﻿pydss.utils.pydss\_utils
 ========================
 
 .. automodule:: pydss.utils.pydss_utils
@@ -10,5 +10,8 @@ pydss.utils.pydss\_utils
    
       form_Yprim
       form_Yprim_2
+      form_yprim
+      form_yprim_2
       get_Yprime_Matrix
+      get_yprime_matrix
    

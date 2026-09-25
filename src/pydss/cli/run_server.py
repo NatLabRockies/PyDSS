@@ -3,7 +3,7 @@ CLI to run the pydss server
 """
 
 from loguru import logger
-from aiohttp import web
+import uvicorn
 import typer
 
 from pydss.api.server import PydssServer
@@ -21,4 +21,4 @@ def serve(
     """Run a pydss RESTful API server."""
     logger.level("DEBUG")
     pydss = PydssServer(ip, port)
-    web.run_app(pydss.app, port=port)
+    uvicorn.run(pydss.app, host=ip, port=port)

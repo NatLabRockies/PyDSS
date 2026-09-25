@@ -1,4 +1,4 @@
-pydss.api.src.app
+﻿pydss.api.src.app
 =================
 
 .. automodule:: pydss.api.src.app
@@ -10,8 +10,8 @@ pydss.api.src.app
    :toctree:
    :recursive:
 
-   DataWriter
-   HDF5
-   JSON_writer
-   Tester
+   data_writer
+   hdf5
+   json_writer
    pydss
+   tester

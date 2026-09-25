@@ -40,8 +40,8 @@ class Instance:
                 self._estimated_space = dss.dry_run_simulation(project, scenario)
             return None, None
 
-        opendss = OpenDSS(settings)
         self._dump_scenario_simulation_settings(settings)
+        opendss = OpenDSS(settings)
         logger.info("Running scenario: %s", settings.project.active_scenario)
         if settings.monte_carlo.num_scenarios > 0:
             opendss.run_mc_simulation(project, scenario, samples=settings.monte_carlo.num_scenarios)

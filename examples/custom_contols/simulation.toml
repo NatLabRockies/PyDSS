@@ -1,100 +1,148 @@
-[Project]
-"Start time" = "2020-07-13 00:00:00.0"
-"Simulation duration (min)" = 10
-"Loadshape start time" = "2020-07-13 00:00:00.0"
-"Step resolution (sec)" = 60.0
-"Max Control Iterations" = 50
-"Error tolerance" = 0.001
-"Control mode" = "Static"
-"OpenMDAO Reports" = true
-"Simulation Type" = "QSTS"
-"Project Path" = "./examples"
-"Active Project" = "custom_contols"
-"Active Scenario" = "base_case"
-"DSS File" = "Master_Spohn_existing_VV.dss"
-"DSS File Absolute Path" = false
-"Return Results" = false
+[project]
+project_path = "examples"
+active_project = "custom_contols"
+active_project_path = "examples/custom_contols"
+active_scenario = "base_case"
+start_time = "2020-07-13T00:00:00"
+simulation_duration_min = 10.0
+step_resolution_sec = 60.0
+loadshape_start_time = "2020-07-13T00:00:00"
+simulation_type = "qsts"
+control_mode = "Static"
+max_control_iterations = 50
+convergence_error_percent_threshold = 0.0
+error_tolerance = 0.001
+max_error_tolerance = 0.0
+skip_export_on_convergence_error = true
+dss_file = "Master_Spohn_existing_VV.dss"
+dss_file_absolute_path = false
+openmdao_reports = true
+use_controller_registry = false
 
-[[Project.Scenarios]]
+[[project.scenarios]]
 name = "base_case"
 post_process_infos = []
 
-# [[Project.Scenarios]]
-# name = "multiple_controls"
-# post_process_infos = []
+[project.scenarios.snapshot_time_point_selection_config]
+mode = "none"
+start_time = "2020-01-01T00:00:00"
+search_duration_min = 1440.0
 
-#[[Project.Scenarios]]
-#name = "self_consumption"
-#post_process_infos = []
+[[project.scenarios]]
+name = "multiple_controls"
+post_process_infos = []
 
-#[[Project.Scenarios]]
-#name = "volt_var"
-#post_process_infos = []
+[project.scenarios.snapshot_time_point_selection_config]
+mode = "none"
+start_time = "2020-01-01T00:00:00"
+search_duration_min = 1440.0
 
-[Exports]
-"Export Mode" = "byClass"
-"Export Style" = "Single file"
-"Export Format" = "csv"
-"Export Compression" = false
-"Export Elements" = false
-"Export Data Tables" = false
-"Export Data In Memory" = false
-"HDF Max Chunk Bytes" = 32768
-"Export Event Log" = true
-"Log Results" = true
+[[project.scenarios]]
+name = "self_consumption"
+post_process_infos = []
 
-[Frequency]
-"Enable frequency sweep" = false
-"Fundamental frequency" = 60
-"Start frequency" = 1.0
-"End frequency" = 15.0
-"frequency increment" = 2.0
-"Neglect shunt admittance" = false
-"Percentage load in series" = 50.0
+[project.scenarios.snapshot_time_point_selection_config]
+mode = "none"
+start_time = "2020-01-01T00:00:00"
+search_duration_min = 1440.0
 
-[Helics]
-"Co-simulation Mode" = false
-"Federate name" = "pydss"
-"Time delta" = 0.01
-"Core type" = "zmq"
-Uninterruptible = true
-"Helics logging level" = 5
+[[project.scenarios]]
+name = "volt_var"
+post_process_infos = []
 
-[Logging]
-"Logging Level" = "INFO"
-"Log to external file" = true
-"Display on screen" = true
-"Clear old log file" = false
+[project.scenarios.snapshot_time_point_selection_config]
+mode = "none"
+start_time = "2020-01-01T00:00:00"
+search_duration_min = 1440.0
 
-[MonteCarlo]
-"Number of Monte Carlo scenarios" = -1
+[project.simulation_range]
+start = "00:00:00"
+end = "23:59:59"
 
-[Reports]
-Format = "h5"
-[[Reports.Types]]
-name = "Capacitor State Change Counts"
-enabled = false
+[exports]
+export_results = true
+export_elements = false
+export_element_types = []
+export_data_tables = false
+export_pv_profiles = false
+export_data_in_memory = false
+export_node_names_by_type = false
+export_event_log = true
+export_format = "csv"
+export_compression = false
+hdf_max_chunk_bytes = 32768
 
-[[Reports.Types]]
-name = "PV Clipping"
-enabled = false
+[frequency]
+enable_frequency_sweep = false
+fundamental_frequency = 60.0
+start_frequency = 1.0
+end_frequency = 15.0
+frequency_increment = 2.0
+neglect_shunt_admittance = false
+percentage_load_in_series = 50.0
 
-[[Reports.Types]]
-name = "PV Curtailment"
-enabled = false
+[helics]
+co_simulation_mode = false
+iterative_mode = false
+error_tolerance = 0.0001
+max_co_iterations = 15
+broker = "mainbroker"
+broker_port = 0
+federate_name = "pydss"
+time_delta = 0.01
+core_type = "zmq"
+uninterruptible = true
+logging_level = 5
 
-[[Reports.Types]]
-name = "RegControl Tap Number Change Counts"
-enabled = false
+[logging]
+logging_level = "info"
+enable_console = true
+enable_file = true
+clear_old_log_file = false
+log_time_step_updates = true
 
-[Profiles]
-"Use profile manager" = true
+[monte_carlo]
+num_scenarios = -1
+
+[profiles]
+use_profile_manager = true
 source_type = "h5"
 source = "profiles.hdf5"
-"Profile mapping" = ""
+profile_mapping = ""
 is_relative_path = true
-[Profiles.settings]
-bufferSize =  10
+
+[profiles.settings]
+bufferSize = 10
 neglectYear = false
 
+[reports]
+format = "h5"
+granularity = "per_element_per_time_point"
 
+[[reports.types]]
+enabled = false
+scenarios = []
+store_all_time_points = false
+name = "Capacitor State Change Counts"
+
+[[reports.types]]
+enabled = false
+scenarios = []
+store_all_time_points = false
+name = "PV Clipping"
+diff_tolerance_percent_pmpp = 1.0
+denominator_tolerance_percent_pmpp = 1.0
+
+[[reports.types]]
+enabled = false
+scenarios = []
+store_all_time_points = false
+name = "PV Curtailment"
+diff_tolerance_percent_pmpp = 1.0
+denominator_tolerance_percent_pmpp = 1.0
+
+[[reports.types]]
+enabled = false
+scenarios = []
+store_all_time_points = false
+name = "RegControl Tap Number Change Counts"

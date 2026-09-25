@@ -3,7 +3,6 @@
 from datetime import datetime, timedelta
 from pathlib import Path
 import shutil
-import enum
 import gzip
 import json
 import os
@@ -13,22 +12,12 @@ import sys
 from loguru import logger
 import pandas as pd
 import numpy as np
-import toml
-
 from pydss.exceptions import InvalidParameter
+from pydss.utils import toml_utils
 
 
 MAX_PATH_LENGTH = 255
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"  # '%Y-%m-%d %H:%M:%S.%f', "%m/%d/%Y %H:%M:%S"
-
-
-class TomlEnumEncoder(toml.TomlEncoder):
-    """Encodes Enum values instead of Enum objects."""
-
-    def dump_value(self, v):
-        if isinstance(v, enum.Enum):
-            return f'"{v.value}"'
-        return super().dump_value(v)
 
 
 def _get_module_from_extension(filename, **kwargs):
@@ -39,7 +28,7 @@ def _get_module_from_extension(filename, **kwargs):
     if ext == ".json":
         mod = json
     elif ext == ".toml":
-        mod = toml
+        mod = toml_utils
     elif "mod" in kwargs:
         mod = kwargs["mod"]
     else:
@@ -61,8 +50,9 @@ def dump_data(data, filename, **kwargs):
 
     """
     mod = _get_module_from_extension(filename, **kwargs)
-    with open(filename, "w") as f_out:
-        mod.dump(data, f_out, **kwargs)
+    mode = "wb" if mod is toml_utils else "w"
+    with open(filename, mode) as f_out:
+        mod.dump(data, f_out)
 
     logger.debug(
         f"Dumped data to {filename}",
@@ -83,7 +73,8 @@ def load_data(filename, **kwargs):
 
     """
     mod = _get_module_from_extension(filename, **kwargs)
-    with open(filename) as f_in:
+    mode = "rb" if mod is toml_utils else "r"
+    with open(filename, mode) as f_in:
         data = mod.load(f_in)
 
     logger.debug(
