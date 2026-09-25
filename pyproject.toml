@@ -23,12 +23,14 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "click~=8.1.8",
+    "typer~=0.15.2",
     "h5py~=3.13.0",
     "helics~=3.6.1",
     "loguru~=0.7.3",
+    "matplotlib~=3.10.1",
     "networkx~=3.4.2",
     "numpy~=2.2.4",
+    "openmdao>=3.37,<4",
     "OpenDSSDirect.py==0.8.4",
     "pandas~=2.2.3",
     "pvder~=0.6.0",
@@ -48,11 +50,12 @@ dev = [
     "mock~=5.2.0",
     "pytest~=9.1.0",
     "pytest-cov~=7.1.0",
+    "pre-commit~=4.3.0",
+    "ruff~=0.15.5",
     "setuptools~=75.8.0",
     "sphinx~=7.4.7",
     "sphinx-rtd-theme~=3.1.0",
     "furo~=2024.8.6",
-    "sphinx-click~=6.0.0",
     "sphinxcontrib-openapi~=0.8.4",
     "sphinxcontrib-redoc~=1.6.0",
     "autodoc-pydantic~=2.0.1",
@@ -70,6 +73,19 @@ pydss = "pydss.cli.pydss:cli"
 [project.urls]
 Homepage = "https://github.com/NatLabRockies/PyDSS"
 Documentation = "https://natlabrockies.github.io/PyDSS/"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = [
+    "docs/build",
+    "examples/**/Exports",
+    "examples/**/Logs",
+    "examples/**/OpenMDAOReports",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "N"]
 
 
 [tool.hatch.build.targets.sdist]

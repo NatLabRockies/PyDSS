@@ -20,7 +20,7 @@ frequency thresholds per the IEEE 1547-2018 standard.
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.PvFrequencyRideThru.PvFrequencyRideThru
+.. py:class:: pydss.py_controllers.controllers.pv_frequency_ride_thru.PvFrequencyRideThru
 
 .. list-table:: PvFrequencyRideThru Settings
    :header-rows: 1
@@ -62,12 +62,6 @@ Controller Model
    * - ``Reconnect Pmax time - sec``
      - float
      - Time to ramp back to maximum power after reconnection (seconds)
-   * - ``Priority``
-     - string
-     - Control priority (``"Var"`` or ``"Watt"``)
-   * - ``UcalcMode``
-     - string
-     - Voltage calculation mode (``"MAX"``, ``"AVG"``, ``"MIN"``, ``"A"``, ``"B"``, ``"C"``)
 
 Usage Example
 -------------
@@ -89,5 +83,3 @@ Usage Example
    Ride-through Category = "Category III"
    Reconnect deadtime - sec = 300
    Reconnect Pmax time - sec = 300
-   Priority = "Var"
-   UcalcMode = "AVG"

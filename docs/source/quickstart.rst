@@ -40,6 +40,8 @@ project. Key settings include:
 - **Simulation type**: QSTS (quasi-static time series), Dynamic, Snapshot, or Monte Carlo
 - **Start time and duration**: When the simulation starts and how long it runs
 - **Step resolution**: Time step size (in seconds)
+- **Controller convergence**: ``Max Control Iterations`` and ``Error tolerance`` configure the
+    OpenMDAO nonlinear solve used to couple controllers with OpenDSS.
 - **Export options**: What data to collect and in what format (HDF5 or CSV)
 
 Refer to :ref:`SimulationSettingsModel` for the full list of settings.
@@ -48,6 +50,10 @@ Each scenario has its own config files for additional customization:
 
 - ``ExportLists/`` — What data to export
 - ``pyControllerList/`` — Controller configurations
+
+Python controllers are OpenMDAO components. The OpenMDAO solver evaluates controller commands and
+the OpenDSS circuit together until the configured tolerance is reached. Use the component-specific
+settings documented on each controller page.
 
 Run the simulation
 ==================

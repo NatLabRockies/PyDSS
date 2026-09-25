@@ -1,7 +1,7 @@
-pydss.modes.Dynamic
+pydss.modes.dynamic
 ===================
 
-.. automodule:: pydss.modes.Dynamic
+.. automodule:: pydss.modes.dynamic
 
    
    .. rubric:: Classes

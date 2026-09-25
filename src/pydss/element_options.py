@@ -4,8 +4,10 @@ from loguru import logger
 
 from pydss.element_fields import ELEMENT_FIELDS
 
+
 class ElementOptions:
     """Stores the options available for element classes and properties."""
+
     def __init__(self, data=None):
         if data is None:
             data = ELEMENT_FIELDS

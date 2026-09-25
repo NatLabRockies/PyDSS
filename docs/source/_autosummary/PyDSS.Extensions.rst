@@ -1,7 +1,7 @@
-pydss.Extensions
+pydss.extensions
 ================
 
-.. automodule:: pydss.Extensions
+.. automodule:: pydss.extensions
 
    
 .. rubric:: Modules
@@ -10,4 +10,4 @@ pydss.Extensions
    :toctree:
    :recursive:
 
-   MonteCarlo
+   monte_carlo

@@ -15,7 +15,7 @@ start time and cleared after a specified duration.
 Controller Model
 ----------------
 
-.. py:class:: pydss.pyControllers.Controllers.FaultController.FaultController
+.. py:class:: pydss.py_controllers.controllers.fault_controller.FaultController
 
 The controller is configured with the following TOML settings:
 

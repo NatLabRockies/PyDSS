@@ -1,12 +1,12 @@
-pydss.dssBus
+pydss.dss_bus
 ============
 
-.. automodule:: pydss.dssBus
+.. automodule:: pydss.dss_bus
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      dssBus
+      DssBus
    

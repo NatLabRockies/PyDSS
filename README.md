@@ -8,7 +8,10 @@
 
 ## Key Features
 
-- **Custom Control Algorithms** — Define Python-based controllers for any circuit element, executed at each simulation time step. 13 built-in controllers are included (PV, storage, motor stall, fault, transformer, thermostat, and more).
+- **OpenMDAO Controller Convergence** — Couple Python controller components and OpenDSS in a
+	nonlinear solve at each simulation time step, with configurable convergence tolerances and
+	diagnostics. 14 built-in controllers are included (PV, storage, motor stall, fault, transformer,
+	thermostat, and more).
 - **HELICS Co-simulation** — Integrate with external simulators via the [HELICS](https://github.com/GMLC-TDC/HELICS) framework for cyber-physical co-simulation studies.
 - **Scenario Management** — Run multiple scenarios on a shared OpenDSS model with independent controllers, exports, and post-processing.
 - **Flexible Data Export** — Export results to HDF5 or CSV with per-element filtering, regex-based selection, moving averages, and group aggregation.

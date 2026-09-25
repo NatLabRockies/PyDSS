@@ -1,12 +1,12 @@
-pydss.dssCircuit
+pydss.dss_circuit
 ================
 
-.. automodule:: pydss.dssCircuit
+.. automodule:: pydss.dss_circuit
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      dssCircuit
+      DssCircuit
    

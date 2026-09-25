@@ -19,14 +19,15 @@ from pydss.exceptions import InvalidParameter
 
 
 MAX_PATH_LENGTH = 255
-DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f' # '%Y-%m-%d %H:%M:%S.%f', "%m/%d/%Y %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"  # '%Y-%m-%d %H:%M:%S.%f', "%m/%d/%Y %H:%M:%S"
+
 
 class TomlEnumEncoder(toml.TomlEncoder):
     """Encodes Enum values instead of Enum objects."""
 
     def dump_value(self, v):
         if isinstance(v, enum.Enum):
-            return f"\"{v.value}\""
+            return f'"{v.value}"'
         return super().dump_value(v)
 
 
@@ -63,7 +64,9 @@ def dump_data(data, filename, **kwargs):
     with open(filename, "w") as f_out:
         mod.dump(data, f_out, **kwargs)
 
-    logger.debug(f"Dumped data to {filename}", )
+    logger.debug(
+        f"Dumped data to {filename}",
+    )
 
 
 def load_data(filename, **kwargs):
@@ -83,7 +86,9 @@ def load_data(filename, **kwargs):
     with open(filename) as f_in:
         data = mod.load(f_in)
 
-    logger.debug(f"Loaded data from {filename}", )
+    logger.debug(
+        f"Loaded data from {filename}",
+    )
     return data
 
 
@@ -170,7 +175,7 @@ def make_human_readable_size(size, decimals=2):
     str:
         Human reable size string with unit.
     """
-    for unit in ["B","KB","MB","GB","TB"]:
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
         if size < 1024.0:
             break
         size /= 1024.0

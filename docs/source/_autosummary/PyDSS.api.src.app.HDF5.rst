@@ -1,12 +1,12 @@
-pydss.api.src.app.HDF5
+pydss.api.src.app.hdf5
 ======================
 
-.. automodule:: pydss.api.src.app.HDF5
+.. automodule:: pydss.api.src.app.hdf5
 
    
    .. rubric:: Classes
 
    .. autosummary::
    
-      hdf5Writer
+      Hdf5Writer
    

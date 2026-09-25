@@ -1,4 +1,3 @@
-
 import math
 import abc
 import os
@@ -9,14 +8,15 @@ import numpy as np
 
 from pydss.common import PV_LOAD_SHAPE_FILENAME
 from pydss.reports.reports import ReportBase, ReportGranularity
-from pydss.utils.dataframe_utils import read_dataframe, write_dataframe
-from pydss.utils.utils import dump_data
+from pydss.utils.dataframe_utils import read_dataframe
 
 PF1_SCENARIO = "pf1"
 CONTROL_MODE_SCENARIO = "control_mode"
 
+
 class PvReportBase(ReportBase, abc.ABC):
     """Base class for PV reports"""
+
     def __init__(self, name, results, simulation_config):
         super().__init__(name, results, simulation_config)
         assert len(results.scenarios) == 2
@@ -33,9 +33,7 @@ class PvReportBase(ReportBase, abc.ABC):
         self._pf1_pv_systems = {
             x["name"]: x for x in self._pf1_scenario.read_pv_profiles()["pv_systems"]
         }
-        self._control_mode_pv_systems = {
-            x["name"]: x for x in cm_profiles["pv_systems"]
-        }
+        self._control_mode_pv_systems = {x["name"]: x for x in cm_profiles["pv_systems"]}
 
     def _get_pv_system_info(self, pv_system, scenario):
         if scenario == PF1_SCENARIO:
@@ -95,14 +93,16 @@ class PvClippingReport(PvReportBase):
         if not self._has_pv_systems():
             return
 
-        diff_tolerance = self._report_settings.diff_tolerance_percent_pmpp * .01
-        denominator_tolerance = self._report_settings.denominator_tolerance_percent_pmpp * .01
+        diff_tolerance = self._report_settings.diff_tolerance_percent_pmpp * 0.01
+        denominator_tolerance = self._report_settings.denominator_tolerance_percent_pmpp * 0.01
         logger.debug("tolerances: diff=%s denominator=%s", diff_tolerance, denominator_tolerance)
         self._diff_tolerances = {}
         self._denominator_tolerances = {}
         for pv_system in self._pf1_scenario.read_pv_profiles()["pv_systems"]:
             self._diff_tolerances[pv_system["name"]] = pv_system["pmpp"] * diff_tolerance
-            self._denominator_tolerances[pv_system["name"]] = pv_system["pmpp"] * denominator_tolerance
+            self._denominator_tolerances[pv_system["name"]] = (
+                pv_system["pmpp"] * denominator_tolerance
+            )
 
     @staticmethod
     def _calculate_clipping(total_dc_power, pf1_real_power):
@@ -112,7 +112,7 @@ class PvClippingReport(PvReportBase):
     def _calculate_clipping_array(dc_power, pf1_real_power):
         dcp = dc_power.values
         rp = pf1_real_power.values
-        rp = np.where(rp==0, np.nan, rp)
+        rp = np.where(rp == 0, np.nan, rp)
         return (dcp - rp) / rp * 100
 
     def _get_total_dc_power_across_pv_systems(self):
@@ -130,9 +130,7 @@ class PvClippingReport(PvReportBase):
 
     def _generate_per_pv_system_per_time_point(self, output_dir):
         pv_load_shapes = self._read_pv_load_shapes()
-        pf1_real_power_full = self._pf1_scenario.get_full_dataframe(
-            "PVSystems", "Powers"
-        )
+        pf1_real_power_full = self._pf1_scenario.get_full_dataframe("PVSystems", "Powers")
         name = None
 
         # TODO: Apply tolerances to other granularity options.
@@ -149,11 +147,12 @@ class PvClippingReport(PvReportBase):
             name = _name
             cm_info = self._get_pv_system_info(name, CONTROL_MODE_SCENARIO)
             pf1_real_power = pf1_real_power_full[name + "__Powers"]
-            dc_power = pv_load_shapes[cm_info["load_shape_profile"]] * \
-                cm_info["pmpp"] * \
-                cm_info["irradiance"]
-            assert len(dc_power) == len(pf1_real_power), \
-                f"{len(dc_power)} {len(pf1_real_power)}"
+            dc_power = (
+                pv_load_shapes[cm_info["load_shape_profile"]]
+                * cm_info["pmpp"]
+                * cm_info["irradiance"]
+            )
+            assert len(dc_power) == len(pf1_real_power), f"{len(dc_power)} {len(pf1_real_power)}"
             col = name + "__Clipping"
             data[col] = dc_power.combine(pf1_real_power, calc_clipping).values
 
@@ -177,9 +176,7 @@ class PvClippingReport(PvReportBase):
         self._export_json_report(data, output_dir, self.TOTAL_FILENAME)
 
     def _generate_all_pv_systems_per_time_point(self, output_dir):
-        pf1_real_power = self._pf1_scenario.get_summed_element_dataframe(
-            "PVSystems", "Powers"
-        )
+        pf1_real_power = self._pf1_scenario.get_summed_element_dataframe("PVSystems", "Powers")
         pv_load_shapes = self._read_pv_load_shapes()
         dc_powers = {}
         for name in self._pv_system_names:
@@ -189,7 +186,10 @@ class PvClippingReport(PvReportBase):
             assert len(dc_power) == len(pf1_real_power)
             dc_powers[name] = dc_power.values
             # TODO: just for validation
-            assert math.isclose(sum(dc_power.values), cm_info["load_shape_pmult_sum"] * cm_info["pmpp"] * cm_info["irradiance"])
+            assert math.isclose(
+                sum(dc_power.values),
+                cm_info["load_shape_pmult_sum"] * cm_info["pmpp"] * cm_info["irradiance"],
+            )
         df = pd.DataFrame(dc_powers, index=pf1_real_power.index)
         total_dc_power = df.sum(axis=1)
 
@@ -203,9 +203,9 @@ class PvClippingReport(PvReportBase):
     def _generate_all_pv_systems_total(self, output_dir):
         total_dc_power = self._get_total_dc_power_across_pv_systems()
 
-        pf1_real_power = next(iter(
-            self._pf1_scenario.get_summed_element_total("PVSystems", "PowersSum").values()
-        ))
+        pf1_real_power = next(
+            iter(self._pf1_scenario.get_summed_element_total("PVSystems", "PowersSum").values())
+        )
         clipping = self._calculate_clipping(total_dc_power, pf1_real_power)
         data = {"clipping": clipping}
         self._export_json_report(data, output_dir, self.TOTAL_FILENAME)
@@ -257,21 +257,22 @@ class PvCurtailmentReport(PvReportBase):
         if not self._has_pv_systems():
             return
 
-        diff_tolerance = self._report_settings.diff_tolerance_percent_pmpp * .01
-        denominator_tolerance = self._report_settings.denominator_tolerance_percent_pmpp * .01
+        diff_tolerance = self._report_settings.diff_tolerance_percent_pmpp * 0.01
+        denominator_tolerance = self._report_settings.denominator_tolerance_percent_pmpp * 0.01
         logger.debug("tolerances: diff=%s denominator=%s", diff_tolerance, denominator_tolerance)
         self._diff_tolerances = {}
         self._denominator_tolerances = {}
         for pv_system in self._pf1_scenario.read_pv_profiles()["pv_systems"]:
             self._diff_tolerances[pv_system["name"]] = pv_system["pmpp"] * diff_tolerance
-            self._denominator_tolerances[pv_system["name"]] = pv_system["pmpp"] * denominator_tolerance
+            self._denominator_tolerances[pv_system["name"]] = (
+                pv_system["pmpp"] * denominator_tolerance
+            )
 
     def _generate_per_pv_system_per_time_point(self, output_dir):
         pf1_power = self._pf1_scenario.get_full_dataframe("PVSystems", "Powers")
-        control_mode_power = self._control_mode_scenario.get_full_dataframe(
-            "PVSystems", "Powers"
-        )
+        control_mode_power = self._control_mode_scenario.get_full_dataframe("PVSystems", "Powers")
         name = None
+
         def calc_curtailment(pf1, cm):
             if pf1 < self._denominator_tolerances[name]:
                 return 0
@@ -318,12 +319,16 @@ class PvCurtailmentReport(PvReportBase):
         self._export_dataframe_report(df, output_dir, "pv_curtailment")
 
     def _generate_all_pv_systems_total(self, output_dir):
-        pf1_power = next(iter(
-            self._pf1_scenario.get_summed_element_total("PVSystems", "PowersSum").values()
-        ))
-        control_mode_power = next(iter(
-            self._control_mode_scenario.get_summed_element_total("PVSystems", "PowersSum").values()
-        ))
+        pf1_power = next(
+            iter(self._pf1_scenario.get_summed_element_total("PVSystems", "PowersSum").values())
+        )
+        control_mode_power = next(
+            iter(
+                self._control_mode_scenario.get_summed_element_total(
+                    "PVSystems", "PowersSum"
+                ).values()
+            )
+        )
 
         curtailment = (pf1_power - control_mode_power) / pf1_power * 100
         data = {"curtailment": curtailment}
@@ -353,9 +358,7 @@ class PvCurtailmentReport(PvReportBase):
         pd.DataFrame
 
         """
-        pf1_power = self._pf1_scenario.get_full_dataframe(
-            "PVSystems", "Powers", real_only=True
-        )
+        pf1_power = self._pf1_scenario.get_full_dataframe("PVSystems", "Powers", real_only=True)
         control_mode_power = self._control_mode_scenario.get_full_dataframe(
             "PVSystems", "Powers", real_only=True
         )

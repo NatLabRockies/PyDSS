@@ -1,5 +1,5 @@
 ,phases,bus1,kV,kW,pf,model,yearly,daily,duty,growth,conn,kvar,Rneut,Xneut,status,class,Vminpu,Vmaxpu,Vminnorm,Vminemerg,xfkVA,allocationfactor,kVA,%mean,%stddev,CVRwatts,CVRvars,kwh,kwhdays,Cfactor,CVRcurve,NumCust,ZIPV,%SeriesRL,RelWeight,Vlowpu,puXharm,XRharm,spectrum,basefreq,enabled,like
-Load.mpx000635970,1,110_2.1,0.24,5.961,0.987278887205994,1,lp_mpx000635970,,,,wye,0.96,-1,0,Variable,1,0.95,1.05,0,0,0,0.5,6.03780763191409,50,10,1,2,0,30,4,,1,['0 0 0 0 0 0 0'],50,1,0.5,0,6,defaultload,60,Yes,
-Load.mpx000460267,1,111_2.1,0.24,13.164,0.985668177157945,1,lp_mpx000460267,,,,wye,2.253,-1,0,Variable,1,0.95,1.05,0,0,0,0.5,13.3554073318638,50,10,1,2,0,30,4,,1,['0 0 0 0 0 0 0'],50,1,0.5,0,6,defaultload,60,Yes,
+Load.mpx000635970,1,110_2.1,0.24,0,0.987278887205994,1,lp_mpx000635970,,,,wye,0,-1,0,Variable,1,0.95,1.05,0,0,0,0.5,0,50,10,1,2,0,30,4,,1,['0 0 0 0 0 0 0'],50,1,0.5,0,6,defaultload,60,Yes,
+Load.mpx000460267,1,111_2.1,0.24,0,0.985668177157945,1,lp_mpx000460267,,,,wye,0,-1,0,Variable,1,0.95,1.05,0,0,0,0.5,0,50,10,1,2,0,30,4,,1,['0 0 0 0 0 0 0'],50,1,0.5,0,6,defaultload,60,Yes,
 Load.mpx000637601,1,112_2.1,0.24,1.575,0.891350249023867,1,lp_mpx000637601,,,,wye,0.801,-1,0,Variable,1,0.95,1.05,0,0,0,0.5,1.76698217308495,50,10,1,2,0,30,4,,1,['0 0 0 0 0 0 0'],50,1,0.5,0,6,defaultload,60,Yes,
 Load.mpx000594341,1,113_2.1,0.24,5.784,0.988083581678164,1,lp_mpx000594341,,,,wye,0.901,-1,0,Variable,1,0.95,1.05,0,0,0,0.5,5.85375580290125,50,10,1,2,0,30,4,,1,['0 0 0 0 0 0 0'],50,1,0.5,0,6,defaultload,60,Yes,

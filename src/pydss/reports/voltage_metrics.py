@@ -6,7 +6,7 @@ import numpy as np
 
 from pydss.common import MinMax, NODE_NAMES_BY_TYPE_FILENAME
 from pydss.reports.reports import ReportBase, ReportGranularity
-from pydss.utils.utils import serialize_timedelta, deserialize_timedelta, load_data
+from pydss.utils.utils import load_data
 from pydss.node_voltage_metrics import (
     NodeVoltageMetricsByType,
     SimulationVoltageMetricsModel,
@@ -19,6 +19,7 @@ from pydss.node_voltage_metrics import (
     VoltageMetric5,
     VoltageMetric6,
 )
+
 
 class VoltageMetrics(ReportBase):
     """Reports voltage metrics.
@@ -69,9 +70,7 @@ class VoltageMetrics(ReportBase):
 
     def __init__(self, name, results, simulation_config):
         super().__init__(name, results, simulation_config)
-        self._granularity = ReportGranularity(
-            self._report_global_settings.granularity
-        )
+        self._granularity = ReportGranularity(self._report_global_settings.granularity)
         self._range_a_limits = MinMax(
             min=self._report_settings.range_a_limits[0],
             max=self._report_settings.range_a_limits[1],
@@ -129,7 +128,9 @@ class VoltageMetrics(ReportBase):
             )
             node_names_by_type = load_data(filename)
             assert len(set(node_names_by_type["primaries"])) == len(node_names_by_type["primaries"])
-            assert len(set(node_names_by_type["secondaries"])) == len(node_names_by_type["secondaries"])
+            assert len(set(node_names_by_type["secondaries"])) == len(
+                node_names_by_type["secondaries"]
+            )
             df = scenario.get_full_dataframe("Buses", "puVmagAngle", mag_ang="mag")
             columns = []
             for column in df.columns:
@@ -173,9 +174,9 @@ class VoltageMetrics(ReportBase):
             max_val = row.max()
             min_val = row.min()
             if (
-                    not (max_val > self._range_b_limits.max)
-                    and not (min_val < self._range_b_limits.min)
-                    and (max_val > self._range_a_limits.max or min_val < self._range_a_limits.min)
+                not (max_val > self._range_b_limits.max)
+                and not (min_val < self._range_b_limits.min)
+                and (max_val > self._range_a_limits.max or min_val < self._range_a_limits.min)
             ):
                 metric_1_violation_time_points.append(timestamp)
             if max_val > self._range_b_limits.max or min_val < self._range_b_limits.min:
@@ -228,17 +229,23 @@ class VoltageMetrics(ReportBase):
             metric_5=vmetric_5,
             metric_6=vmetric_6,
             summary=NodeVoltageMetricsByType.create_summary(
-                vmetric_1, vmetric_2, vmetric_3, vmetric_5, vmetric_6, list(df.columns),
-                len(df), self._resolution, self._range_a_limits, self._range_b_limits,
-                self._moving_window_minutes
-            )
+                vmetric_1,
+                vmetric_2,
+                vmetric_3,
+                vmetric_5,
+                vmetric_6,
+                list(df.columns),
+                len(df),
+                self._resolution,
+                self._range_a_limits,
+                self._range_b_limits,
+                self._moving_window_minutes,
+            ),
         )
 
     @staticmethod
     def get_required_exports(simulation_config):
-        inputs = VoltageMetrics.get_inputs_from_defaults(
-            simulation_config, VoltageMetrics.NAME
-        )
+        inputs = VoltageMetrics.get_inputs_from_defaults(simulation_config, VoltageMetrics.NAME)
         if inputs["store_all_time_points"]:
             return {
                 # TODO: This should use Circuit.AllBusMagPu for performance reasons.
@@ -269,9 +276,7 @@ class VoltageMetrics(ReportBase):
 
     @staticmethod
     def set_required_project_settings(settings):
-        inputs = VoltageMetrics.get_inputs_from_defaults(
-            settings, VoltageMetrics.NAME
-        )
+        inputs = VoltageMetrics.get_inputs_from_defaults(settings, VoltageMetrics.NAME)
         exports = settings.exports
         if inputs["store_all_time_points"] and not exports.export_node_names_by_type:
             exports.export_node_names_by_type = True

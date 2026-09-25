@@ -1,10 +1,10 @@
-
 import os
 
 from loguru import logger
 
 from pydss.reports.reports import ReportBase
 from pydss.utils.utils import dump_data
+
 
 class CapacitorStateChangeReport(ReportBase):
     """Reports the state changes per Capacitor.
@@ -23,9 +23,11 @@ class CapacitorStateChangeReport(ReportBase):
         for scenario in self._results.scenarios:
             scenario_data = {"name": scenario.name, "capacitors": []}
             for capacitor in scenario.list_element_names("Capacitors"):
-                change_count = int(scenario.get_element_property_value(
-                    "Capacitors", "TrackStateChanges", capacitor
-                ))
+                change_count = int(
+                    scenario.get_element_property_value(
+                        "Capacitors", "TrackStateChanges", capacitor
+                    )
+                )
                 changes = {"name": capacitor, "change_count": change_count}
                 scenario_data["capacitors"].append(changes)
             data["scenarios"].append(scenario_data)

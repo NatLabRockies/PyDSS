@@ -15,8 +15,9 @@ organizational, analytical, and co-simulation capabilities. It is built on top o
 Key Features
 ============
 
-- **Custom Control Algorithms** — Define Python-based controllers for any circuit element, executed
-  at each simulation time step. 13 built-in controllers are included.
+- **OpenMDAO controller convergence** — Python controllers and the OpenDSS circuit are coupled in
+  an OpenMDAO nonlinear model and solved together at each simulation time step. 14 built-in
+  controller components are included.
 - **HELICS Co-simulation** — Integrate with external simulators via the
   `HELICS <https://github.com/GMLC-TDC/HELICS>`_ framework for cyber-physical co-simulation studies.
 - **Scenario Management** — Run multiple scenarios on a shared OpenDSS model with independent
@@ -64,7 +65,7 @@ Verify the installation:
 
 .. note::
 
-   PyDSS requires Python 3.9 or later. Python 3.11 is recommended.
+  PyDSS requires Python 3.10 or later. Python 3.11 is recommended.
 
 
 *************
@@ -91,6 +92,7 @@ Additional Documentation
    interfaces
    co-simulation_support
    controllers_overview
+  openmdao_convergence
    reports
    hdf-data-format
 

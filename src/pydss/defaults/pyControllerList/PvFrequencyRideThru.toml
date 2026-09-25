@@ -1,8 +1,5 @@
 ["Generator.pv_1"]
 Category = "test"
-Control1 = "None"
-Control2 = "None"
-Control3 = "None"
 kV = nan
 kVA = 4
 maxKW = 4
@@ -10,7 +7,6 @@ KvarLimit = 1.76
 "%PCutin" = 10
 "%PCutout" = 10
 UcalcMode = "Max"
-Priority = "Equal"
 "Enable PF limit" = false
 pfMin = 0.95
 "Follow standard" = "1547-2018"

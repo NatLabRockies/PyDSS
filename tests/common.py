@@ -1,9 +1,7 @@
-
 import os
 import shutil
 import tarfile
 import zipfile
-import tempfile
 from pathlib import Path
 
 import opendssdirect as dss
@@ -16,31 +14,23 @@ from pydss.utils.utils import dump_data
 
 
 RUN_PROJECT_PATH = os.path.join("tests", "data", "project")
-CUSTOM_EXPORTS_PROJECT_PATH = os.path.join(
-    "tests", "data", "custom_exports_project"
-)
-PV_REPORTS_PROJECT_PATH = os.path.join(
-    "tests", "data", "pv_reports_project"
-)
-PV_REPORTS_PROJECT_STORE_ALL_PATH = os.path.join(
-    "tests", "data", "pv_reports_project_store_all"
-)
+CUSTOM_EXPORTS_PROJECT_PATH = os.path.join("tests", "data", "custom_exports_project")
+PV_REPORTS_PROJECT_PATH = os.path.join("tests", "data", "pv_reports_project")
+PV_REPORTS_PROJECT_STORE_ALL_PATH = os.path.join("tests", "data", "pv_reports_project_store_all")
 AUTO_SNAPSHOT_TIME_POINT_PROJECT_PATH = os.path.join(
     "tests", "data", "auto_snapshot_time_point_project"
 )
 
-EDLIFO_PROJECT_PATH = os.path.join(
-    "tests", "data", "edlifo-project")
+EDLIFO_PROJECT_PATH = os.path.join("tests", "data", "edlifo-project")
 
-DYNAMIC_VOLTAGE_SUPPORT_PATH = os.path.join(
-    "tests", "data", "dynamic_voltage_support_test_project"
-)
+DYNAMIC_VOLTAGE_SUPPORT_PATH = os.path.join("tests", "data", "dynamic_voltage_support_test_project")
 
 SCENARIO_NAME = "scenario1"
 
 
 class FakeElement:
     """Fake that behaves like an OpenDSS element"""
+
     def __init__(self, full_name, name):
         self.FullName = full_name
         self.Name = name
@@ -72,25 +62,25 @@ def cleanup_project():
             os.chdir(project_path)
             if os.path.exists(PROJECT_TAR):
                 with tarfile.open(PROJECT_TAR) as tar:
+
                     def is_within_directory(directory, target):
-                        
+
                         abs_directory = os.path.abspath(directory)
                         abs_target = os.path.abspath(target)
-                    
+
                         prefix = os.path.commonprefix([abs_directory, abs_target])
-                        
+
                         return prefix == abs_directory
-                    
+
                     def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-                    
+
                         for member in tar.getmembers():
                             member_path = os.path.join(path, member.name)
                             if not is_within_directory(path, member_path):
                                 raise Exception("Attempted Path Traversal in Tar File")
-                    
-                        tar.extractall(path, members, numeric_owner=numeric_owner) 
-                        
-                    
+
+                        tar.extractall(path, members, numeric_owner=numeric_owner)
+
                     safe_extract(tar)
                 os.remove(PROJECT_TAR)
                 pass

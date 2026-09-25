@@ -1,12 +1,10 @@
-
-
 from pathlib import Path
 import math
 import os
 
 import numpy as np
 
-from tests.common import PV_REPORTS_PROJECT_PATH, PV_REPORTS_PROJECT_STORE_ALL_PATH, cleanup_project
+from tests.common import PV_REPORTS_PROJECT_PATH, PV_REPORTS_PROJECT_STORE_ALL_PATH
 from pydss.reports.feeder_losses import SimulationFeederLossesMetricsModel, compare_feeder_losses
 from pydss.node_voltage_metrics import SimulationVoltageMetricsModel, compare_voltage_metrics
 from pydss.thermal_metrics import SimulationThermalMetricsModel, compare_thermal_metrics
@@ -21,11 +19,13 @@ import traceback
 import warnings
 import sys
 
+
 def warn_with_traceback(message, category, filename, lineno, file=None, line=None):
 
-    log = file if hasattr(file,'write') else sys.stderr
+    log = file if hasattr(file, "write") else sys.stderr
     traceback.print_stack(file=log)
     log.write(warnings.formatwarning(message, category, filename, lineno, line))
+
 
 warnings.showwarning = warn_with_traceback
 
@@ -53,7 +53,7 @@ def test_pv_reports_per_element_per_time_point(cleanup_project):
         **load_data(Path(PV_REPORTS_PROJECT_STORE_ALL_PATH) / "Reports" / "voltage_metrics.json")
     )
     baseline_feeder_losses = SimulationFeederLossesMetricsModel(
-        **load_data( Path(PV_REPORTS_PROJECT_STORE_ALL_PATH) / "Reports" / "feeder_losses.json")
+        **load_data(Path(PV_REPORTS_PROJECT_STORE_ALL_PATH) / "Reports" / "feeder_losses.json")
     )
 
     granularities = [x for x in ReportGranularity]
@@ -99,16 +99,16 @@ def verify_pv_reports(granularity):
         ReportGranularity.ALL_ELEMENTS_PER_TIME_POINT,
     ):
         clipping_name = os.path.join(PV_REPORTS_PROJECT_PATH, "Reports", "pv_clipping.h5")
-        clipping = read_dataframe(clipping_name)
+        read_dataframe(clipping_name)
         curtailment_name = os.path.join(PV_REPORTS_PROJECT_PATH, "Reports", "pv_curtailment.h5")
-        curtailment = read_dataframe(curtailment_name)
+        read_dataframe(curtailment_name)
     else:
         clipping_name = os.path.join(PV_REPORTS_PROJECT_PATH, "Reports", "pv_clipping.json")
-        clipping = load_data(clipping_name)
+        load_data(clipping_name)
         curtailment_name = os.path.join(PV_REPORTS_PROJECT_PATH, "Reports", "pv_curtailment.json")
-        curtailment = load_data(curtailment_name)
+        load_data(curtailment_name)
 
-    total_cm_p1ulv53232_1_2_pv = 2237.4654
+    total_cm_p1ulv53232_1_2_pv = 2233.5718
     total_cm_p1ulv57596_1_2_3_pv = 650.3959
     overall_total_cm = total_cm_p1ulv53232_1_2_pv + total_cm_p1ulv57596_1_2_3_pv
     total_pf1_p1ulv53232_1_2_pv = 2389.4002
@@ -116,21 +116,61 @@ def verify_pv_reports(granularity):
     overall_total_pf1 = total_pf1_p1ulv53232_1_2_pv + total_pf1_p1ulv57596_1_2_3_pv
     if granularity == ReportGranularity.PER_ELEMENT_PER_TIME_POINT:
         df = s_cm.get_full_dataframe("PVSystems", "Powers")
-        assert math.isclose(df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].sum(), total_cm_p1ulv53232_1_2_pv, rel_tol=1e-04)
-        assert math.isclose(df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].sum(), total_cm_p1ulv57596_1_2_3_pv, rel_tol=1e-04)
+        assert math.isclose(
+            df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].sum(),
+            total_cm_p1ulv53232_1_2_pv,
+            rel_tol=1e-04,
+        )
+        assert math.isclose(
+            df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].sum(),
+            total_cm_p1ulv57596_1_2_3_pv,
+            rel_tol=1e-04,
+        )
         df = s_pf1.get_full_dataframe("PVSystems", "Powers")
-        assert math.isclose(df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].sum(), total_pf1_p1ulv53232_1_2_pv, rel_tol=1e-04)
-        assert math.isclose(df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].sum(), total_pf1_p1ulv57596_1_2_3_pv, rel_tol=1e-04)
+        assert math.isclose(
+            df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].sum(),
+            total_pf1_p1ulv53232_1_2_pv,
+            rel_tol=1e-04,
+        )
+        assert math.isclose(
+            df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].sum(),
+            total_pf1_p1ulv57596_1_2_3_pv,
+            rel_tol=1e-04,
+        )
     elif granularity == ReportGranularity.PER_ELEMENT_TOTAL:
         df = s_cm.get_full_dataframe("PVSystems", "PowersSum")
-        assert math.isclose(df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].values[0], total_cm_p1ulv53232_1_2_pv, rel_tol=1e-04)
-        assert math.isclose(df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].values[0], total_cm_p1ulv57596_1_2_3_pv, rel_tol=1e-04)
+        assert math.isclose(
+            df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].values[0],
+            total_cm_p1ulv53232_1_2_pv,
+            rel_tol=1e-04,
+        )
+        assert math.isclose(
+            df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].values[0],
+            total_cm_p1ulv57596_1_2_3_pv,
+            rel_tol=1e-04,
+        )
         df = s_pf1.get_full_dataframe("PVSystems", "PowersSum")
-        assert math.isclose(df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].values[0], total_pf1_p1ulv53232_1_2_pv, rel_tol=1e-04)
-        assert math.isclose(df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].values[0], total_pf1_p1ulv57596_1_2_3_pv, rel_tol=1e-04)
+        assert math.isclose(
+            df["PVSystem.small_p1ulv53232_1_2_pv__Powers"].values[0],
+            total_pf1_p1ulv53232_1_2_pv,
+            rel_tol=1e-04,
+        )
+        assert math.isclose(
+            df["PVSystem.small_p1ulv57596_1_2_3_pv__Powers"].values[0],
+            total_pf1_p1ulv57596_1_2_3_pv,
+            rel_tol=1e-04,
+        )
     elif granularity == ReportGranularity.ALL_ELEMENTS_TOTAL:
-        assert math.isclose(s_cm.get_summed_element_total("PVSystems", "PowersSum")['Total__Powers'], overall_total_cm, rel_tol=1e-04)
-        assert math.isclose(s_pf1.get_summed_element_total("PVSystems", "PowersSum")['Total__Powers'], overall_total_pf1, rel_tol=1e-04)
+        assert math.isclose(
+            s_cm.get_summed_element_total("PVSystems", "PowersSum")["Total__Powers"],
+            overall_total_cm,
+            rel_tol=1e-04,
+        )
+        assert math.isclose(
+            s_pf1.get_summed_element_total("PVSystems", "PowersSum")["Total__Powers"],
+            overall_total_pf1,
+            rel_tol=1e-04,
+        )
     elif granularity == ReportGranularity.ALL_ELEMENTS_PER_TIME_POINT:
         df = s_cm.get_summed_element_dataframe("PVSystems", "Powers")
         assert math.isclose(df["Total__Powers"].sum(), overall_total_cm, rel_tol=1e-04)

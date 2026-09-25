@@ -17,7 +17,8 @@ The HELICS interface for PyDSS is built to reduce the complexity of setting up l
 co-simulation scenarios. The user defines publications and subscriptions to exchange data
 with external federates.
 
-A minimal HELICS example is availble in the ``examples`` folder (top directory of the repository). Enabling the HELICS interface requires user to define additional parammeters in the scenario TOML file.
+A minimal HELICS example is available in the ``examples`` folder at the repository root. Enabling
+the HELICS interface requires additional parameters in the scenario TOML file.
 
 
 Interface Overview
@@ -137,7 +138,7 @@ The Socket Interface
 --------------------
 
 The socket interface is implemented as a PyDSS controller
-(:py:class:`pydss.pyControllers.Controllers.SocketController.SocketController`).
+(:py:class:`pydss.py_controllers.controllers.socket_controller.SocketController`).
 It is well suited for situations where an existing external controller needs to be integrated
 into the simulation environment — for example, integrating a controller for thermostatically
 controlled loads implemented in Modelica or Python. This allows integration without modifying

@@ -21,9 +21,11 @@ class RegControlTapNumberChangeReport(ReportBase):
         for scenario in self._results.scenarios:
             scenario_data = {"name": scenario.name, "reg_controls": []}
             for reg_control in scenario.list_element_names("RegControls"):
-                change_count = int(scenario.get_element_property_value(
-                    "RegControls", "TrackTapNumberChanges", reg_control
-                ))
+                change_count = int(
+                    scenario.get_element_property_value(
+                        "RegControls", "TrackTapNumberChanges", reg_control
+                    )
+                )
                 changes = {"name": reg_control, "change_count": change_count}
                 scenario_data["reg_controls"].append(changes)
             data["scenarios"].append(scenario_data)

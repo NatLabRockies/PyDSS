@@ -1,7 +1,7 @@
-pydss.api.src.app.DataWriter
+pydss.api.src.app.data_writer
 ============================
 
-.. automodule:: pydss.api.src.app.DataWriter
+.. automodule:: pydss.api.src.app.data_writer
 
    
    .. rubric:: Classes

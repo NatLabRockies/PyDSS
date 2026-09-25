@@ -8,5 +8,5 @@ pydss.api.src.web.create\_schema
 
    .. autosummary::
    
-      getJSONschema
+      get_json_schema
    

@@ -1,8 +1,5 @@
 import time
 import helics as h
-from math import pi
-import random
-import time
 
 initstring = "-f 2 --name=mainbroker"
 fedinitstring = "--broker=mainbroker --federates=1"
@@ -34,7 +31,7 @@ h.helicsFederateInfoSetCoreInitString(fedinfo, fedinitstring)
 
 # Set one second message interval #
 h.helicsFederateInfoSetTimeProperty(fedinfo, h.helics_property_time_delta, deltat)
-#h.helicsFederateInfoSetIntegerProperty(fedinfo, h.helics_property_int_log_level, 20)
+# h.helicsFederateInfoSetIntegerProperty(fedinfo, h.helics_property_int_log_level, 20)
 # Create value federate #
 vfed = h.helicsCreateValueFederate("Test Federate", fedinfo)
 
@@ -43,22 +40,20 @@ pub1 = h.helicsFederateRegisterGlobalTypePublication(vfed, "test.load1.power", "
 pub2 = h.helicsFederateRegisterGlobalTypePublication(vfed, "test.feederhead.voltage", "double", "")
 pub3 = h.helicsFederateRegisterGlobalTypePublication(vfed, "test.feederhead.angle", "double", "")
 sub1 = h.helicsFederateRegisterSubscription(vfed, "pydss.Circuit.heco19021.TotalPower", "")
-#h.helicsInputSetMinimumChange(sub1, 0.1)
+# h.helicsInputSetMinimumChange(sub1, 0.1)
 
 # Enter execution mode #
 h.helicsFederateEnterExecutingMode(vfed)
 
 for t in range(1, 30):
     time_requested = t * 60
-    #currenttime = h.helicsFederateRequestTime(vfed, time_requested)
+    # currenttime = h.helicsFederateRequestTime(vfed, time_requested)
     iteration_state = h.helics_iteration_result_iterating
     for i in range(20):
         currenttime, iteration_state = h.helicsFederateRequestTimeIterative(
-            vfed,
-            time_requested,
-            h.helics_iteration_request_iterate_if_needed
+            vfed, time_requested, h.helics_iteration_request_iterate_if_needed
         )
-        h.helicsPublicationPublishDouble(pub1, 5.0 + 1. / (1.0 + i))
+        h.helicsPublicationPublishDouble(pub1, 5.0 + 1.0 / (1.0 + i))
         h.helicsPublicationPublishDouble(pub2, 1.0)
         h.helicsPublicationPublishDouble(pub3, 120.0)
         value = h.helicsInputGetVector(sub1)

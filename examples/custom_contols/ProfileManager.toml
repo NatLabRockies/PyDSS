@@ -9,7 +9,6 @@
 "Max Control Iterations" = 50
 "Error tolerance" = 0.001
 "Control mode" = "Static"
-"Disable pydss controllers" = false
 "Simulation Type" = "QSTS"
 "Project Path" = "C:\\Users\\alatif\\Desktop\\pydss_2.0\\pydss_src\\examples"
 "Active Project" = "custom_contols"

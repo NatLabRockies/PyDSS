@@ -1,9 +1,6 @@
 ["Storage.1234"]
 VoltageMeaElem = "storagebus"
 PowerMeaElem = "Line.sw0"
-Control1 = "PS"
-Control2 = "None"
-Control3 = "None"
 BaseLoadLim = 0
 ExpWindowStart = 18:00:00
 ExpWindowEnd = 08:00:00

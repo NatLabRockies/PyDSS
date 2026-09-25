@@ -1,4 +1,3 @@
-
 import copy
 import abc
 
@@ -15,7 +14,10 @@ class StorageFilterBase(abc.ABC):
     Subclasses can perform custom filtering based on StoreValuesType.
 
     """
-    def __init__(self, hdf_store, path, prop, num_steps, max_chunk_bytes, values, elem_names, **kwargs):
+
+    def __init__(
+        self, hdf_store, path, prop, num_steps, max_chunk_bytes, values, elem_names, **kwargs
+    ):
         self._prop = prop
         self._container = self.make_container(
             hdf_store,
@@ -95,6 +97,7 @@ class StorageChangeCount(StorageFilterBase):
 
 class StorageMin(StorageFilterBase):
     """Stores the min value across time points."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._min = None
@@ -115,13 +118,13 @@ class StorageMin(StorageFilterBase):
         else:
             for i, new_val in enumerate(values):
                 cur_val = self._min[i]
-                if (np.isnan(cur_val.value) and not np.isnan(new_val.value)) or \
-                        new_val < cur_val:
+                if (np.isnan(cur_val.value) and not np.isnan(new_val.value)) or new_val < cur_val:
                     self._min[i].set_value(new_val.value)
 
 
 class StorageMax(StorageFilterBase):
     """Stores the max value across time points."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._max = None
@@ -142,13 +145,13 @@ class StorageMax(StorageFilterBase):
         else:
             for i, new_val in enumerate(values):
                 cur_val = self._max[i]
-                if (np.isnan(cur_val.value) and not np.isnan(new_val.value)) or \
-                        new_val > cur_val:
+                if (np.isnan(cur_val.value) and not np.isnan(new_val.value)) or new_val > cur_val:
                     self._max[i].set_value(new_val.value)
 
 
 class StorageMovingAverage(StorageFilterBase):
     """Stores a moving average across time points."""
+
     def __init__(self, *args, **kwargs):
         """Constructor for StorageMovingAverage.
 
@@ -188,6 +191,7 @@ class StorageMovingAverage(StorageFilterBase):
 
 class StorageMovingAverageMax(StorageMax):
     """Stores the max value of a moving average across time points."""
+
     def __init__(self, *args, **kwargs):
         """Constructor for StorageMovingAverageMax.
 
@@ -220,6 +224,7 @@ class StorageMovingAverageMax(StorageMax):
 
 class StorageSum(StorageFilterBase):
     """Keeps a running sum of all values and records the total."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._sum = None
@@ -250,7 +255,7 @@ def _make_circular_buffers(num_elements, prop, window_sizes):
 
 STORAGE_TYPE_MAP = {
     StoreValuesType.ALL: StorageAll,
-    #StoreValuesType.CHANGE_COUNT: StorageChangeCount,
+    # StoreValuesType.CHANGE_COUNT: StorageChangeCount,
     StoreValuesType.MAX: StorageMax,
     StoreValuesType.MIN: StorageMin,
     StoreValuesType.MOVING_AVERAGE: StorageMovingAverage,

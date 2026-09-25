@@ -9,7 +9,6 @@ from pydss.utils.utils import make_timestamps
 from pydss.common import DatasetPropertyType
 
 
-
 KiB = 1024
 MiB = KiB * KiB
 GiB = MiB * MiB
@@ -23,20 +22,31 @@ GiB = MiB * MiB
 # entire chunk to be read.
 DEFAULT_MAX_CHUNK_BYTES = 1 * MiB
 
+
 class DatasetBuffer:
     """Provides a write buffer to an HDF dataset to increase performance.
     Users must call flush_data before the object goes out of scope to ensure
     that all data is flushed.
 
     """
+
     # TODO add support for context manager, though pydss wouldn't be able to
     # take advantage in its current implementation.
 
     def __init__(
-            self, hdf_store, path, max_size, dtype, columns, scaleoffset=None,
-            max_chunk_bytes=None, attributes=None, names=None,
-            column_ranges_per_name=None, data=None
-        ):
+        self,
+        hdf_store,
+        path,
+        max_size,
+        dtype,
+        columns,
+        scaleoffset=None,
+        max_chunk_bytes=None,
+        attributes=None,
+        names=None,
+        column_ranges_per_name=None,
+        data=None,
+    ):
         if max_chunk_bytes is None:
             max_chunk_bytes = DEFAULT_MAX_CHUNK_BYTES
         self._buf_index = 0
@@ -70,7 +80,7 @@ class DatasetBuffer:
             shuffle=True,
             maxshape=[None for _ in range(dim)],
             # Does not preserve NaN, so don't use it.
-            #scaleoffset=scaleoffset,
+            # scaleoffset=scaleoffset,
         )
 
         # Columns, names, and column_ranges_per_name can't be stored as
@@ -80,7 +90,7 @@ class DatasetBuffer:
         column_dataset = self._hdf_store.create_dataset(
             name=column_dataset_path,
             data=np.array(columns, dtype="S"),
-            maxshape=(None, ),
+            maxshape=(None,),
         )
         column_dataset.attrs["type"] = DatasetPropertyType.METADATA.value
         self._dataset.attrs["column_dataset_path"] = column_dataset_path
@@ -88,9 +98,9 @@ class DatasetBuffer:
         if names is not None:
             name_dataset_path = path + "Names"
             name_dataset = self._hdf_store.create_dataset(
-                name = name_dataset_path,
-                data = np.array(names, dtype="S"),
-                maxshape=(None, ),
+                name=name_dataset_path,
+                data=np.array(names, dtype="S"),
+                maxshape=(None,),
             )
             name_dataset.attrs["type"] = DatasetPropertyType.METADATA.value
             self._dataset.attrs["name_dataset_path"] = name_dataset_path
@@ -115,12 +125,12 @@ class DatasetBuffer:
             for attr, val in attributes.items():
                 self._dataset.attrs[attr] = val
 
-        logger.debug("Created DatasetBuffer path=%s shape=%s chunks=%s",
-                     path, shape, chunks)
+        logger.debug("Created DatasetBuffer path=%s shape=%s chunks=%s", path, shape, chunks)
 
     def __del__(self):
-        assert self._buf_index == 0, \
+        assert self._buf_index == 0, (
             f"DatasetBuffer destructed with data in memory: {self._dataset.name}"
+        )
 
     def flush_data(self):
         """Flush the data in the temporary buffer to storage."""
@@ -129,14 +139,16 @@ class DatasetBuffer:
             return
 
         new_index = self._dataset_index + length
-        
+
         if new_index > self._dataset.shape[0]:
             new_dimensions = (new_index, self._dataset.shape[1])
             self._dataset.resize(new_dimensions)
-            logger.warning(f"result index {new_index} exceed dataset dimension {self._dataset.shape[0]} for dataset {self._dataset.name}. Resizig dataset to {new_dimensions}")
-  
-        self._dataset[self._dataset_index:new_index] = self._buf[0:length]
-        
+            logger.warning(
+                f"result index {new_index} exceed dataset dimension {self._dataset.shape[0]} for dataset {self._dataset.name}. Resizig dataset to {new_dimensions}"
+            )
+
+        self._dataset[self._dataset_index : new_index] = self._buf[0:length]
+
         self._buf_index = 0
         self._dataset_index = new_index
         self._dataset.attrs["length"] = new_index
@@ -164,25 +176,20 @@ class DatasetBuffer:
     def write_data(self, values):
         """Write the data to the dataset."""
         new_index = self._dataset_index + len(values)
-        self._dataset[self._dataset_index:new_index] = values
+        self._dataset[self._dataset_index : new_index] = values
         self._dataset_index = new_index
         self._dataset.attrs["length"] = new_index
 
     @staticmethod
-    def compute_chunk_count(
-            num_columns,
-            max_size,
-            dtype,
-            max_chunk_bytes=DEFAULT_MAX_CHUNK_BYTES
-        ):
+    def compute_chunk_count(num_columns, max_size, dtype, max_chunk_bytes=DEFAULT_MAX_CHUNK_BYTES):
         assert max_size > 0, f"max_size={max_size}"
         tmp = np.empty((1, num_columns), dtype=dtype)
         size_row = tmp.size * tmp.itemsize
         chunk_count = min(int(max_chunk_bytes / size_row), max_size)
         if chunk_count == 0:
             raise InvalidConfiguration(
-                f"HDF Max Chunk Bytes is smaller than the size of a row. Please increase it. " \
-                f"max_chunk_bytes={max_chunk_bytes} num_columns={num_columns} " \
+                f"HDF Max Chunk Bytes is smaller than the size of a row. Please increase it. "
+                f"max_chunk_bytes={max_chunk_bytes} num_columns={num_columns} "
                 f"size_row={size_row}"
             )
 

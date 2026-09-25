@@ -27,7 +27,7 @@ when compared to the complete motor stall model
 Controller model
 ----------------
 
-.. autopydantic_model:: pydss.pyControllers.models.MotorStallSimpleSettings
+.. autopydantic_model:: pydss.py_controllers.models.MotorStallSimpleSettings
 
 Usage example
 -------------

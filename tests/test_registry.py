@@ -2,12 +2,11 @@
 
 import copy
 import os
-import tempfile
 from pathlib import Path
 
 import pytest
 
-from pydss.common import ControllerType, CONTROLLER_TYPES
+from pydss.common import ControllerType
 from pydss.registry import Registry, DEFAULT_REGISTRY
 
 
@@ -54,7 +53,9 @@ def test_registry__register_controllers(registry_fixture):
 def test_registry__is_controller_registered(registry_fixture):
     registry = Registry(registry_filename=TEST_FILENAME)
     registry.reset_defaults()
-    assert registry.is_controller_registered(CTYPE, DEFAULT_REGISTRY["Controllers"][CTYPE][0]["name"])
+    assert registry.is_controller_registered(
+        CTYPE, DEFAULT_REGISTRY["Controllers"][CTYPE][0]["name"]
+    )
 
 
 def test_registry__reset_defaults(registry_fixture):

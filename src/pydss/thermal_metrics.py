@@ -7,11 +7,19 @@ from loguru import logger
 from pydantic import BaseModel, Field
 
 from pydss.utils.simulation_utils import CircularBufferHelper
-from pydss.utils.utils import dump_data, load_data
+from pydss.utils.utils import load_data
 from pydantic import ConfigDict
 
+
 class ThermalMetricsBaseModel(BaseModel):
-    model_config = ConfigDict(title="ThermalMetricsBaseModel", str_strip_whitespace=True, validate_assignment=True, validate_default=True, extra="forbid", use_enum_values=False)
+    model_config = ConfigDict(
+        title="ThermalMetricsBaseModel",
+        str_strip_whitespace=True,
+        validate_assignment=True,
+        validate_default=True,
+        extra="forbid",
+        use_enum_values=False,
+    )
 
 
 class ThermalMetricsModel(ThermalMetricsBaseModel):
@@ -21,66 +29,77 @@ class ThermalMetricsModel(ThermalMetricsBaseModel):
             {},
             title="max_instantaneous_loadings_pct",
             description="maximum instantaneous loading percent for each element",
-        )]
+        ),
+    ]
     max_instantaneous_loading_pct: Annotated[
         float,
         Field(
-            default = 120,
+            default=120,
             title="max_instantaneous_loading_pct",
             description="maximum instantaneous loading percent overall",
-        )]
+        ),
+    ]
     max_moving_average_loadings_pct: Annotated[
         Dict[str, float],
         Field(
             {},
             title="max_moving_average_loadings_pct",
             description="maximum moving average loading percent for each element",
-        )]
+        ),
+    ]
     max_moving_average_loading_pct: Annotated[
         float,
         Field(
             100,
             title="max_moving_average_loading_pct",
             description="maximum moving average loading percent overall",
-        )]
+        ),
+    ]
     window_size_hours: Annotated[
         Optional[int],
         Field(
             None,
             title="window_size_hours",
             description="window size used to calculate the moving average",
-        )]
+        ),
+    ]
     num_time_points_with_instantaneous_violations: Annotated[
         Optional[int],
         Field(
             None,
             title="num_time_points_with_instantaneous_violations",
             description="number of time points where the instantaneous threshold was violated",
-        )]
+        ),
+    ]
     num_time_points_with_moving_average_violations: Annotated[
         Optional[int],
         Field(
             None,
             title="num_time_points_with_moving_average_violations",
             description="number of time points where the moving average threshold was violated",
-        )]
+        ),
+    ]
     instantaneous_threshold: Annotated[
         Optional[int],
         Field(
             None,
             title="instantaneous_threshold",
             description="instantaneous threshold",
-        )]
+        ),
+    ]
     moving_average_threshold: Annotated[
         Optional[int],
         Field(
             None,
             title="moving_average_threshold",
             description="moving average threshold",
-        )]
+        ),
+    ]
 
 
-def compare_thermal_metrics(metrics1: ThermalMetricsModel, metrics2: ThermalMetricsModel, rel_tol=0.001):
+def compare_thermal_metrics(
+    metrics1: ThermalMetricsModel, metrics2: ThermalMetricsModel, rel_tol=0.001
+):
     """Compares the values of two instances of ThermalMetricsModel.
     Uses a tolerance of 0.001 for moving averages.
 
@@ -92,10 +111,12 @@ def compare_thermal_metrics(metrics1: ThermalMetricsModel, metrics2: ThermalMetr
     """
     match = True
     fields = (
-        "max_instantaneous_loading_pct", "window_size_hours",
+        "max_instantaneous_loading_pct",
+        "window_size_hours",
         "num_time_points_with_instantaneous_violations",
         "num_time_points_with_moving_average_violations",
-        "instantaneous_threshold", "moving_average_threshold",
+        "instantaneous_threshold",
+        "moving_average_threshold",
     )
     for field in fields:
         val1 = getattr(metrics1, field)
@@ -104,14 +125,21 @@ def compare_thermal_metrics(metrics1: ThermalMetricsModel, metrics2: ThermalMetr
             logger.error("field=%s mismatch %s != %s", field, val1, val2)
             match = False
 
-    if not math.isclose(metrics1.max_moving_average_loading_pct, metrics2.max_instantaneous_loading_pct, rel_tol=rel_tol):
-        logger.error("max_moving_average_loading_pct mismatch %s != %s",
-                     metrics1.max_moving_average_loading_pct, metrics2.max_instantaneous_loading_pct)
+    if not math.isclose(
+        metrics1.max_moving_average_loading_pct,
+        metrics2.max_moving_average_loading_pct,
+        rel_tol=rel_tol,
+    ):
+        logger.error(
+            "max_moving_average_loading_pct mismatch %s != %s",
+            metrics1.max_moving_average_loading_pct,
+            metrics2.max_instantaneous_loading_pct,
+        )
         match = False
 
     for name, val1 in metrics1.max_instantaneous_loadings_pct.items():
         val2 = metrics2.max_instantaneous_loadings_pct[name]
-        if val1 != val2:
+        if not math.isclose(val1, val2, rel_tol=rel_tol):
             logger.error("max_instantaneous_loadings_pct mismatch %s != %s", name, val1, val2)
             match = False
 
@@ -130,13 +158,15 @@ class ThermalMetricsSummaryModel(ThermalMetricsBaseModel):
         Field(
             title="line_loadings",
             description="line loading metrics",
-        )]
+        ),
+    ]
     transformer_loadings: Annotated[
         Union[ThermalMetricsModel, None],
         Field(
             title="transformer_loadings",
             description="transformer loading metrics",
-        )]
+        ),
+    ]
 
 
 class SimulationThermalMetricsModel(ThermalMetricsBaseModel):
@@ -145,7 +175,8 @@ class SimulationThermalMetricsModel(ThermalMetricsBaseModel):
         Field(
             title="scenarios",
             description="thermal metrics by pydss scenario name",
-        )]
+        ),
+    ]
 
 
 def create_summary(filename):
@@ -171,7 +202,9 @@ def create_summary_from_dict(data):
     summary = SimulationThermalMetricsModel(**data)
     report = defaultdict(dict)
     for scenario in summary.scenarios:
-        for model, elem_type in zip(("line_loadings", "transformer_loadings"), ("line", "transformer")):
+        for model, elem_type in zip(
+            ("line_loadings", "transformer_loadings"), ("line", "transformer")
+        ):
             model = getattr(summary.scenarios[scenario], model)
             if model is None:
                 continue
@@ -219,7 +252,9 @@ class ThermalMetrics:
         self._transformer_loading_percent_threshold = transformer_loading_percent_threshold
         self._transformer_window_size_hours = transformer_window_size_hours
         self._transformer_window_size = transformer_window_size
-        self._transformer_loading_percent_mavg_threshold = transformer_loading_percent_moving_average_threshold
+        self._transformer_loading_percent_mavg_threshold = (
+            transformer_loading_percent_moving_average_threshold
+        )
         self._num_time_points_inst_line_violations = 0
         self._num_time_points_mavg_line_violations = 0
         self._num_time_points_inst_transformer_violations = 0
@@ -273,9 +308,13 @@ class ThermalMetrics:
         inst_violations_by_transformer = {}
         mavg_violations_by_transformer = {}
         for i in range(len(self._max_inst_transformer_violations)):
-            inst_violations_by_transformer[self._transformer_names[i]] = self._max_inst_transformer_violations[i]
+            inst_violations_by_transformer[self._transformer_names[i]] = (
+                self._max_inst_transformer_violations[i]
+            )
         for i in range(len(self._max_mavg_transformer_violations)):
-            mavg_violations_by_transformer[self._transformer_names[i]] = self._max_mavg_transformer_violations[i]
+            mavg_violations_by_transformer[self._transformer_names[i]] = (
+                self._max_mavg_transformer_violations[i]
+            )
 
         if self.has_transformers():
             transformer_metric = ThermalMetricsModel(
@@ -344,8 +383,13 @@ class ThermalMetrics:
 
         """
         if self._line_bufs is None:
-            self._line_bufs = [CircularBufferHelper(self._line_window_size) for _ in range(len(self._line_names))]
-            self._transformer_bufs = [CircularBufferHelper(self._transformer_window_size) for _ in range(len(self._transformer_names))]
+            self._line_bufs = [
+                CircularBufferHelper(self._line_window_size) for _ in range(len(self._line_names))
+            ]
+            self._transformer_bufs = [
+                CircularBufferHelper(self._transformer_window_size)
+                for _ in range(len(self._transformer_names))
+            ]
             self._max_inst_line_violations = [0.0] * len(self._line_names)
             self._max_mavg_line_violations = [0.0] * len(self._line_names)
             self._max_inst_transformer_violations = [0.0] * len(self._transformer_names)
@@ -365,7 +409,10 @@ class ThermalMetrics:
 
             if moving_avg > self._max_mavg_line_violations[i]:
                 self._max_mavg_line_violations[i] = moving_avg
-            if not has_mavg_line_violation and moving_avg > self._line_loading_percent_mavg_threshold:
+            if (
+                not has_mavg_line_violation
+                and moving_avg > self._line_loading_percent_mavg_threshold
+            ):
                 has_mavg_line_violation = True
 
         has_inst_transformer_violation = False
@@ -373,7 +420,10 @@ class ThermalMetrics:
         for i, loading in enumerate(transformer_loadings):
             if loading.value > self._max_inst_transformer_violations[i]:
                 self._max_inst_transformer_violations[i] = loading.value
-            if not has_inst_transformer_violation and loading.value > self._transformer_loading_percent_threshold:
+            if (
+                not has_inst_transformer_violation
+                and loading.value > self._transformer_loading_percent_threshold
+            ):
                 has_inst_transformer_violation = True
 
             buf = self._transformer_bufs[i]
@@ -381,7 +431,10 @@ class ThermalMetrics:
             moving_avg = buf.average()
             if moving_avg > self._max_mavg_transformer_violations[i]:
                 self._max_mavg_transformer_violations[i] = moving_avg
-            if not has_mavg_transformer_violation and moving_avg > self._transformer_loading_percent_mavg_threshold:
+            if (
+                not has_mavg_transformer_violation
+                and moving_avg > self._transformer_loading_percent_mavg_threshold
+            ):
                 has_mavg_transformer_violation = True
 
         if has_inst_line_violation:

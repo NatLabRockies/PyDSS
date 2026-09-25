@@ -1,9 +1,7 @@
-
 import abc
 import os
 import re
 
-from loguru import logger
 import numpy as np
 
 from pydss.common import DatasetPropertyType, INTEGER_NAN
@@ -12,7 +10,6 @@ from pydss.exceptions import InvalidParameter, InvalidConfiguration
 
 
 class ValueStorageBase(abc.ABC):
-
     DELIMITER = "__"
 
     def __init__(self):
@@ -220,10 +217,11 @@ class ValueStorageBase(abc.ABC):
 
 
 class ValueByList(ValueStorageBase):
-    """"Stores a list of lists of numbers by an arbitrary suffix. This is a generic method to handle lists returned from
+    """ "Stores a list of lists of numbers by an arbitrary suffix. This is a generic method to handle lists returned from
     a function call. An example would be returned values "taps" function for transformer elements. The class can be
     used for any methods that return a list.
     """
+
     def __init__(self, name, prop, values, label_suffixes):
         """Constructor for ValueByLabel
 
@@ -245,8 +243,9 @@ class ValueByList(ValueStorageBase):
         self._labels = []
         self._value_type = None
         self._value = []
-        assert (isinstance(values, list) and len(values) == len(label_suffixes)), \
+        assert isinstance(values, list) and len(values) == len(label_suffixes), (
             '"values" and "label_suffixes" should be lists of equal lengths'
+        )
         for val, lab_suf in zip(values, label_suffixes):
             label = prop + self.DELIMITER + lab_suf
             self._labels.append(label)
@@ -269,9 +268,7 @@ class ValueByList(ValueStorageBase):
         return np.isnan(self._value[0])
 
     def make_columns(self):
-        return [
-            self.DELIMITER.join((self._name, f"{x}")) for x in self._labels
-        ]
+        return [self.DELIMITER.join((self._name, f"{x}")) for x in self._labels]
 
     @property
     def num_columns(self):
@@ -313,13 +310,14 @@ class ValueByList(ValueStorageBase):
 
 class ValueByNumber(ValueStorageBase):
     """Stores a list of numbers for an element/property."""
+
     def __init__(self, name, prop, value):
         super().__init__()
         assert not isinstance(value, list), str(value)
         self._name = name
         self._prop = prop
         self._value_type = type(value)
-        if self._value_type == str:
+        if self._value_type is str:
             raise InvalidConfiguration(
                 f"Data export feature does not support strings: name={name} prop={prop} value={value}"
             )
@@ -379,7 +377,8 @@ class ValueByLabel(ValueStorageBase):
     calls like Currents, currentMagAng where every two consecutive values in the returned list are representing one
     quantity. The class differentiates between complex and mag / angle representation and stores the values appropriately
     """
-    def __init__(self, name, prop, value, Nodes, is_complex, units):
+
+    def __init__(self, name, prop, value, nodes, is_complex, units):
         """Constructor for ValueByLabel
 
         Parameters
@@ -396,28 +395,28 @@ class ValueByLabel(ValueStorageBase):
         """
         super().__init__()
         phs = {
-            1: 'A',
-            2: 'B',
-            3: 'C',
-            0: 'N',
+            1: "A",
+            2: "B",
+            3: "C",
+            0: "N",
         }
 
         self._name = name
         self._prop = prop
-        self._nodes = Nodes
+        self._nodes = nodes
         self._labels = []
         self._value = []
         self._value_type = complex if is_complex else float
         self._is_complex = is_complex
 
         n = 2
-        m = int(len(value) / (len(Nodes)*n))
+        m = int(len(value) / (len(nodes) * n))
 
         self._m = m
         self._n = n
         self._value_length = len(value)
         value = self._fix_value(value)
-        
+
         # Chunk_list example
         # X = list(range(12)) , nList= 2
         # Y = chunk_list(X, nList) -> [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 11]]
@@ -430,15 +429,15 @@ class ValueByLabel(ValueStorageBase):
         for i, node_val in enumerate(zip(self._nodes, value)):
             node, val = node_val
             for v, x in zip(node, val):
-                label = '{}{}'.format(phs[v], str(i+1))
+                label = "{}{}".format(phs[v], str(i + 1))
                 # Note that the value logic is duplicated in set_value_from_raw
                 if self._is_complex:
                     label += " " + units[0]
                     self._labels.append(label)
                     self._value += [complex(x[0], x[1])]
                 else:
-                    label_mag = label + self.DELIMITER + "mag" + ' ' + units[0]
-                    label_ang = label + self.DELIMITER + "ang" + ' ' + units[1]
+                    label_mag = label + self.DELIMITER + "mag" + " " + units[0]
+                    label_ang = label + self.DELIMITER + "ang" + " " + units[1]
                     self._labels.extend([label_mag, label_ang])
                     self._value += [x[0], x[1]]
 
@@ -456,9 +455,12 @@ class ValueByLabel(ValueStorageBase):
         return self._value
 
     @staticmethod
-    def chunk_list(values, nLists):
+    def chunk_list(values, n_lists):
         # TODO: this breaks for Bus.puVmagAngle in monte carlo example test
-        return  [values[i * nLists:(i + 1) * nLists] for i in range((len(values) + nLists - 1) // nLists)]
+        return [
+            values[i * n_lists : (i + 1) * n_lists]
+            for i in range((len(values) + n_lists - 1) // n_lists)
+        ]
 
     def _fix_value(self, value):
         value = self.chunk_list(value, self._n)
@@ -471,9 +473,7 @@ class ValueByLabel(ValueStorageBase):
         return np.isnan(self._value[0])
 
     def make_columns(self):
-        return [
-            self.DELIMITER.join((self._name, f"{x}")) for x in self._labels
-        ]
+        return [self.DELIMITER.join((self._name, f"{x}")) for x in self._labels]
 
     @property
     def num_columns(self):
@@ -497,10 +497,10 @@ class ValueByLabel(ValueStorageBase):
     def set_value_from_raw(self, value):
         if len(value) != self._value_length:
             value = [np.nan for i in range(self._value_length)]
-        
+
         value = self._fix_value(value)
         self._value.clear()
-        
+
         for i, node_val in enumerate(zip(self._nodes, value)):
             node, val = node_val
             for v, x in zip(node, val):
@@ -508,6 +508,7 @@ class ValueByLabel(ValueStorageBase):
                     self._value += [complex(x[0], x[1])]
                 else:
                     self._value += [x[0], x[1]]
+
     @property
     def value_type(self):
         return self._value_type
@@ -516,8 +517,17 @@ class ValueByLabel(ValueStorageBase):
 class ValueContainer:
     """Container for a sequence of instances of ValueStorageBase."""
 
-    def __init__(self, values, hdf_store, path, max_size, elem_names,
-                 dataset_property_type, max_chunk_bytes=None, store_time_step=False):
+    def __init__(
+        self,
+        values,
+        hdf_store,
+        path,
+        max_size,
+        elem_names,
+        dataset_property_type,
+        max_chunk_bytes=None,
+        store_time_step=False,
+    ):
         group_name = os.path.dirname(path)
         basename = os.path.basename(path)
         self.group_name = group_name
@@ -528,14 +538,14 @@ class ValueContainer:
         except KeyError:
             # Don't bother checking each sub path.
             pass
-        
-        self._length={}
+
+        self._length = {}
         for value in values:
             if isinstance(value, list):
                 self._length[value] = len(value.value)
             else:
                 self._length[value] = 1
-        
+
         dtype = values[0].value_type
         scaleoffset = None
         # There is no np.float128 on Windows.
@@ -610,16 +620,18 @@ class ValueContainer:
             list of ValueStorageBase
 
         """
-        
+
         if values:
             if isinstance(values[0].value, list):
                 vals = [x for y in values for x in y.value]
             else:
-                vals = [INTEGER_NAN if (x.is_nan() and x._value_type == int) else x.value for x in values ]
+                vals = [
+                    INTEGER_NAN if (x.is_nan() and x._value_type is int) else x.value
+                    for x in values
+                ]
         else:
             vals = [self.set_nan() for k, v in self._length.items() for x in range(v)]
         self._dataset.write_value(vals)
-                     
 
     def append_by_time_step(self, value, time_step, elem_index):
         """Append a value to the container.
@@ -631,7 +643,7 @@ class ValueContainer:
         elem_index : int
 
         """
-        
+
         if isinstance(value.value, list):
             vals = [x for x in value.value]
         else:
@@ -639,8 +651,7 @@ class ValueContainer:
 
         self._dataset.write_value(vals)
         self._time_steps.write_value([time_step, elem_index])
-        
-        
+
     def flush_data(self):
         """Flush any outstanding data to disk."""
         self._dataset.flush_data()

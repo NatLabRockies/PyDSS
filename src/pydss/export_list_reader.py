@@ -1,5 +1,3 @@
-
-
 from collections import defaultdict
 from pathlib import Path
 import os
@@ -8,15 +6,18 @@ import re
 from loguru import logger
 
 
-from pydss.common import DataConversion, LimitsFilter, StoreValuesType, \
-    DatasetPropertyType, MinMax
-from pydss.pyContrReader import pyExportReader
+from pydss.common import DataConversion, LimitsFilter, StoreValuesType, DatasetPropertyType, MinMax
+from pydss.py_contr_reader import PyExportReader
 from pydss.utils.utils import load_data
 from pydss.exceptions import InvalidConfiguration, InvalidParameter
 from pydss.metrics import (
-    NodeVoltageMetric, TrackCapacitorChangeCounts,
-    TrackRegControlTapNumberChanges, ExportLoadingsMetric, OverloadsMetricInMemory,
-    ExportPowersMetric, FeederHeadMetrics
+    NodeVoltageMetric,
+    TrackCapacitorChangeCounts,
+    TrackRegControlTapNumberChanges,
+    ExportLoadingsMetric,
+    OverloadsMetricInMemory,
+    ExportPowersMetric,
+    FeederHeadMetrics,
 )
 
 
@@ -26,15 +27,16 @@ CUSTOM_METRICS = {
     "CktElement.OverloadsMetricInMemory": OverloadsMetricInMemory,
     "CktElement.ExportPowersMetric": ExportPowersMetric,
     "FeederHead.FeederHeadMetrics": FeederHeadMetrics,
-    #"Lines.LoadingPercent": LineLoadingPercent,
+    # "Lines.LoadingPercent": LineLoadingPercent,
     "Nodes.VoltageMetric": NodeVoltageMetric,
     "RegControls.TrackTapNumberChanges": TrackRegControlTapNumberChanges,
-    #"Transformers.LoadingPercent": TransformerLoadingPercent,
+    # "Transformers.LoadingPercent": TransformerLoadingPercent,
 }
 
 
 class ExportListProperty:
     """Contains export options for an element property."""
+
     def __init__(self, elem_class, data):
         self.elem_class = elem_class
         self._opendss_classes = data.get("opendss_classes", [])
@@ -61,11 +63,11 @@ class ExportListProperty:
 
         # Note to devs: any field added here needs to be handled in serialize()
 
-        if self._sum_elements and self._store_values_type not in \
-                (StoreValuesType.ALL, StoreValuesType.SUM):
-            raise InvalidConfiguration(
-                "sum_elements requires store_values_types = all or sum"
-            )
+        if self._sum_elements and self._store_values_type not in (
+            StoreValuesType.ALL,
+            StoreValuesType.SUM,
+        ):
+            raise InvalidConfiguration("sum_elements requires store_values_types = all or sum")
 
         if self._is_max() and self._limits is not None:
             raise InvalidConfiguration("limits are not allowed with max types")
@@ -75,7 +77,11 @@ class ExportListProperty:
             "OverloadsMetricInMemory",
             "ExportPowersMetric",
         )
-        if elem_class == "CktElement" and self.name in requires_opendss_classes and not self._opendss_classes:
+        if (
+            elem_class == "CktElement"
+            and self.name in requires_opendss_classes
+            and not self._opendss_classes
+        ):
             raise InvalidConfiguration(
                 f"Exporting {elem_class}.{self.name} requires that opendss_classes be specifed"
             )
@@ -83,7 +89,7 @@ class ExportListProperty:
     def _check_sum_groups(self, sum_groups_file):
         if sum_groups_file is not None:
             if self._sum_groups:
-                raise InvalidConfiguration(f"Cannot set both sum_groups and sum_groups_file")
+                raise InvalidConfiguration("Cannot set both sum_groups and sum_groups_file")
 
             # This path needs to be relative to the current directory, not the Exports.toml.
             # This might need to be changed.
@@ -107,7 +113,8 @@ class ExportListProperty:
 
     def _is_max(self):
         return self._store_values_type in (
-            StoreValuesType.MAX, StoreValuesType.MOVING_AVERAGE_MAX,
+            StoreValuesType.MAX,
+            StoreValuesType.MOVING_AVERAGE_MAX,
         )
 
     @property
@@ -116,7 +123,8 @@ class ExportListProperty:
 
     def is_moving_average(self):
         return self._store_values_type in (
-            StoreValuesType.MOVING_AVERAGE, StoreValuesType.MOVING_AVERAGE_MAX,
+            StoreValuesType.MOVING_AVERAGE,
+            StoreValuesType.MOVING_AVERAGE_MAX,
         )
 
     @staticmethod
@@ -194,19 +202,23 @@ class ExportListProperty:
         """
         if self._limits is not None:
             return DatasetPropertyType.FILTERED
-        if self._store_values_type in \
-                (StoreValuesType.SUM, StoreValuesType.MAX,
-                 StoreValuesType.MIN,
-                 StoreValuesType.MOVING_AVERAGE_MAX,
-                 StoreValuesType.CHANGE_COUNT):
+        if self._store_values_type in (
+            StoreValuesType.SUM,
+            StoreValuesType.MAX,
+            StoreValuesType.MIN,
+            StoreValuesType.MOVING_AVERAGE_MAX,
+            StoreValuesType.CHANGE_COUNT,
+        ):
             return DatasetPropertyType.VALUE
         return DatasetPropertyType.PER_TIME_POINT
 
     def get_max_size(self, num_steps):
         """Return the max number of items that could be stored."""
         singles = (
-            StoreValuesType.CHANGE_COUNT, StoreValuesType.MAX,
-            StoreValuesType.MIN, StoreValuesType.MOVING_AVERAGE_MAX,
+            StoreValuesType.CHANGE_COUNT,
+            StoreValuesType.MAX,
+            StoreValuesType.MIN,
+            StoreValuesType.MOVING_AVERAGE_MAX,
             StoreValuesType.SUM,
         )
         if self._store_values_type in singles:
@@ -250,7 +262,7 @@ class ExportListProperty:
     def serialize(self):
         """Serialize object to a dictionary."""
         if self._are_names_regex:
-            #raise InvalidConfiguration("cannot serialize when names are regex")
+            # raise InvalidConfiguration("cannot serialize when names are regex")
             logger.warning("cannot serialize when names are regex")
             names = None
         else:
@@ -376,6 +388,7 @@ class ExportListProperty:
 
 class ExportListReader:
     """Reads export files and provides access to export properties."""
+
     def __init__(self, filename):
         self._elem_classes = defaultdict(list)
         legacy_files = ("ExportMode-byClass.toml", "ExportMode-byElement.toml")
@@ -385,9 +398,7 @@ class ExportListReader:
             parser = self._parse_file
 
         for elem_class, data in parser(filename):
-            self._elem_classes[elem_class].append(ExportListProperty(
-                elem_class, data
-            ))
+            self._elem_classes[elem_class].append(ExportListProperty(elem_class, data))
 
         # TODO: verify that multiple instances of the same property have
         # the same names.
@@ -407,7 +418,7 @@ class ExportListReader:
 
     @staticmethod
     def _parse_legacy_file(filename):
-        reader = pyExportReader(filename)
+        reader = PyExportReader(filename)
         publications = {tuple(x.split()) for x in reader.publicationList}
         for elem_class, props in reader.pyControllers.items():
             for prop in props:
@@ -451,9 +462,9 @@ class ExportListReader:
     def list_element_property_names(self, elem_class):
         return sorted({x.name for x in self._elem_classes[elem_class]})
 
-    # This name needs to match the interface defined in pyExportReader.
+    # This compatibility property matches the legacy PyExportReader interface.
     @property
-    def publicationList(self):
+    def publication_list(self):
         """Return the properties to be published to HELICS.
 
         Returns
@@ -462,10 +473,7 @@ class ExportListReader:
             Format: ["ElementClass Property"]
 
         """
-        return [
-            f"{x.elem_class} {x.name}" for x in self.iter_export_properties()
-            if x.publish
-        ]
+        return [f"{x.elem_class} {x.name}" for x in self.iter_export_properties() if x.publish]
 
     def serialize(self):
         """Serialize object to a dictionary."""
@@ -475,3 +483,6 @@ class ExportListReader:
                 data[elem_class].append(prop.serialize())
 
         return data
+
+
+setattr(ExportListReader, "publicationList", ExportListReader.publication_list)
