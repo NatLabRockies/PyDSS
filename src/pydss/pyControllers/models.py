@@ -165,6 +165,38 @@ class MotorStallSimpleSettings(BaseControllerModel):
     
 
 class MotorStallSettings(BaseControllerModel):
+    t_stall:  Annotated[
+        float,
+        Field(0.032, description="Stall time (range) based on laboratory testing"),
+    ] 
+    t_restart:  Annotated[
+        float,
+        Field(0.300, description="Induction motor restart time is relatively short"),
+    ]
+    comp_lf:  Annotated[
+        float,
+        Field(1.000, description="Motor D real power to motor base ratio"),
+    ]    
+    rated_pf:  Annotated[
+        float,
+        Field(0.980, description="Assumed slightly inductive motors load"),
+    ] 
+    v_stall:  Annotated[
+        float,
+        Field(0.45, ge=0.40, le=0.70,  description="Stall voltage (range) based on laboratory testing"),
+    ] 
+    r_stall_pu:  Annotated[
+        float,
+        Field(0.120, description="Based on laboratory testing results of residential air-conditioners."),
+    ]
+    x_stall_pu:  Annotated[
+        float,
+        Field(0.120, description="Based on laboratory testing results of residential air-conditioners."),
+    ]
+    lf_adj:  Annotated[
+        float,
+        Field(0.0, description="Load factor adjustment to the stall voltage10"),
+    ] 
     k_p1:  Annotated[
         float,
         Field(0 , description="Real power constant for running state 111"),
@@ -197,17 +229,37 @@ class MotorStallSettings(BaseControllerModel):
         float,
         Field(2.5, description="Reactive power exponent for running state 2."),
     ] 
-    t_th:  Annotated[
+    v_break:  Annotated[
         float,
-        Field(4.0, description="Varies based on manufacturer and external factors - sensitivity analysis required"),
+        Field(0.86, description="Compressor motor 'breakdown' voltage (pu)"),
     ] 
     f_rst:  Annotated[
         float,
         Field(0.2, description="Captures diversity in load; also based on testing (fraction of motors capable of restart)."),
     ] 
-    lf_adj:  Annotated[
+    v_rstrt: Annotated[
         float,
-        Field(0.0, description="Load factor adjustment to the stall voltage10"),
+        Field(0.95, description="Reconnect when acceptable voltage met"),
+    ] 
+    vc_1off:  Annotated[
+        float,
+        Field(0.5, description="Motor D voltage at which contactors start opening, pu"),
+    ] 
+    vc_2off:  Annotated[
+        float,
+        Field(0.4, description="Motor D voltage at which all contactors are opened, pu"),
+    ]
+    vc_1on:  Annotated[
+        float,
+        Field(0.6, description="Motor D voltage at which all contactors are reclosed, pu"),
+    ] 
+    vc_2on:  Annotated[
+        float,
+        Field(0.5, description="Motor D voltage at which contactors start reclosing, pu"),
+    ] 
+    t_th:  Annotated[
+        float,
+        Field(15.0, description="Varies based on manufacturer and external factors - sensitivity analysis required"),
     ] 
     t_th1t:  Annotated[
         float,
@@ -217,46 +269,20 @@ class MotorStallSettings(BaseControllerModel):
         float,
         Field(1.9, description="Assumed all tripped at 190% temperature"),
     ] 
-    p_fault: Annotated[
+    f_uvr:  Annotated[
         float,
-        Field(3.5, ge=3.0, le=5.0, description="Active power multiplier post fault."),
+        Field(0.0, ge=0.0, le=0.10,  description="Motor D heating time constant, s"),
     ] 
-    q_fault: Annotated[
+    uv_tr1:  Annotated[
         float,
-        Field(5.0, ge=3.0, le=7.0, description="Reactive power multiplier post fault."),
+        Field(0.6, ge=0.45, le=0.70,  description="Motor D 1st undervoltage pick-up, pu"),
     ] 
-    v_stall:  Annotated[
+    t_tr1:  Annotated[
         float,
-        Field(0.55, ge=0.45, le=0.60,  description="Stall voltage (range) based on laboratory testing"),
+        Field(0.02, ge=0.01, le=0.05,  description="Motor D 1st undervoltage trip delay, s"),
     ] 
-    v_break:  Annotated[
-        float,
-        Field(0.86, description="Compressor motor 'breakdown' voltage (pu)"),
-    ] 
-    v_rstrt: Annotated[
-        float,
-        Field(0.95, description="Reconnect when acceptable voltage met"),
-    ] 
-    t_stall:  Annotated[
-        float,
-        Field(0.032, description="Stall time (range) based on laboratory testing"),
-    ] 
-    t_restart:  Annotated[
-        float,
-        Field(0.300, description="Induction motor restart time is relatively short"),
-    ] 
-    rated_pf:  Annotated[
-        float,
-        Field(0.939, description="Assumed slightly inductive motors load"),
-    ] 
-    r_stall_pu:  Annotated[
-        float,
-        Field(0.100, description="Based on laboratory testing results of residential air-conditioners."),
-    ]
-    x_stall_pu:  Annotated[
-        float,
-        Field(0.100, description="Based on laboratory testing results of residential air-conditioners."),
-    ]  
+
+
     
 
 class PvControllerModel(BaseControllerModel):

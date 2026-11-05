@@ -156,7 +156,11 @@ class OpenDSS:
     def _CreateControllers(self, ControllerDict):
         self._pyControls = {}
         self._pyControls_types = {}
+        # logger.info(f'self._dssObjects -> {self._dssObjects}')
+        # os.system("PAUSE")
         for ControllerType, ElementsDict in ControllerDict.items():
+            # logger.info(f'ControllerType -> {ControllerType}, ElementsDict -> {ElementsDict}')
+            # os.system("PAUSE")
             for ElmName, SettingsDict in ElementsDict.items():
                 Controller = pyControllers.pyController.Create(ElmName, ControllerType, SettingsDict, self._dssObjects,
                                                   self._dssInstance, self._dssSolver)
@@ -167,24 +171,47 @@ class OpenDSS:
                     if controller_name not in self._pyControls_types:
                         self._pyControls_types[controller_name] = class_name
                     logger.info('Created pyController -> Controller.' + ElmName)
+
+        # --- Batch MotorStall controllers ---
+        from pydss.pyControllers.Controllers.MotorStall import MotorStall
+        from pydss.pyControllers.Controllers.MotorStallBatch import MotorStallBatch
+        motor_stall_keys = [k for k, v in self._pyControls.items()
+                            if isinstance(v, MotorStall)]
+        if len(motor_stall_keys) > 0:
+            motor_stall_ctrls = [self._pyControls[k] for k in motor_stall_keys]
+            batch = MotorStallBatch(motor_stall_ctrls)
+            # Remove individual controllers, add the batch
+            for k in motor_stall_keys:
+                del self._pyControls[k]
+            self._pyControls['Controller.MotorStallBatch'] = batch
+            logger.info(f"Batched {len(motor_stall_keys)} MotorStall controllers into MotorStallBatch")
+
+        # --- Batch PvVoltageRideThru controllers ---
+        from pydss.pyControllers.Controllers.PvVoltageRideThru import PvVoltageRideThru
+        from pydss.pyControllers.Controllers.PvVoltageRideThruBatch import PvVoltageRideThruBatch
+        pv_rt_keys = [k for k, v in self._pyControls.items()
+                      if isinstance(v, PvVoltageRideThru)]
+        if len(pv_rt_keys) > 0:
+            pv_rt_ctrls = [self._pyControls[k] for k in pv_rt_keys]
+            pv_batch = PvVoltageRideThruBatch(pv_rt_ctrls)
+            for k in pv_rt_keys:
+                del self._pyControls[k]
+            self._pyControls['Controller.PvVoltageRideThruBatch'] = pv_batch
+            logger.info(f"Batched {len(pv_rt_keys)} PvVoltageRideThru controllers into PvVoltageRideThruBatch")
+
+        self._controller_list = list(self._pyControls.values())
+        self._controllers_by_priority = {p: [] for p in range(CONTROLLER_PRIORITIES)}
+        for controller in self._controller_list:
+            for p in getattr(controller, 'ACTIVE_PRIORITIES', range(CONTROLLER_PRIORITIES)):
+                self._controllers_by_priority[p].append(controller)
         return
 
     def _update_controllers(self, Priority, Time, Iteration, UpdateResults):
-        errors = []
         maxError = 0
-        _pyControls_types = set(self._pyControls_types.values())
-
-        for class_name in _pyControls_types:
-            self._dssInstance.Basic.SetActiveClass(class_name)
-            elm = self._dssInstance.ActiveClass.First()
-            while elm:
-                element_name = self._dssInstance.CktElement.Name()
-                controller_name = 'Controller.' + element_name
-                if controller_name in self._pyControls:
-                    controller = self._pyControls[controller_name]
-                    error = controller.Update(Priority, Time, UpdateResults)
-                    maxError = error if error > maxError else maxError
-                elm = self._dssInstance.ActiveClass.Next()
+        for controller in self._controllers_by_priority[Priority]:
+            error = controller.Update(Priority, Time, UpdateResults)
+            if error > maxError:
+                maxError = error
         return maxError < self._settings.project.error_tolerance, maxError
 
     @staticmethod
@@ -205,7 +232,8 @@ class OpenDSS:
         InvalidSelection = ['Settings', 'ActiveClass', 'dss', 'utils', 'PDElements', 'XYCurves', 'Bus', 'Properties']
         # TODO: this causes a segmentation fault. Aadil says it may not be needed.
         #self._dssObjectsByClass={'LoadShape': self._get_relavent_object_dict('LoadShape')}
-
+        # logger.info(f"dss.Circuit.AllElementNames()  -> {dss.Circuit.AllElementNames()}")
+        # os.system("PAUSE")
         for ElmName in dss.Circuit.AllElementNames():
             Class, Name =  ElmName.split('.', 1)
             ClassName = Class + 's'
@@ -239,12 +267,17 @@ class OpenDSS:
 
     @track_timing(timer_stats_collector)
     def RunStep(self, step, updateObjects=None):
+
         # updating parameters before simulation run
         if self._settings.logging.log_time_step_updates:
             logger.info(f'Pydss datetime - {self._dssSolver.GetDateTime()}')
             logger.info(f'OpenDSS time [h] - {self._dssSolver.GetOpenDSSTime()}')
         if self._settings.profiles.use_profile_manager:
             self.profileStore.update()
+
+        if self._settings.helics.co_simulation_mode:
+            # self._heilcs_interface.updateHelicsPublications()
+            self._increment_flag, helics_time = self._heilcs_interface.request_time_increment()
 
         if self._settings.helics.co_simulation_mode:
             self._heilcs_interface.updateHelicsSubscriptions()
@@ -263,6 +296,7 @@ class OpenDSS:
                     for i in range(self._settings.project.max_control_iterations):
                         has_converged, error = self._update_controllers(priority, step, i, UpdateResults=False)
                         logger.debug('Control Loop {} convergence error: {}'.format(priority, error))
+                        logger.debug('Control Loop {} convergence @step {} '.format(priority, step))
                         if has_converged:
                             priority_has_converged = True
                             break
@@ -278,7 +312,6 @@ class OpenDSS:
                         time_step_has_converged = False
                         logger.warning('Control Loop {} no convergence @ {} '.format(priority, step))
                         self._HandleConvergenceErrorChecks(step, error)
-
 
         if self._settings.frequency.enable_frequency_sweep and \
                 self._settings.project.simulation_type != SimulationType.DYNAMIC:
@@ -297,8 +330,10 @@ class OpenDSS:
 
         if self._settings.helics.co_simulation_mode:
             self._heilcs_interface.updateHelicsPublications()
-            self._increment_flag, helics_time = self._heilcs_interface.request_time_increment()
+            # if step < 1:
+            #     self._increment_flag, helics_time = self._heilcs_interface.request_time_increment_2()
 
+        # os.system("PAUSE")
         return time_step_has_converged
 
     def _HandleConvergenceErrorChecks(self, step, error):
@@ -316,7 +351,7 @@ class OpenDSS:
         self._convergenceErrorsOpenDSS += 1
 
         if self._maxConvergenceErrorCount is not None and self._convergenceErrorsOpenDSS > self._maxConvergenceErrorCount:
-            logger.error("Exceeded OpenDSS convergence error count threshold at step %s", step)
+            logger.error(f"Exceeded OpenDSS convergence error count threshold at step {step}")
             raise OpenDssConvergenceErrorCountExceeded(f"{self._convergenceErrorsOpenDSS} errors occurred")
 
     def DryRunSimulation(self, project, scenario):
@@ -357,7 +392,7 @@ class OpenDSS:
         dss.Solution.Convergence(self._settings.project.error_tolerance)
         logger.info('Running simulation from {} till {}.'.format(sTime, eTime))
         logger.info('Simulation time step {}.'.format(Steps))
-        logger.info("Set OpenDSS convergence to %s", dss.Solution.Convergence())
+        logger.info(f"Set OpenDSS convergence to {dss.Solution.Convergence()}")
         logger.info('Max convergence error count {}.'.format(self._maxConvergenceErrorCount))
         logger.info("initializing store")
         self.ResultContainer.InitializeDataStore(project.hdf_store, Steps, MC_scenario_number)
@@ -390,10 +425,14 @@ class OpenDSS:
                     pydss_has_converged = self.RunStep(step)
                     opendss_has_converged = dss.Solution.Converged()
                     if not opendss_has_converged:
-                        logger.error("OpenDSS did not converge at step=%s pydss_converged=%s",
-                                            step, pydss_has_converged)
+                        logger.error(f"OpenDSS did not converge at step={step} pydss_converged={pydss_has_converged}")
                         self._HandleOpenDSSConvergenceErrorChecks(step)
-                has_converged = pydss_has_converged and opendss_has_converged
+
+                if pydss_has_converged:
+                    has_converged = True
+                else:
+                    has_converged = pydss_has_converged and opendss_has_converged
+                
                 if step == 0 and self.ResultContainer is not None:
                     size = make_human_readable_size(self.ResultContainer.max_num_bytes())
                     logger.info('Storage requirement estimation: %s, estimated based on first time step run.', size)
@@ -426,6 +465,7 @@ class OpenDSS:
 
                 if self._settings.exports.export_results:
                     current_results = self.ResultContainer.CurrentResults
+
                 yield False, step, has_converged, current_results
 
         finally:

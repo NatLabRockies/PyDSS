@@ -43,7 +43,7 @@ class instance(object):
 
         opendss = OpenDSS(settings)
         self._dump_scenario_simulation_settings(settings)
-        logger.info('Running scenario: %s', settings.project.active_scenario)
+        logger.info(f'Running scenario: {settings.project.active_scenario}')
         if settings.monte_carlo.num_scenarios > 0:
             opendss.RunMCsimulation(project, scenario, samples=settings.monte_carlo.num_scenarios)
         else:

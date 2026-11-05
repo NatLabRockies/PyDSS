@@ -2,14 +2,16 @@ from pydantic import ConfigDict, BaseModel, model_validator
 from typing import List, Optional, Any, Union, Dict
 from enum import Enum
 import helics
+import opendssdirect as dss
 import os
 import re
-
+import pandas as pd
 from loguru import logger
 
 from pydss.simulation_input_models import SimulationSettingsModel
 from pydss.common import SUBSCRIPTIONS_FILENAME, ExportMode
 from pydss.utils.utils import load_data
+from pydss.dssElement import dssElement
 
 TYPE_INFO = {
         'CurrentsMagAng': 'vector',
@@ -61,6 +63,9 @@ class Subscription(BaseModel):
     states: List[Union[float, int, bool]] = [0.0, 0.0, 0.0, 0.0, 0.0]
     sub: Any = None
     model_config = ConfigDict(arbitrary_types_allowed=True)
+    multi_input_ids: List[str] = None
+    multi_input_handling_method: int = 0 # the enums for helics multi-input handling methods: https://docs.helics.org/en/latest/references/api-reference/C_API.html#enums
+    # a zero indicates in order of priority or no_op (no operation)
 
 class Publication(BaseModel):
     model: str
@@ -76,18 +81,24 @@ class Subscriptions(BaseModel):
     subscriptions: List[Subscription]
 
     @model_validator(mode='after')
-    def is_in_opendss_model(self)-> 'Subscriptions':
+    def is_in_opendss_model(self)-> 'Subscriptions':        
         for subscription in self.subscriptions:
             if subscription.model not in self.opendss_models:
                 raise AssertionError(f"The loaded OpenDSS model does not have an element define with the name {subscription}")
-            
             if subscription.subscribe:
                 subscription.object = self.opendss_models[subscription.model]
-                subscription.sub = helics.helicsFederateRegisterSubscription(
-                    self.federate,
-                    subscription.id,
-                    subscription.unit
-                )
+                if subscription.multi_input_ids:
+                    subscription.sub = helics.helicsFederateRegisterInput(self.federate, str(subscription.id), helics.helics_data_type_double, "")
+                    for input_id in subscription.multi_input_ids:
+                        helics.helicsInputAddTarget(subscription.sub, input_id)
+                    helics.helicsInputSetOption(subscription.sub, helics.helics_handle_option_multi_input_handling_method,
+                        subscription.multi_input_handling_method)
+                else:
+                    subscription.sub = helics.helicsFederateRegisterSubscription(
+                        self.federate,
+                        subscription.id,
+                        subscription.unit
+                    )
         return self
     
 class Publications(BaseModel):
@@ -208,6 +219,7 @@ class helics_interface:
         IP = self._settings.helics.broker
         Port = self._settings.helics.broker_port
         logger.info("Connecting to broker @ {}".format(f"{IP}:{Port}" if Port else IP))
+        logger.info(f"Connecting to broker @ {self._settings.helics}")
         if self._settings.helics.broker:
             helics.helicsFederateInfoSetBroker(self.fedinfo, str(self._settings.helics.broker))
         if self._settings.helics.broker_port:
@@ -261,16 +273,59 @@ class helics_interface:
                     value = helics.helicsInputGetInteger(subscription.sub)
                     
                 if value and value != 0:
-                    if value > 1e6 or value < -1e6:
-                        value = 1.0 
+                    logger.info(f"value is {value}")
+                    if value > 1e8 or value < -1e6 or pd.isna(value):
+                        logger.info(f"subscription {subscription.model}.{subscription.property} not updated with invalid value, continuing to next subscription")
+                        continue
+                        #value = 1.0
 
                 value = value * subscription.multiplier
-                subscription.object.SetParameter(subscription.property, value) 
+
+                if subscription.property == 'Switch':
+                    # converting a line to a switch resets it's properties, so save the line properties
+                    # then convert to switch
+                    # then re-apply the line properties
+                    line_properties = {}
+                    line_properties['r0'] = subscription.object.GetParameter('r0')
+                    line_properties['r1'] = subscription.object.GetParameter('r1')
+                    line_properties['x0'] = subscription.object.GetParameter('x0')
+                    line_properties['x1'] = subscription.object.GetParameter('x1')
+                    line_properties['c0'] = subscription.object.GetParameter('c0')
+                    line_properties['c1'] = subscription.object.GetParameter('c1')
+                    line_properties['length'] = subscription.object.GetParameter('length')
+                
+                subscription.object.SetParameter(subscription.property, value) # this redirects to the SetParameter function of the dssElement property in dssElement.py
                 logger.info('Value for "{}.{}" changed to "{}"'.format(
                         subscription.model,
                         subscription.property,
                         value
                     ))
+                # if it is a line outage, you've just turned the line into a switch, so set the switch to be open
+                # if subscription.property == 'Switch':
+                #     if value<=1:
+                #         state_value = 'Open'
+                #     else: 
+                #         state_value = 'Closed'
+                #     # make sure the line properties are maintained
+                #     #for line_prop, line_value in line_properties.items():
+                #     #    subscription.object.SetParameter(line_prop, line_value)
+                #     # check if the switch is in the model
+                #     switch_name = subscription.model.replace('Line','SwtControl')
+                #     if switch_name.replace('SwtControl.','') in dss.SwtControls.AllNames():
+                #         logger.info(f'{switch_name} already exists. Opening existing switch')
+                #         dss.SwtControls.Name(switch_name.replace('SwtControl.',''))
+                #         dss.SwtControls.Delay(0)
+                #         dss.SwtControls.State(int(value)) # 1 is open and 2 is closed
+                #         dss.SwtControls.NormalState(int(value))
+                #         #dss.SwtControls.Action(state_value)
+                #     else:
+                #         #if it's not already created, then create the switch and set params with one command line
+                #         new_switch_command = f'New {switch_name} Delay=0 enabled=Yes Normal=Open State={state_value} SwitchedObj={subscription.model}'
+                #         dss.run_command(new_switch_command)
+                #         #dss.SwtControls.Action(state_value)
+                #         logger.info(f'{switch_name} created with {new_switch_command}')
+                #     logger.info(f'Line switch status: {dss.SwtControls.State()}')
+                #     logger.info(f'Line {switch_name} modeled with open switch')
 
                 if self._settings.helics.iterative_mode:
                     if self.c_seconds != self.c_seconds_old:
@@ -313,6 +368,18 @@ class helics_interface:
             logger.info(str(self.publications.publications))
             for publication in self.publications.publications:
                 logger.info(f"pubscription created: {publication}")
+
+        # Register an aggregate generator total-power publication so that
+        # the co-simulation launcher can subscribe PSSE machines to it.
+        # Published as [P_kW, Q_kvar] with POSITIVE values for generation.
+        self._gen_total_pub = None
+        gen_class = self._objects_by_class.get("Generators", {})
+        if gen_class:
+            gen_pub_name = f"{self._settings.helics.federate_name}.Generators.Total.TotalPower"
+            self._gen_total_pub = helics.helicsFederateRegisterGlobalTypePublication(
+                self._federate, gen_pub_name, "vector", ""
+            )
+            logger.info(f"Registered generator aggregate publication: {gen_pub_name}")
         return
 
     def updateHelicsPublications(self):
@@ -333,11 +400,63 @@ class helics_interface:
             else:
                 raise ValueError("Unsupported data type forr teh HELICS interface")
             logger.info(f"{publication} - {value}")
+
+        # Publish aggregate generator total power [P_kW, Q_kvar].
+        # Sign convention: POSITIVE = generation (negated from OpenDSS
+        # CktElement.Powers which uses load convention, i.e. negative for
+        # power injected by generators).
+        if self._gen_total_pub is not None:
+            total_gen_p = 0.0
+            total_gen_q = 0.0
+            for gen_name, gen_obj in self._objects_by_class.get("Generators", {}).items():
+                powers = gen_obj.GetValue("Powers")
+                if powers is not None and isinstance(powers, list):
+                    for i in range(0, len(powers), 2):
+                        total_gen_p += powers[i]
+                        if i + 1 < len(powers):
+                            total_gen_q += powers[i + 1]
+            # Negate: OpenDSS Powers are negative for gen injection
+            total_gen_p = -total_gen_p
+            total_gen_q = -total_gen_q
+            helics.helicsPublicationPublishVector(self._gen_total_pub, [total_gen_p, total_gen_q])
+            logger.debug(f"Published generator total power: [{total_gen_p:.4f}, {total_gen_q:.4f}]")
         return
 
     def request_time_increment(self):
         error = sum([abs(sub.states[0] - sub.states[1]) for sub in self.subscriptions.subscriptions])
-        r_seconds = self._dss_solver.GetTotalSeconds() #- self._dss_solver.GetStepResolutionSeconds()
+        # r_seconds = self._dss_solver.GetTotalSeconds() # parallel
+        r_seconds = self._dss_solver.GetTotalSeconds() + self._dss_solver.GetStepResolutionSeconds() # transmission priority
+        # if r_seconds > 0:
+        #     r_seconds = self._dss_solver.GetTotalSeconds() + self._dss_solver.GetStepResolutionSeconds()
+        # logger.info(f"self._dss_solver.GetTotalSeconds(): {self._dss_solver.GetTotalSeconds()}, self._dss_solver.GetStepResolutionSeconds(): {self._dss_solver.GetStepResolutionSeconds()}")
+        # os.system('PAUSE')
+        if not self._settings.helics.iterative_mode:
+            while self.c_seconds < r_seconds:
+                self.c_seconds = helics.helicsFederateRequestTime(self._federate, r_seconds)
+            logger.info('Time requested: {} - time granted: {} '.format(r_seconds, self.c_seconds))
+            return True, self.c_seconds
+        else:
+
+            self.c_seconds, iteration_state = helics.helicsFederateRequestTimeIterative(
+                self._federate,
+                r_seconds,
+                helics.helics_iteration_request_iterate_if_needed
+            )
+
+            logger.info('Time requested: {} - time granted: {} error: {} it: {}'.format(
+                r_seconds, self.c_seconds, error, self.itr))
+            if error > -1 and self.itr < self._co_convergance_max_iterations - 1:
+                self.itr += 1
+                return False, self.c_seconds
+            else:
+                self.itr = 0
+                return True, self.c_seconds
+    
+    def request_time_increment_2(self):
+        error = sum([abs(sub.states[0] - sub.states[1]) for sub in self.subscriptions.subscriptions])
+        r_seconds = self._dss_solver.GetTotalSeconds() + self._dss_solver.GetStepResolutionSeconds()/2
+        # logger.info('Time requested: {} - self._dss_solver.GetStepResolutionSeconds(): {} '.format(r_seconds, self._dss_solver.GetStepResolutionSeconds()))
+        # os.system('PAUSE')
         if not self._settings.helics.iterative_mode:
             while self.c_seconds < r_seconds:
                 self.c_seconds = helics.helicsFederateRequestTime(self._federate, r_seconds)
@@ -366,3 +485,4 @@ class helics_interface:
         helics.helicsFederateInfoFree(self.fedinfo)
         helics.helicsFederateFree(self._federate)
         logger.info('HELICS federate for pydss destroyed')
+

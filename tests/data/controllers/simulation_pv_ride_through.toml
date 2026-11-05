@@ -1,0 +1,60 @@
+[Project]
+"Start time" = "2019-06-20 00:00:00.0"
+"Simulation duration (min)" = 0.05
+"Loadshape start time" = "2019-06-20 00:00:00.0"
+"Step resolution (sec)" = 0.05
+"Max Control Iterations" = 50
+"Error tolerance" = 0.001
+"Control mode" = "Static"
+"Disable pydss controllers" = false
+"Simulation Type" = "QSTS"
+"Project Path" = "./tests/data"
+"Active Project" = "controllers"
+"Active Scenario" = "base_case"
+"DSS File" = "Master_Spohn_existing_VV.dss"
+"DSS File Absolute Path" = false
+"Return Results" = false
+
+[[Project.Scenarios]]
+name = "voltage_ride_through"
+post_process_infos = []
+
+[Exports]
+"Export Mode" = "byClass"
+"Export Style" = "Single file"
+"Export Format" = "csv"
+"Export Compression" = false
+"Export Elements" = false
+"Export Data Tables" = false
+"Export Data In Memory" = false
+"HDF Max Chunk Bytes" = 32768
+"Export Event Log" = true
+"Log Results" = true
+
+[Frequency]
+"Enable frequency sweep" = false
+"Fundamental frequency" = 60
+"Start frequency" = 1.0
+"End frequency" = 15.0
+"frequency increment" = 2.0
+"Neglect shunt admittance" = false
+"Percentage load in series" = 50.0
+
+[Helics]
+"Co-simulation Mode" = false
+"Federate name" = "pydss"
+"Time delta" = 0.01
+"Core type" = "zmq"
+Uninterruptible = true
+"Helics logging level" = 5
+
+[Logging]
+"Logging Level" = "INFO"
+"Log to external file" = true
+"Display on screen" = true
+"Clear old log file" = false
+
+[MonteCarlo]
+"Number of Monte Carlo scenarios" = -1
+
+[Reports]

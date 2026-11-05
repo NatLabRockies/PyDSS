@@ -37,6 +37,7 @@ class DatasetBuffer:
             max_chunk_bytes=None, attributes=None, names=None,
             column_ranges_per_name=None, data=None
         ):
+
         if max_chunk_bytes is None:
             max_chunk_bytes = DEFAULT_MAX_CHUNK_BYTES
         self._buf_index = 0

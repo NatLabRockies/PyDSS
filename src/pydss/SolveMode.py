@@ -10,7 +10,8 @@ from pydss.simulation_input_models import ProjectModel, SimulationSettingsModel
 
 
 def GetSolver(settings: SimulationSettingsModel, dssInstance):
-    logger.info('Setting solver to %s mode.', settings.project.simulation_type.value)
+    # logger.info('Setting solver to %s mode.', settings.project.simulation_type.value)
+    logger.info(f'Setting solver to {settings.project.simulation_type.value} mode.')
     return get_solver_from_simulation_type(settings.project)
 
 

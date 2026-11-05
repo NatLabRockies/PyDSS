@@ -694,6 +694,31 @@ class HelicsModel(InputsBaseModel):
             raise ValueError(f"max_co_iterations must be between 1 and 1000: {val}")
         return val
 
+class ThreatModel(InputsBaseModel):
+    threat_federate: Annotated[
+        bool, 
+        Field(
+            title="threat_federate",
+            description="Set to true to enable the Threat Federate.",
+            default=False,
+            alias="Enable Threat Federate",
+        )]
+    federate_name: Annotated[
+        str, 
+        Field(
+            title="federate_name",
+            description="Name of the federate",
+            default="threat_test",
+            alias="Federate Name",
+        )]
+    threat_mapping: Annotated[
+        Optional[Path],
+        Field(
+            None,
+            title="threat_mapping",
+            description="Path of the mapping file for threat federate.",
+            alias="Threat Mapping Path",
+        )]
 
 class LoggingModel(InputsBaseModel):
     """Defines the user inputs for controlling logging."""
@@ -1130,6 +1155,14 @@ class SimulationSettingsModel(InputsBaseModel):
             description="HELICS settings",
             default=HelicsModel(),
             alias="Helics",
+        )]
+    threat_settings:Annotated[
+        ThreatModel, 
+        Field(
+            title="threat_settings",
+            description="Threat settings",
+            default=ThreatModel(),
+            alias="Threat",
         )]
     logging: Annotated[
         LoggingModel, 

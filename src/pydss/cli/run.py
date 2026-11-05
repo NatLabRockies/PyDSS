@@ -5,6 +5,7 @@ CLI to run a pydss project
 from pathlib import Path
 import ast
 import sys
+import os
 
 from loguru import logger
 import click
@@ -83,7 +84,10 @@ def run(project_path, options=None, tar_project=False, zip_project=False, verbos
 
     logger.level(console_level)
     if filename:
-        logger.add(filename)
+        if settings.logging.clear_old_log_file:
+            logger.add(filename, mode="w")
+        else:
+            logger.add(filename)
 
     logger.info(f"CLI: [{get_cli_string()}]",)
 
@@ -92,7 +96,6 @@ def run(project_path, options=None, tar_project=False, zip_project=False, verbos
         if not isinstance(options, dict):
             logger.error("options are invalid: %s", options)
             sys.exit(1)
-
     project = PyDssProject.load_project(project_path, options=options, simulation_file=simulations_file)
     project.run(tar_project=tar_project, zip_project=zip_project, dry_run=dry_run)
 

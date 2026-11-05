@@ -39,29 +39,7 @@ DEFAULT_REGISTRY = {
                 ),
             },
         ],
-        ControllerType.PV_VOLTAGE_RIDETHROUGH.value: [
-            {
-                "name": "NO_VRT_DVS_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
-                ),
-            },
-            {
-                "name": "1547_CAT_III_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
-                ),
-            },
-            {
-                "name": "1547_CAT_III_DVS_test",
-                "filename": os.path.join(
-                    os.path.dirname(getattr(pydss, "__path__")[0]),
-                    "pydss/pyControllers/Controllers/Settings/VoltageRideThru.toml"
-                ),
-            },
-        ],
+        ControllerType.PV_VOLTAGE_RIDETHROUGH.value: [],
         ControllerType.SOCKET_CONTROLLER.value: [],
         ControllerType.STORAGE_CONTROLLER.value: [],
         ControllerType.XMFR_CONTROLLER.value: [],
